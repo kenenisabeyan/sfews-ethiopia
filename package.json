@@ -1,0 +1,14 @@
+{
+  "name": "sfews-ethiopia",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev:backend": "cd backend && venv\\Scripts\\activate.bat && uvicorn main:app --reload",
+    "dev:frontend": "cd frontend && pnpm run dev",
+    "dev:simulator": "cd simulator && ..\\backend\\venv\\Scripts\\activate.bat && python run_simulation.py",
+    "dev": "concurrently -c \"cyan,magenta,yellow\" -n \"backend,frontend,simulator\" \"pnpm run dev:backend\" \"pnpm run dev:frontend\" \"pnpm run dev:simulator\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
