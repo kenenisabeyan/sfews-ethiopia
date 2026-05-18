@@ -1,15 +1,18 @@
 export interface SensorNode {
-    id: string;
+    id: number;
     name: string;
     latitude: number;
     longitude: number;
-    status: 'Safe' | 'Warning' | 'Critical';
+    status: string;
     batteryLevel: number;
+    waterLevelCm?: number;
+    rainfallRateMm?: number;
+    currentRisk?: 'Safe' | 'Warning' | 'Critical';
 }
 
 export interface HydroLog {
-    logId: string;
-    nodeId: string;
+    logId: string | number;
+    nodeId: number;
     waterLevelCm: number;
     rainfallRateMm: number;
     floodProbability: number;
@@ -17,14 +20,21 @@ export interface HydroLog {
     timestamp: string;
 }
 
-export interface DashboardData {
+export interface DashboardSummary {
+    totalNodes: number;
+    activeAlerts: number;
+    systemHealthStatus: string;
+}
+
+export interface DashboardPayload {
+    summary: DashboardSummary;
     nodes: SensorNode[];
     history: HydroLog[];
 }
 
-export interface HealthStatus {
+export interface SystemHealth {
     status: string;
-    api: string;
-    database: string;
-    db_time: string;
+    api_version: string;
+    database_connection: string;
+    server_time: string;
 }
