@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  background-color: #030712; /* Tailwind's gray-950 color for a clean dark mode default */
+}
