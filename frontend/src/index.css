@@ -2,7 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  margin: 0;
-  background-color: #030712; /* Tailwind's gray-950 color for a clean dark mode default */
+@layer base {
+  body {
+    @apply bg-[#030712] text-slate-200 antialiased m-0 p-0;
+  }
 }

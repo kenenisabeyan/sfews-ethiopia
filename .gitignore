@@ -1,112 +1,40 @@
-# ==========================================
-# SFEWS - Comprehensive .gitignore
-# ==========================================
-
-# ------------------------------------------
-# 1. Environment Variables & Secrets
-# ------------------------------------------
-.env
-.env.*
-!.env.example
-
-# ------------------------------------------
-# 2. Python & Backend (FastAPI)
-# ------------------------------------------
-# Byte-compiled / optimized / DLL files
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
-.Python
-
-# Virtual Environments
-.venv/
 venv/
 env/
-ENV/
-
-# Packages and Builds
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-share/python-wheels/
+.venv/
 *.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
+.pytest_cache/
 
-# ------------------------------------------
-# 3. Node.js & Frontend (React + Vite)
-# ------------------------------------------
-# Dependencies
+# Environment Variables
+.env
+.env.local
+.env.*.local
+
+# Node / React (Frontend)
 node_modules/
-
-# Production Build
-dist-ssr/
-frontend/dist/
-
-# Logs
-logs
-*.log
+dist/
+build/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
+.pnpm-debug.log*
+.eslintcache
 
-# ------------------------------------------
-# 4. Machine Learning & Jupyter (ml-research)
-# ------------------------------------------
-.ipynb_checkpoints/
-# Data files (often too large for Git)
-*.csv
-*.dat
-*.out
-*.hdf5
-*.h5
-*.pkl
-*.onnx
-# Downloaded/Generated datasets
-ml-research/data/*
-!ml-research/data/.gitkeep
-
-# ------------------------------------------
-# 5. Firmware & IoT (ESP32 / PlatformIO)
-# ------------------------------------------
-.pio/
-.pioenvs/
-.piolibdeps/
-*.bin
-*.elf
-*.hex
-*.a
-*.o
-
-# ------------------------------------------
-# 6. Editor, IDE & OS Files
-# ------------------------------------------
-.vscode/*
-!.vscode/extensions.json
-!.vscode/settings.json
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/
 .idea/
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
+
+# General
+*.log
+coverage/
