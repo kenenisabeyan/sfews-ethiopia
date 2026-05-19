@@ -1,0 +1,35 @@
+services:
+  # 1. FastAPI Backend Service
+  - type: web
+    name: sfews-backend
+    env: python
+    buildCommand: "cd backend && pip install -r requirements.txt"
+    startCommand: "cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT"
+    envVars:
+      - key: DB_HOST
+        value: dpg-d85p1rrrjlhs73a6ak3g-a # Internal database connection for ultra-low latency
+      - key: DB_PORT
+        value: "5432"
+      - key: DB_NAME
+        value: sfews_ethiopia
+      - key: DB_USER
+        value: sfews_ethiopia_user
+      - key: DB_PASSWORD
+        sync: false # Set this manually in the Render Dashboard
+
+  # 2. React Vite Frontend Dashboard
+  - type: web
+    name: sfews-frontend
+    env: static
+    buildCommand: "cd frontend && npm install -g pnpm && pnpm install && pnpm build"
+    staticPublishPath: "./frontend/dist"
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html # Fixes React Router refreshing issues
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          type: web
+          name: sfews-backend
+          envVarKey: RENDER_EXTERNAL_URL

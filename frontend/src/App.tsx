@@ -3,7 +3,7 @@ import axios from 'axios';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { SensorNode, DashboardPayload, SystemHealth } from './types';
 
-const API_BASE_URL = 'http://localhost:8000';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 const App: React.FC = () => {
     const [payload, setPayload] = useState<DashboardPayload | null>(null);
