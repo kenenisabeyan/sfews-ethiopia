@@ -69,10 +69,10 @@ def get_db():
         db_pool.putconn(conn)
 
 class TelemetryData(BaseModel):
-    node_id: int = Field(..., description="The empirical ID of the sensor station")
+    node_id: str = Field(..., description="The empirical ID of the sensor station")
     water_level_cm: float = Field(..., description="Current water elevation in cm")
     rainfall_rate_mm: float = Field(..., description="Precipitation rate in mm/hr")
-    battery_level: int = Field(..., description="Battery percentage (0-100)")
+    battery_level: float = Field(..., description="Battery percentage (0-100)")
 
 def predictive_flood_model(water_level_cm: float, rainfall_rate_mm: float) -> float:
     """
@@ -126,17 +126,20 @@ def ingest_telemetry(payload: TelemetryData, conn = Depends(get_db)):
     
     try:
         with conn.cursor(cursor_factory=RealDictCursor) as cur:
-            # 3. Verify node exists and update its vitals
+            # 3. Upsert sensor node to auto-register it
             cur.execute("""
-                UPDATE sensor_nodes 
-                SET battery_level = %s, status = 'Active', created_at = NOW()
-                WHERE node_id = %s
-                RETURNING node_id;
-            """, (payload.battery_level, payload.node_id))
+                INSERT INTO sensor_nodes (id, name, latitude, longitude, status, battery_level, last_updated)
+                VALUES (%s, %s, 9.0, 40.0, 'Active', %s, NOW())
+                ON CONFLICT (id) DO UPDATE 
+                SET battery_level = EXCLUDED.battery_level, 
+                    status = EXCLUDED.status, 
+                    last_updated = NOW()
+                RETURNING id;
+            """, (payload.node_id, f"Station {payload.node_id}", payload.battery_level))
             
             if not cur.fetchone():
                 conn.rollback()
-                raise HTTPException(status_code=404, detail=f"Sensor node {payload.node_id} not recognized in the network.")
+                raise HTTPException(status_code=500, detail=f"Sensor node {payload.node_id} registration failed.")
             
             # 4. Insert telemetry to hydro_logs
             cur.execute("""
@@ -170,8 +173,8 @@ def build_dashboard_payload(conn = Depends(get_db)):
             # Fetch all nodes and join their LATEST log for realtime metrics
             cur.execute("""
                 SELECT 
-                    n.node_id as id, 
-                    n.node_name as name, 
+                    n.id as id, 
+                    n.name as name, 
                     n.latitude, 
                     n.longitude, 
                     n.status, 
@@ -183,11 +186,11 @@ def build_dashboard_payload(conn = Depends(get_db)):
                 LEFT JOIN LATERAL (
                     SELECT water_level_cm, rainfall_rate_mm, risk_level
                     FROM hydro_logs
-                    WHERE node_id = n.node_id
+                    WHERE node_id = n.id
                     ORDER BY timestamp DESC
                     LIMIT 1
                 ) l ON true
-                ORDER BY n.node_id ASC;
+                ORDER BY n.id ASC;
             """)
             nodes = cur.fetchall()
             

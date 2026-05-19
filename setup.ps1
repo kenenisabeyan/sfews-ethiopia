@@ -11,7 +11,7 @@ cd ..
 # 2. Setup Frontend
 Write-Host "`n[2/3] Installing Frontend Dependencies..." -ForegroundColor Yellow
 cd frontend
-npm install
+pnpm install
 cd ..
 
 # 3. Reminder about Database
@@ -30,6 +30,6 @@ Write-Host "`nSetup Complete!" -ForegroundColor Green
 Write-Host "--------------------------------------------------------"
 Write-Host "To start the application, open 3 separate terminals:"
 Write-Host "Terminal 1 (Backend):   cd backend; .\venv\Scripts\Activate.ps1; uvicorn main:app --reload"
-Write-Host "Terminal 2 (Frontend):  cd frontend; npm run dev"
+Write-Host "Terminal 2 (Frontend):  cd frontend; pnpm dev"
 Write-Host "Terminal 3 (Simulator): cd backend; .\venv\Scripts\Activate.ps1; cd ..\simulator; python run_simulation.py"
 Write-Host "--------------------------------------------------------"
