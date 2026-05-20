@@ -1,0 +1,10 @@
+{
+  "name": "sfews-backend",
+  "version": "1.0.0",
+  "description": "SFEWS FastAPI Backend",
+  "private": true,
+  "scripts": {
+    "dev": "venv\\Scripts\\python.exe -m uvicorn app.main:app --port 8000 --reload",
+    "simulator": "venv\\Scripts\\python.exe simulator\\run_simulation.py"
+  }
+}

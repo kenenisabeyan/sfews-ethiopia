@@ -25,13 +25,14 @@ app.add_middleware(
 app.include_router(telemetry.router)
 app.include_router(dashboard.router)
 
+from sqlalchemy import text
 from datetime import datetime
 
 @app.get("/")
 def health_check(db = Depends(database.get_db)):
     try:
         # Simple query to check db connection
-        db.execute("SELECT 1")
+        db.execute(text("SELECT 1"))
         db_status = "Active"
     except Exception:
         db_status = "Inactive"
