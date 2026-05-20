@@ -31,3 +31,11 @@ class DashboardResponse(BaseModel):
     summary: DashboardSummary
     nodes: List[SensorNodeResponse]
     history: List[dict]
+
+class NodeRegistration(BaseModel):
+    id: str
+    name: str
+    basin_id: int
+    latitude: Optional[float] = None
+    longitude: Optional[float] = None
+    battery_level: float = 100.0
