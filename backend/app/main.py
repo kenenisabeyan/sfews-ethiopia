@@ -27,6 +27,7 @@ app.include_router(dashboard.router)
 app.include_router(nodes.router)
 app.include_router(system.router)
 
+from sqlalchemy import text
 from datetime import datetime
 
 from sqlalchemy import text

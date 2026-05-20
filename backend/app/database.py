@@ -7,6 +7,12 @@ load_dotenv()
 
 DATABASE_URL = os.getenv("DATABASE_URL")
 
+<<<<<<< HEAD
+# Check if DATABASE_URL is provided directly (e.g. Neon DB, Render, etc.)
+SQLALCHEMY_DATABASE_URL = os.getenv("DATABASE_URL")
+
+if not SQLALCHEMY_DATABASE_URL:
+=======
 if DATABASE_URL:
     SQLALCHEMY_DATABASE_URL = DATABASE_URL
 else:
@@ -15,6 +21,7 @@ else:
     DB_NAME = os.getenv("DB_NAME", "sfews")
     DB_USER = os.getenv("DB_USER", "postgres")
     DB_PASSWORD = os.getenv("DB_PASSWORD", "postgres")
+>>>>>>> main
     # Using PostgreSQL URL format for SQLAlchemy
     SQLALCHEMY_DATABASE_URL = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 
