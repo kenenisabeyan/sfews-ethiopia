@@ -1,5 +1,5 @@
 export interface SensorNode {
-    id: number;
+    id: string;
     name: string;
     latitude: number;
     longitude: number;
@@ -12,7 +12,7 @@ export interface SensorNode {
 
 export interface HydroLog {
     logId: string | number;
-    nodeId: number;
+    nodeId: string;
     waterLevelCm: number;
     rainfallRateMm: number;
     floodProbability: number;

@@ -1,0 +1,18 @@
+[project]
+name = "sfews-backend"
+version = "0.1.0"
+description = "SFEWS Backend Command Center API"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi",
+    "psycopg2-binary",
+    "pydantic",
+    "python-dotenv",
+    "requests",
+    "sqlalchemy",
+    "uvicorn",
+]
+
+[tool.uv]
+package = false
