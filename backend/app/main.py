@@ -2,7 +2,7 @@ from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from . import database
 from .database import engine, Base
-from .routers import telemetry, dashboard
+from .routers import telemetry, dashboard, nodes, system
 
 # Automatically create all tables in PostgreSQL
 try:
@@ -24,14 +24,18 @@ app.add_middleware(
 # Register routers
 app.include_router(telemetry.router)
 app.include_router(dashboard.router)
+app.include_router(nodes.router)
+app.include_router(system.router)
 
 from datetime import datetime
+
+from sqlalchemy import text
 
 @app.get("/")
 def health_check(db = Depends(database.get_db)):
     try:
         # Simple query to check db connection
-        db.execute("SELECT 1")
+        db.execute(text("SELECT 1"))
         db_status = "Active"
     except Exception:
         db_status = "Inactive"
