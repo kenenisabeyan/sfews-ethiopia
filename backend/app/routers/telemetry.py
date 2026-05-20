@@ -37,12 +37,18 @@ async def ingest_telemetry(payload: schemas.TelemetryData, background_tasks: Bac
         flood_probability=probability,
         risk_level=risk_level
     )
+    from ..services.dashboard import build_dashboard_payload
+    
     db.add(log)
     db.commit()
     db.refresh(log)
     
-    # 5. Broadcast to connected WebSockets in the background so it doesn't block response
-    background_tasks.add_task(manager.broadcast_dashboard, db)
+    # 5. Build dashboard payload while the DB session is still actively open
+    dashboard_payload = build_dashboard_payload(db)
+    json_data = dashboard_payload.model_dump_json(by_alias=True)
+    
+    # 6. Broadcast the plain JSON string in the background
+    background_tasks.add_task(manager.broadcast_dashboard_json, json_data)
     
     return {
         "status": "success", 
