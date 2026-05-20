@@ -8,29 +8,42 @@ router = APIRouter(prefix="/api/v1/nodes", tags=["Nodes"])
 @router.post("/register", response_model=schemas.SensorNodeResponse, status_code=status.HTTP_201_CREATED)
 def register_node(payload: schemas.NodeRegistration, db: Session = Depends(get_db)):
     """
-    Register a new edge sensor node to a specific river basin.
+    Register a new edge sensor node. Automatically creates the geographical Country 
+    and River Basin if they do not already exist.
     """
-    # 1. Verify Basin exists
-    basin = db.query(models.RiverBasin).filter(models.RiverBasin.id == payload.basin_id).first()
-    if not basin:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, 
-            detail=f"River basin with ID {payload.basin_id} not found."
-        )
-        
-    # 2. Check if node ID is already taken
+    # 1. Check if node ID is already taken
     existing_node = db.query(models.SensorNode).filter(models.SensorNode.id == payload.id).first()
     if existing_node:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail=f"Sensor node with ID '{payload.id}' is already registered."
         )
+
+    # 2. Upsert Country
+    country = db.query(models.Country).filter(models.Country.name == payload.country_name).first()
+    if not country:
+        country = models.Country(name=payload.country_name, code=payload.country_name[:3].upper())
+        db.add(country)
+        db.commit()
+        db.refresh(country)
         
-    # 3. Create Node
+    # 3. Upsert Basin
+    basin = db.query(models.RiverBasin).filter(
+        models.RiverBasin.name == payload.basin_name,
+        models.RiverBasin.country_id == country.id
+    ).first()
+    
+    if not basin:
+        basin = models.RiverBasin(name=payload.basin_name, country_id=country.id)
+        db.add(basin)
+        db.commit()
+        db.refresh(basin)
+        
+    # 4. Create Node
     node = models.SensorNode(
         id=payload.id,
         name=payload.name,
-        basin_id=payload.basin_id,
+        basin_id=basin.id,
         latitude=payload.latitude,
         longitude=payload.longitude,
         battery_level=payload.battery_level,
@@ -40,7 +53,7 @@ def register_node(payload: schemas.NodeRegistration, db: Session = Depends(get_d
     db.commit()
     db.refresh(node)
     
-    # 4. Return formatted response mapping to SensorNodeResponse schema
+    # 5. Return formatted response mapping to SensorNodeResponse schema
     return schemas.SensorNodeResponse(
         id=node.id,
         name=node.name,

@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from typing import List, Optional
 
 class TelemetryData(BaseModel):
@@ -18,9 +18,7 @@ class SensorNodeResponse(BaseModel):
     rainfallRateMm: float = Field(..., alias="rainfall_rate_mm")
     currentRisk: str = Field(..., alias="risk_level")
     
-    class Config:
-        allow_population_by_field_name = True
-        orm_mode = True
+    model_config = ConfigDict(populate_by_name=True, from_attributes=True)
 
 class DashboardSummary(BaseModel):
     totalNodes: int
@@ -35,7 +33,8 @@ class DashboardResponse(BaseModel):
 class NodeRegistration(BaseModel):
     id: str
     name: str
-    basin_id: int
+    basin_name: str = "Awash River Basin"
+    country_name: str = "Ethiopia"
     latitude: Optional[float] = None
     longitude: Optional[float] = None
     battery_level: float = 100.0

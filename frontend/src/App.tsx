@@ -11,35 +11,55 @@ const App: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
 
-    const fetchDashboardData = async () => {
+    const fetchHealth = async () => {
         try {
-            setLoading(true);
-            const [healthRes, dashboardRes] = await Promise.all([
-                axios.get<SystemHealth>(`${API_BASE_URL}/`),
-                axios.get<DashboardPayload>(`${API_BASE_URL}/api/v1/dashboard`)
-            ]);
-            
+            const healthRes = await axios.get<SystemHealth>(`${API_BASE_URL}/`);
             setHealth(healthRes.data);
-            
-            // Reversing history array so that the chart plots left-to-right chronologically
-            const chronologicalHistory = [...dashboardRes.data.history].reverse();
-            setPayload({
-                ...dashboardRes.data,
-                history: chronologicalHistory
-            });
-            setError(null);
         } catch (err: any) {
-            console.error('API Handshake Error:', err);
+            console.error('Health Check Error:', err);
             setError(err.message || 'System network degraded.');
-        } finally {
-            setLoading(false);
         }
     };
 
     useEffect(() => {
-        fetchDashboardData();
-        const interval = setInterval(fetchDashboardData, 8000); // High temporal granularity (sub-10s)
-        return () => clearInterval(interval);
+        fetchHealth();
+        
+        // Convert http:// to ws:// for WebSocket connection
+        const wsUrl = API_BASE_URL.replace(/^http/, 'ws') + '/api/v1/ws/dashboard';
+        const ws = new WebSocket(wsUrl);
+        
+        ws.onopen = () => {
+            console.log('WebSocket Connected to Command Center');
+            setError(null);
+        };
+        
+        ws.onmessage = (event) => {
+            try {
+                const data: DashboardPayload = JSON.parse(event.data);
+                // Reversing history array so that the chart plots left-to-right chronologically
+                const chronologicalHistory = [...data.history].reverse();
+                setPayload({
+                    ...data,
+                    history: chronologicalHistory
+                });
+                setLoading(false);
+            } catch (e) {
+                console.error("Failed to parse WebSocket data", e);
+            }
+        };
+        
+        ws.onerror = (event) => {
+            console.error("WebSocket Error", event);
+            setError("Live connection lost. System network degraded.");
+        };
+        
+        ws.onclose = () => {
+            console.log('WebSocket Disconnected');
+        };
+
+        return () => {
+            ws.close();
+        };
     }, []);
 
     const broadcastEmergencySMS = (node: SensorNode) => {

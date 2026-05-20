@@ -1,13 +1,14 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, BackgroundTasks
 from sqlalchemy.orm import Session
 from .. import models, schemas
 from ..database import get_db
 from ..services.ml import predict_flood_probability, evaluate_risk_tier
+from ..services.websocket import manager
 
 router = APIRouter(prefix="/api/v1/telemetry", tags=["Telemetry"])
 
 @router.post("/", response_model=dict, status_code=status.HTTP_201_CREATED)
-def ingest_telemetry(payload: schemas.TelemetryData, db: Session = Depends(get_db)):
+async def ingest_telemetry(payload: schemas.TelemetryData, background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
     """
     Ingest telemetry data from a registered edge sensor node.
     Performs ML inference and logs the result.
@@ -39,6 +40,9 @@ def ingest_telemetry(payload: schemas.TelemetryData, db: Session = Depends(get_d
     db.add(log)
     db.commit()
     db.refresh(log)
+    
+    # 5. Broadcast to connected WebSockets in the background so it doesn't block response
+    background_tasks.add_task(manager.broadcast_dashboard, db)
     
     return {
         "status": "success", 
