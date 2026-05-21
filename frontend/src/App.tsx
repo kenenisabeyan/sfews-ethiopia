@@ -770,6 +770,223 @@ const App: React.FC = () => {
                                 </div>
 
                             </div>
+
+                            {/* Section D: Spatial Topography Heatmap & Weather Grid */}
+                            <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
+                                
+                                {/* SVG GIS Map Vector Panel */}
+                                <div className="xl:col-span-2 glass-panel rounded-3xl p-7 flex flex-col min-h-[480px]">
+                                    <div className="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                        <div>
+                                            <h2 className="text-lg font-extrabold text-slate-100 tracking-wide uppercase">Awash Basin Topographic Heatmap</h2>
+                                            <p className="text-xs text-slate-500 mt-0.5 font-bold uppercase tracking-wider">Spatial coordinates mapping of active sensor nodes</p>
+                                        </div>
+                                        
+                                        {/* Map Legends */}
+                                        <div className="flex flex-wrap gap-3">
+                                            <span className="flex items-center gap-1.5 text-xs text-slate-400 font-bold uppercase"><span className="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Safe</span>
+                                            <span className="flex items-center gap-1.5 text-xs text-slate-400 font-bold uppercase"><span className="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Warning</span>
+                                            <span className="flex items-center gap-1.5 text-xs text-slate-400 font-bold uppercase"><span className="w-2.5 h-2.5 rounded-full bg-red-500"></span> Critical</span>
+                                        </div>
+                                    </div>
+
+                                    {/* Custom SVG Interactive Map */}
+                                    <div className="flex-grow w-full bg-[#04070d] border border-slate-900 rounded-3xl relative overflow-hidden flex items-center justify-center min-h-[320px] p-4">
+                                        <svg className="w-full h-full max-w-[700px] max-h-[300px] text-slate-800" viewBox="0 0 600 320" fill="none">
+                                            {/* Curvy River Path representing the Awash River flow */}
+                                            <path 
+                                                d="M 50,80 Q 150,50 220,120 T 380,180 T 550,220" 
+                                                stroke="url(#riverGradientHome)" 
+                                                strokeWidth="10" 
+                                                strokeLinecap="round" 
+                                                fill="none" 
+                                                className="opacity-40" 
+                                            />
+                                            <path 
+                                                d="M 50,80 Q 150,50 220,120 T 380,180 T 550,220" 
+                                                stroke="#6366f1" 
+                                                strokeWidth="3" 
+                                                strokeLinecap="round" 
+                                                fill="none" 
+                                                className="opacity-80" 
+                                            />
+
+                                            <defs>
+                                                <linearGradient id="riverGradientHome" x1="0%" y1="0%" x2="100%" y2="100%">
+                                                    <stop offset="0%" stopColor="#6366f1" />
+                                                    <stop offset="50%" stopColor="#22d3ee" />
+                                                    <stop offset="100%" stopColor="#3b82f6" />
+                                                </linearGradient>
+                                            </defs>
+
+                                            {/* Basin Topographic shapes */}
+                                            <path d="M 80,120 Q 120,160 160,110 T 240,160" stroke="rgba(255,255,255,0.03)" strokeWidth="1.5" fill="none" />
+                                            <path d="M 280,240 Q 320,290 380,220 T 480,260" stroke="rgba(255,255,255,0.03)" strokeWidth="1.5" fill="none" />
+
+                                            {/* Pulsing neon dots for sensor stations */}
+                                            {payload?.nodes.map((node, index) => {
+                                                const coords = getMapCoordinates(node.id, index);
+                                                const isSelected = activeStationId === node.id;
+                                                
+                                                let strokeColor = '#10b981';
+                                                if (node.currentRisk === 'Warning') {
+                                                    strokeColor = '#f59e0b';
+                                                } else if (node.currentRisk === 'Critical') {
+                                                    strokeColor = '#ef4444';
+                                                }
+
+                                                return (
+                                                    <g 
+                                                        key={node.id} 
+                                                        transform={`translate(${coords.x}, ${coords.y})`}
+                                                        className="cursor-pointer group"
+                                                        onClick={() => {
+                                                            setActiveStationId(node.id);
+                                                            setSelectedMapNode(node);
+                                                        }}
+                                                    >
+                                                        <circle r="18" fill={strokeColor} opacity={isSelected ? '0.15' : '0'} className="animate-ping" />
+                                                        <circle r="11" fill="none" stroke={strokeColor} strokeWidth="2.5" opacity="0.3" />
+                                                        <circle 
+                                                            r="6" 
+                                                            fill={strokeColor} 
+                                                            className="group-hover:scale-125 transition-transform duration-200" 
+                                                            style={{ filter: `drop-shadow(0 0 6px ${strokeColor})` }}
+                                                        />
+                                                        <text 
+                                                            y="-16" 
+                                                            textAnchor="middle" 
+                                                            fill="#94a3b8" 
+                                                            fontSize="10" 
+                                                            fontWeight="bold" 
+                                                            className="font-sans group-hover:fill-slate-100 transition-colors duration-200 uppercase tracking-widest font-mono"
+                                                        >
+                                                            {node.name.split(' ')[0]}
+                                                        </text>
+                                                    </g>
+                                                );
+                                            })}
+                                        </svg>
+                                    </div>
+                                </div>
+
+                                {/* Weather Widget */}
+                                <div className="glass-panel rounded-3xl p-7 flex flex-col justify-between min-h-[480px]">
+                                    <div className="text-center w-full">
+                                        <h2 className="text-lg font-extrabold text-slate-100 tracking-wide uppercase">Meteorology Widget</h2>
+                                        <p className="text-xs text-slate-500 mt-0.5 font-bold uppercase tracking-wider">{weatherCity}</p>
+                                    </div>
+
+                                    <div className="flex flex-col items-center justify-center my-4 space-y-2">
+                                        <span className="text-glow-purple text-5xl font-black text-slate-50 font-mono tracking-tight flex items-start">
+                                            24<span className="text-2.5xl text-indigo-400 font-medium font-sans">°C</span>
+                                        </span>
+                                        <div className="text-center">
+                                            <p className="text-sm font-extrabold text-slate-100 uppercase tracking-wide">Intense Precipitation</p>
+                                            <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider font-mono">humidity: 89% | wind: 12km/h</span>
+                                        </div>
+                                    </div>
+
+                                    <div className="space-y-2.5">
+                                        <div className="text-[10px] text-slate-500 font-bold uppercase tracking-widest border-b border-slate-900 pb-2">3-Hour Outlook</div>
+                                        <div className="grid grid-cols-3 gap-2">
+                                            {weatherForecast.slice(0, 3).map((fc, i) => (
+                                                <div key={i} className="bg-[#050911]/80 border border-slate-900 p-2.5 rounded-xl flex flex-col items-center justify-center text-center hover:border-slate-800 transition-colors">
+                                                    <span className="text-slate-500 font-extrabold text-[9px] uppercase tracking-wider">{fc.day}</span>
+                                                    <div className="w-6 h-6 my-1 text-indigo-400">
+                                                        {fc.icon === 'cloud' && (
+                                                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" /></svg>
+                                                        )}
+                                                        {fc.icon === 'rain' && (
+                                                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z" /></svg>
+                                                        )}
+                                                        {fc.icon === 'storm' && (
+                                                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                                                        )}
+                                                        {fc.icon === 'sun' && (
+                                                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z" /></svg>
+                                                        )}
+                                                    </div>
+                                                    <span className="font-mono text-slate-200 font-bold text-xs">{fc.temp}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Section E: Recent Alerts Log Table */}
+                            <div className="glass-panel rounded-3xl p-7 space-y-6">
+                                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                    <div>
+                                        <h2 className="text-lg font-extrabold text-slate-100 tracking-wide uppercase">Command Center Activity & Event Log</h2>
+                                        <p className="text-xs text-slate-500 mt-0.5 font-bold uppercase tracking-wider">Real-time warning transmissions and sensor telemetry alerts</p>
+                                    </div>
+                                    <span className="px-3 py-1 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 font-extrabold text-[10px] uppercase tracking-widest">
+                                        SECURE TELEMETRY LOG
+                                    </span>
+                                </div>
+
+                                <div className="overflow-x-auto">
+                                    <table className="w-full text-left border-collapse text-xs md:text-sm">
+                                        <thead>
+                                            <tr className="border-b border-slate-900 text-slate-400 font-extrabold uppercase tracking-widest text-[10px]">
+                                                <th className="py-4 px-6">Event ID</th>
+                                                <th className="py-4 px-6">Source Station</th>
+                                                <th className="py-4 px-6">Hydrological Metric / Trigger</th>
+                                                <th className="py-4 px-6">Risk Category</th>
+                                                <th className="py-4 px-6">Dispatch System Response</th>
+                                                <th className="py-4 px-6 text-right">Activity Timestamp</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-slate-900/60 font-semibold text-slate-300">
+                                            {payload?.nodes.map((node, i) => {
+                                                const eventId = `EVT-00${3045 + i}`;
+                                                let riskText = 'Safe';
+                                                let triggerVal = `WL: ${node.waterLevelCm?.toFixed(1) || '0.0'} cm`;
+                                                let responseText = 'Monitoring Active';
+                                                
+                                                if (node.currentRisk === 'Warning') {
+                                                    riskText = 'Warning';
+                                                    responseText = 'Warning Alert Broadcast Available';
+                                                } else if (node.currentRisk === 'Critical') {
+                                                    riskText = 'Critical';
+                                                    responseText = 'SMS Dispatched & Alarm Triggered';
+                                                }
+
+                                                return (
+                                                    <tr key={node.id} className="hover:bg-slate-900/10 transition-colors">
+                                                        <td className="py-4 px-6 font-mono text-slate-400 text-xs">{eventId}</td>
+                                                        <td className="py-4 px-6">
+                                                            <div className="font-bold text-slate-100">{node.name}</div>
+                                                            <div className="text-[10px] text-slate-500 font-mono uppercase mt-0.5">{node.id}</div>
+                                                        </td>
+                                                        <td className="py-4 px-6">
+                                                            <span className="font-mono text-xs text-indigo-400">{triggerVal}</span>
+                                                            <span className="text-[10px] text-slate-500 font-medium block">Precipitation: {node.rainfallRateMm?.toFixed(1) || '0.0'} mm/h</span>
+                                                        </td>
+                                                        <td className="py-4 px-6">
+                                                            <span className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-wider border ${getAlertColors(node.currentRisk)}`}>
+                                                                {riskText}
+                                                            </span>
+                                                        </td>
+                                                        <td className="py-4 px-6">
+                                                            <div className="flex items-center gap-2">
+                                                                <span className={`w-1.5 h-1.5 rounded-full ${node.currentRisk === 'Critical' ? 'bg-red-500 shadow-[0_0_6px_#ef4444]' : node.currentRisk === 'Warning' ? 'bg-amber-500' : 'bg-emerald-500'}`}></span>
+                                                                <span className="text-xs">{responseText}</span>
+                                                            </div>
+                                                        </td>
+                                                        <td className="py-4 px-6 text-right text-slate-400 text-xs font-mono">
+                                                            {i === 0 ? 'Just Now' : `${i * 12} min ago`}
+                                                        </td>
+                                                    </tr>
+                                                );
+                                            })}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
                         </>
                     )}
 
