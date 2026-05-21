@@ -872,6 +872,32 @@ const App: React.FC = () => {
 
     const activeStation = payload?.nodes.find((s) => s.id === activeStationId) || payload?.nodes[0];
 
+    // Dynamically calculate dashboard metrics
+    const avgWaterLevel = payload && payload.nodes.length > 0
+        ? payload.nodes.reduce((acc, curr) => acc + (curr.waterLevelCm || 0), 0) / payload.nodes.length
+        : 0;
+
+    const maxRainfall = payload && payload.nodes.length > 0
+        ? Math.max(...payload.nodes.map(n => n.rainfallRateMm || 0))
+        : 0;
+
+    const criticalCount = payload?.nodes.filter(n => n.currentRisk === 'Critical').length || 0;
+    const warningCount = payload?.nodes.filter(n => n.currentRisk === 'Warning').length || 0;
+    const safeCount = payload?.nodes.filter(n => n.currentRisk === 'Safe' || !n.currentRisk).length || 0;
+
+    const latestFloodProb = payload && payload.history.length > 0
+        ? Math.round(payload.history[payload.history.length - 1].floodProbability * 100)
+        : 78;
+
+    // Live clock state
+    const [liveTime, setLiveTime] = useState<string>(new Date().toLocaleString());
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setLiveTime(new Date().toLocaleString());
+        }, 1000);
+        return () => clearInterval(timer);
+    }, []);
+
     // Filtered levels table state
     const [levelFilter, setLevelFilter] = useState<string>('All');
     const [searchQuery, setSearchQuery] = useState<string>('');

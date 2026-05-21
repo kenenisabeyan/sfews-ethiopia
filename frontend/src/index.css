@@ -4,67 +4,16 @@
 
 @layer base {
   body {
-<<<<<<< Updated upstream
-    @apply bg-[#030712] text-slate-200 antialiased m-0 p-0 select-none;
-  }
-}
-
-/* Custom flow animations for geographical channel contours */
-@keyframes dash {
-  from {
-    stroke-dashoffset: 40;
-  }
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-
-.animate-river-flow {
-  stroke-dasharray: 8 6;
-  animation: dash 4s linear infinite;
-}
-
-/* Keyframes for alerts */
-@keyframes pulseGlow {
-  0%, 100% {
-    opacity: 0.15;
-    box-shadow: 0 0 15px rgba(239, 68, 68, 0.2);
-  }
-  50% {
-    opacity: 0.4;
-    box-shadow: 0 0 25px rgba(239, 68, 68, 0.5);
-  }
-}
-
-.animate-danger-banner {
-  animation: pulseGlow 2s infinite ease-in-out;
-}
-
-/* Custom scrollbars for telemetry feeds */
-=======
     @apply bg-[#02040a] text-slate-100 antialiased m-0 p-0 overflow-x-hidden;
     font-family: 'Plus Jakarta Sans', sans-serif;
   }
 }
 
 /* Custom Scrollbar */
->>>>>>> Stashed changes
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
-<<<<<<< Updated upstream
-::-webkit-scrollbar-track {
-  background: rgba(3, 7, 18, 0.5);
-  border-radius: 4px;
-}
-::-webkit-scrollbar-thumb {
-  background: rgba(100, 116, 139, 0.3);
-  border-radius: 4px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(192, 132, 252, 0.5);
-=======
 
 ::-webkit-scrollbar-track {
   background: rgba(3, 7, 18, 0.1);
@@ -157,5 +106,4 @@
 
 .animate-pulse-slow {
   animation: pulse-slow 3s ease-in-out infinite;
->>>>>>> Stashed changes
 }

@@ -38,3 +38,20 @@ class NodeRegistration(BaseModel):
     latitude: Optional[float] = None
     longitude: Optional[float] = None
     battery_level: float = 100.0
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+class UserCreate(BaseModel):
+    email: str
+    name: str
+    password: str
+
+class UserResponse(BaseModel):
+    id: int
+    name: str
+    email: str
+    role: str
+
+    model_config = ConfigDict(from_attributes=True)
