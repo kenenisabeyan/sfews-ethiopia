@@ -23,7 +23,7 @@ class ConnectionManager:
         if not self.active_connections:
             return 
             
-        for connection in self.active_connections:
+        for connection in self.active_connections.copy():
             try:
                 await connection.send_text(json_data)
             except Exception:

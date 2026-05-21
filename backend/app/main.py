@@ -1,5 +1,7 @@
 from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
+from datetime import datetime, timezone
+from sqlalchemy import text
 from . import database
 from .database import engine, Base
 from .routers import telemetry, dashboard, nodes, system, ws, chat
@@ -29,10 +31,7 @@ app.include_router(system.router)
 app.include_router(ws.router)
 app.include_router(chat.router)
 
-from sqlalchemy import text
-from datetime import datetime
 
-from sqlalchemy import text
 
 @app.get("/")
 def health_check(db = Depends(database.get_db)):
@@ -47,5 +46,5 @@ def health_check(db = Depends(database.get_db)):
         "status": "Operational",
         "api_version": "2.0.0",
         "database_connection": db_status,
-        "server_time": datetime.utcnow().isoformat()
+        "server_time": datetime.now(timezone.utc).isoformat()
     }
