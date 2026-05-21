@@ -17,7 +17,10 @@ else:
     DB_NAME = os.getenv("DB_NAME", "sfews")
     DB_USER = os.getenv("DB_USER", "postgres")
     DB_PASSWORD = os.getenv("DB_PASSWORD", "postgres")
+<<<<<<< Updated upstream
     
+=======
+>>>>>>> Stashed changes
     # Using PostgreSQL URL format for SQLAlchemy
     SQLALCHEMY_DATABASE_URL = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 
