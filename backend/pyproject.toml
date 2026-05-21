@@ -12,6 +12,8 @@ dependencies = [
     "requests",
     "sqlalchemy",
     "uvicorn",
+    "openai",
+    "httpx",
 ]
 
 [tool.uv]
