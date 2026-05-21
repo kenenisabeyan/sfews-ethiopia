@@ -2,7 +2,7 @@ import time
 import random
 import requests
 
-API_URL = "http://localhost:8000/api/v1/telemetry"
+API_URL = "http://localhost:8000/api/v1/telemetry/"
 NODES = ["NODE-ALPHA-1", "NODE-BETA-2", "NODE-GAMMA-3"]
 
 def simulate():

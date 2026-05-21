@@ -14,7 +14,9 @@ dependencies = [
     "uvicorn",
     "openai",
     "httpx",
+    "websockets",
 ]
+
 
 [tool.uv]
 package = false

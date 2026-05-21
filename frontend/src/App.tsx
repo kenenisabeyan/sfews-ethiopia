@@ -40,15 +40,6 @@ const App: React.FC = () => {
     const active_station_id = 'birampur';
     const activeStation = stations.find((s) => s.id === active_station_id) || stations[0];
 
-<<<<<<< Updated upstream
-    const fetchHealth = async () => {
-        try {
-            const healthRes = await axios.get<SystemHealth>(`${API_BASE_URL}/`);
-            setHealth(healthRes.data);
-        } catch (err: any) {
-            console.error('Health Check Error:', err);
-            setError(err.message || 'System network degraded.');
-=======
     const initialSubscribers: Subscriber[] = [
       { id: '1', name: 'Kanafor Nome', phone: '+1245859595', zone: 'Zone A', status: 'Active' },
       { id: '2', name: 'Piles Flant', phone: '+1245556596', zone: 'Zone B', status: 'Active' },
@@ -140,66 +131,11 @@ const App: React.FC = () => {
             };
             updated.dispatch_logs = [newLog, ...updated.dispatch_logs].slice(0, 30);
           }
->>>>>>> Stashed changes
         }
 
-<<<<<<< Updated upstream
-    useEffect(() => {
-        fetchHealth();
-        
-        // Convert http:// to ws:// for WebSocket connection
-        const wsUrl = API_BASE_URL.replace(/^http/, 'ws') + '/api/v1/ws/dashboard';
-        const ws = new WebSocket(wsUrl);
-        
-        ws.onopen = () => {
-            console.log('WebSocket Connected to Command Center');
-            setError(null);
-        };
-        
-        ws.onmessage = (event) => {
-            try {
-                const data: DashboardPayload = JSON.parse(event.data);
-                // Reversing history array so that the chart plots left-to-right chronologically
-                const chronologicalHistory = [...data.history].reverse();
-                setPayload({
-                    ...data,
-                    history: chronologicalHistory
-                });
-                setLoading(false);
-            } catch (e) {
-                console.error("Failed to parse WebSocket data", e);
-            }
-        };
-        
-        ws.onerror = (event) => {
-            console.error("WebSocket Error", event);
-            setError("Live connection lost. System network degraded.");
-        };
-        
-        ws.onclose = () => {
-            console.log('WebSocket Disconnected');
-        };
-
-        return () => {
-            ws.close();
-        };
-    }, []);
-
-    const broadcastEmergencySMS = (node: SensorNode) => {
-        alert(`BROADCAST TRIGGERED: Emergency SMS sent to local subscribers in proximity to ${node.name} (Station ID: ${node.id}).`);
-    };
-
-    const getAlertColors = (risk?: string) => {
-        switch (risk) {
-            case 'Safe': return 'text-emerald-400 bg-emerald-400/10 border-emerald-400/20';
-            case 'Warning': return 'text-amber-400 bg-amber-400/10 border-amber-400/20';
-            case 'Critical': return 'text-red-400 bg-red-400/10 border-red-400/20 shadow-[0_0_15px_rgba(239,68,68,0.2)]';
-            default: return 'text-slate-400 bg-slate-800/50 border-slate-700/50';
-=======
         // Reset the dynamic active crash flag once handled
         if (forceCrashActive) {
           setForceCrashActive(false);
->>>>>>> Stashed changes
         }
         return updated;
       });
