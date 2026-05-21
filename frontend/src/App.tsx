@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, Cell } from 'recharts';
 import { SensorNode, DashboardPayload, SystemHealth } from './types';
+import { LoginPanel } from './components/LoginPanel';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
@@ -33,6 +34,10 @@ interface Subscriber {
 }
 
 const App: React.FC = () => {
+    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
+        return sessionStorage.getItem('sfews_authenticated') === 'true';
+    });
+
     // Core states (integrated with API & WebSockets)
     const [payload, setPayload] = useState<DashboardPayload | null>(null);
     const [health, setHealth] = useState<SystemHealth | null>(null);
@@ -389,6 +394,17 @@ const App: React.FC = () => {
 
     const isSystemOnline = health?.database_connection === 'Active';
 
+    if (!isAuthenticated) {
+        return (
+            <LoginPanel
+                onLoginSuccess={() => {
+                    sessionStorage.setItem('sfews_authenticated', 'true');
+                    setIsAuthenticated(true);
+                }}
+            />
+        );
+    }
+
     return (
         <div className="flex h-screen bg-[#02040a] text-slate-200 overflow-hidden font-sans relative">
             
@@ -493,6 +509,16 @@ const App: React.FC = () => {
                             <span>TELEMETRY SYNC:</span>
                             <span className="px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-400 font-mono">ACTIVE</span>
                         </div>
+                        <button
+                            onClick={() => {
+                                sessionStorage.removeItem('sfews_authenticated');
+                                setIsAuthenticated(false);
+                            }}
+                            className="w-full mt-2.5 py-2.5 bg-red-950/20 hover:bg-red-950/40 text-red-400 border border-red-500/10 hover:border-red-500/20 rounded-xl text-xs font-extrabold tracking-widest transition-all uppercase flex items-center justify-center gap-2"
+                        >
+                            <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
+                            Secure Log Out
+                        </button>
                     </div>
                 </div>
             </aside>
