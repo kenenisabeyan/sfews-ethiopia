@@ -55,3 +55,14 @@ class UserResponse(BaseModel):
     role: str
 
     model_config = ConfigDict(from_attributes=True)
+
+class SystemSettingsResponse(BaseModel):
+    critical_threshold: float
+    warning_threshold: float
+    radius_km: float
+
+class SystemSettingsUpdate(BaseModel):
+    critical_threshold: float
+    warning_threshold: float
+    radius_km: float
+

@@ -13,7 +13,7 @@ class ChatResponse(BaseModel):
     response: str
 
 @router.post("/ask", response_model=ChatResponse)
-async def ask_agent(request: ChatRequest, current_user: models.User = Depends(get_current_user)):
+async def ask_agent(request: ChatRequest):
     """
     Single-shot chat endpoint.
     Takes a natural language query, orchestrates LLM tools to gather live data, and returns a situational report.
@@ -26,3 +26,4 @@ async def ask_agent(request: ChatRequest, current_user: models.User = Depends(ge
         return ChatResponse(response=final_answer)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
