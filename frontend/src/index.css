@@ -4,6 +4,7 @@
 
 @layer base {
   body {
+<<<<<<< Updated upstream
     @apply bg-[#030712] text-slate-200 antialiased m-0 p-0 select-none;
   }
 }
@@ -40,10 +41,19 @@
 }
 
 /* Custom scrollbars for telemetry feeds */
+=======
+    @apply bg-[#02040a] text-slate-100 antialiased m-0 p-0 overflow-x-hidden;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+}
+
+/* Custom Scrollbar */
+>>>>>>> Stashed changes
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
+<<<<<<< Updated upstream
 ::-webkit-scrollbar-track {
   background: rgba(3, 7, 18, 0.5);
   border-radius: 4px;
@@ -54,4 +64,98 @@
 }
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(192, 132, 252, 0.5);
+=======
+
+::-webkit-scrollbar-track {
+  background: rgba(3, 7, 18, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.15);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.3);
+}
+
+/* Cyberpunk and Glassmorphism Utilities */
+.glass-panel {
+  background: rgba(8, 13, 24, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.glass-panel-interactive {
+  background: rgba(8, 13, 24, 0.5);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-panel-interactive:hover {
+  background: rgba(13, 20, 38, 0.7);
+  border-color: rgba(99, 102, 241, 0.25);
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.6), 0 0 15px rgba(99, 102, 241, 0.05);
+  transform: translateY(-2px);
+}
+
+/* Neon Text and Border Glows */
+.text-glow-cyan {
+  text-shadow: 0 0 10px rgba(34, 211, 238, 0.4);
+}
+
+.text-glow-purple {
+  text-shadow: 0 0 10px rgba(168, 85, 247, 0.4);
+}
+
+.text-glow-emerald {
+  text-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
+}
+
+.border-glow-red {
+  box-shadow: 0 0 15px rgba(239, 68, 68, 0.2), inset 0 0 10px rgba(239, 68, 68, 0.05);
+}
+
+.border-glow-indigo {
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.15);
+}
+
+/* Animated Grid Pattern Background */
+.grid-bg {
+  background-image: linear-gradient(rgba(18, 24, 38, 0.3) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(18, 24, 38, 0.3) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* Custom Keyframe Animations */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+  100% { transform: translateY(0px); }
+}
+
+@keyframes scanline {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+
+@keyframes pulse-slow {
+  0%, 100% { opacity: 0.25; }
+  50% { opacity: 0.5; }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-scanline {
+  animation: scanline 8s linear infinite;
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 3s ease-in-out infinite;
+>>>>>>> Stashed changes
 }
