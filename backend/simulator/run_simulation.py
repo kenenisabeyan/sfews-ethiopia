@@ -2,7 +2,7 @@ import time
 import random
 import requests
 
-API_URL = "http://localhost:8000/api/v1/telemetry"
+API_URL = "http://localhost:8000/api/v1/telemetry/"
 NODES = ["NODE-ALPHA-1", "NODE-BETA-2", "NODE-GAMMA-3"]
 
 def simulate():
@@ -26,14 +26,14 @@ def simulate():
             
             try:
                 res = requests.post(API_URL, json=payload)
-                if res.status_code == 200:
+                if res.status_code in (200, 201):
                     data = res.json()
                     status = data.get("risk_level", "Unknown")
-                    print(f"[{node_id}] Telemetry Synced | WL: {payload['water_level_cm']}cm | RF: {payload['rainfall_rate_mm']}mm | STATUS: {status}")
+                    print(f"[{node_id}] Telemetry Synced | WL: {payload['water_level_cm']}cm | RF: {payload['rainfall_rate_mm']}mm | STATUS: {status}", flush=True)
                 else:
-                    print(f"[{node_id}] Warning: HTTP {res.status_code} - {res.text}")
+                    print(f"[{node_id}] Warning: HTTP {res.status_code} - {res.text}", flush=True)
             except Exception as e:
-                print(f"[{node_id}] Connection Error: Ensure FastAPI is running on port 8000.")
+                print(f"[{node_id}] Connection Error: Ensure FastAPI is running on port 8000.", flush=True)
             
             time.sleep(1.5) # Stagger transmissions
             

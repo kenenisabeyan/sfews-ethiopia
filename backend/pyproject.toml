@@ -12,12 +12,19 @@ dependencies = [
     "requests",
     "sqlalchemy",
     "uvicorn",
+<<<<<<< HEAD
+    "openai",
+    "httpx",
+    "websockets",
+=======
     "openai>=1.63.2",
     "httpx>=0.28.1",
     "passlib[bcrypt]>=1.7.4",
     "pyjwt>=2.10.1",
     "python-multipart>=0.0.20",
+>>>>>>> 43cbb65c896f335ac8d79153176701115aedf543
 ]
+
 
 [tool.uv]
 package = false
