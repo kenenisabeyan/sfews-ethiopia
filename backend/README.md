@@ -24,9 +24,11 @@ backend/
 │   │   ├── telemetry.py # Edge device data ingestion (Trigger for WebSockets)
 │   │   ├── nodes.py     # Sensor node registration
 │   │   ├── ws.py        # WebSocket tunnel for real-time frontend pushing
-│   │   ├── dashboard.py # Frontend analytics (Fallback HTTP endpoint)
-│   │   ├── chat.py      # AI Agent chat endpoint (LLM Orchestration)
+│   │   ├── dashboard.py # Frontend analytics (Protected HTTP endpoint)
+│   │   ├── chat.py      # AI Agent chat endpoint (Protected)
+│   │   ├── auth.py      # JWT Authentication & Login
 │   │   └── system.py    # Database seeding utility
+│   ├── security.py      # JWT token generation & password hashing
 │   └── services/        
 │       ├── ml.py        # Flood prediction ML models
 │       ├── websocket.py # WebSocket Connection Manager & Broadcaster
@@ -117,13 +119,17 @@ The dashboard is completely event-driven. **Do NOT use HTTP polling.**
 * **`POST /api/v1/system/seed`**
 * **Description:** Seeds the database with default regions (e.g., Ethiopia, Awash River Basin) to facilitate testing.
 
-### 4. Dashboard Analytics (HTTP Fallback)
-* **`GET /api/v1/dashboard/`**
-* **Description:** *Deprecated for live updates.* Returns the same aggregate payload pushed over WebSockets. Useful for initial testing or fallback if WebSockets are blocked.
+### 4. Authentication Endpoints
+* **`POST /api/v1/auth/seed-admin`**: Creates the default admin user.
+* **`POST /api/v1/auth/login`**: Accepts `username` and `password` as `application/x-www-form-urlencoded` and returns a JWT `access_token`.
 
-### 5. AI Agent Chat
+### 5. Dashboard Analytics (HTTP Fallback) - 🔒 PROTECTED
+* **`GET /api/v1/dashboard/`**
+* **Description:** *Requires JWT Token.* Returns aggregate data. *Deprecated for live updates (use WebSockets).*
+
+### 6. AI Agent Chat - 🔒 PROTECTED
 * **`POST /api/v1/chat/ask`**
-* **Description:** Single-shot natural language query endpoint. The AI agent autonomously gathers real-time sensor data from the database, fetches weather forecasts from OpenWeather, and geocodes locations via LocationIQ to produce a comprehensive situational report.
+* **Description:** *Requires JWT Token.* Single-shot natural language query endpoint.
 
 ---
 
@@ -176,6 +182,32 @@ No frontend code changes are needed — the fallback is entirely server-side and
 
 ### Frontend Integration
 
+#### 🔐 1. Authentication (Required)
+The AI Agent and Dashboard API endpoints are secured. **WebSockets and Telemetry are intentionally left unprotected** to ensure high-performance IoT data ingestion without token rotation overhead.
+
+**Default Dev Credentials:**
+Run `curl -X POST http://localhost:8000/api/v1/auth/seed-admin` to generate the default admin:
+* **Email:** `admin@sfews.gov.et`
+* **Password:** `admin123`
+
+You must fetch the token first:
+```typescript
+const login = async () => {
+  const params = new URLSearchParams();
+  params.append("username", "admin@sfews.gov.et");
+  params.append("password", "admin123");
+
+  const res = await fetch("http://localhost:8000/api/v1/auth/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: params
+  });
+  const data = await res.json();
+  localStorage.setItem("token", data.access_token);
+}
+```
+
+#### 🤖 2. Agent Request (Authenticated)
 **Request:**
 ```bash
 POST /api/v1/chat/ask
@@ -196,9 +228,13 @@ Content-Type: application/json
 **React/TypeScript Example:**
 ```typescript
 const askAgent = async (question: string): Promise<string> => {
+  const token = localStorage.getItem("token");
   const res = await fetch("http://localhost:8000/api/v1/chat/ask", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { 
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}` 
+    },
     body: JSON.stringify({ query: question }),
   });
   const data = await res.json();

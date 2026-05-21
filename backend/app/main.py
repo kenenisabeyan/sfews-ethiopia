@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 from sqlalchemy import text
 from . import database
 from .database import engine, Base
-from .routers import telemetry, dashboard, nodes, system, ws, chat
+from .routers import telemetry, dashboard, nodes, system, ws, chat, auth
 
 # Automatically create all tables in PostgreSQL
 try:
@@ -30,6 +30,7 @@ app.include_router(nodes.router)
 app.include_router(system.router)
 app.include_router(ws.router)
 app.include_router(chat.router)
+app.include_router(auth.router)
 
 
 

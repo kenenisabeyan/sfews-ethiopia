@@ -1,13 +1,14 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from .. import schemas
+from .. import schemas, models
 from ..database import get_db
 from ..services.dashboard import build_dashboard_payload
+from ..security import get_current_user
 
 router = APIRouter(prefix="/api/v1/dashboard", tags=["Dashboard"])
 
 @router.get("/", response_model=schemas.DashboardResponse)
-def get_dashboard_data(db: Session = Depends(get_db)):
+def get_dashboard_data(db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
     """
     Returns the latest aggregate data for the frontend dashboard.
     (This is preserved for initial load and fallback).
