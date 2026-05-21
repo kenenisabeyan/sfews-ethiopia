@@ -3,6 +3,8 @@ import axios from 'axios';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, Cell } from 'recharts';
 import { SensorNode, DashboardPayload, SystemHealth } from './types';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+
 // Landscape imagery for live camera feeds carousel
 const CAMERA_FEED_SLIDES = [
   {
@@ -76,6 +78,7 @@ const App: React.FC = () => {
             console.error('Health Check Error:', err);
             setError(err.message || 'System network degraded.');
         }
+    };
 
     // Reconnect trigger
     const handleReconnect = () => {
@@ -141,51 +144,7 @@ const App: React.FC = () => {
             case 'Critical': return 'text-red-400 bg-red-500/10 border-red-500/20 shadow-[0_0_15px_rgba(239,68,68,0.2)]';
             default: return 'text-slate-400 bg-slate-800/50 border-slate-700/50';
         }
-        return updated;
-      });
-    }, 500);
-
-    return () => clearInterval(interval);
-  }, [isPaused, forceCrashActive]);
-
-  // Handler: Change active station node tracking
-  const handleSelectStation = (id: string) => {
-    setDashboardState((prev) => {
-      const active = prev.stations.find((st) => st.id === id) || prev.stations[0];
-      return {
-        ...prev,
-        active_station_id: id,
-        current_metrics: active.metrics,
-        is_siphon_active: active.siphon_active,
-        flow_regime: active.status === 'DANGER' ? 'COHESION_FAILURE' : active.siphon_active ? 'STABLE_SIPHON' : 'STAGNANT',
-        historical_stream: active.history,
-      };
-    });
-  };
-
-  // Handler: Manual emergency custom broadcast trigger
-  const handleManualBroadcast = (message: string, targetName: string) => {
-    const newLog: DispatchLog = {
-      id: 'log-' + Math.random(),
-      timestamp: new Date().toISOString(),
-      stationName: targetName,
-      message: `MANUAL BROADCAST: ${message}`,
-      type: 'MANUAL',
-      status: 'DELIVERED',
     };
-    setDashboardState((prev) => ({
-      ...prev,
-      dispatch_logs: [newLog, ...prev.dispatch_logs].slice(0, 30),
-    }));
-  };
-
-  // Carousel handlers
-  const handleNextSlide = () => {
-    setActiveSlideIdx((prev) => (prev + 1) % CAMERA_FEED_SLIDES.length);
-  };
-  const handlePrevSlide = () => {
-    setActiveSlideIdx((prev) => (prev - 1 + CAMERA_FEED_SLIDES.length) % CAMERA_FEED_SLIDES.length);
-  };
 
     // SVG Map Node Coordinate generator based on ID
     const getMapCoordinates = (nodeId: string, index: number) => {
@@ -328,6 +287,8 @@ const App: React.FC = () => {
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
         )}
     ];
+
+    const isSystemOnline = health?.database_connection === 'Active';
 
     return (
         <div className="flex h-screen bg-[#02040a] text-slate-200 overflow-hidden font-sans relative">
@@ -472,7 +433,7 @@ const App: React.FC = () => {
                                         Awash Command Console
                                     </h1>
                                     <p className="text-slate-400 mt-1 text-sm md:text-base font-semibold tracking-wide flex items-center gap-2">
-                                        Real-time Hydrological Telemetry Dashboard — Ethiopia
+                                        Real-time Hydrological Telemetry Dashboard — Ethiopia • <span className="font-mono text-cyan-400">{liveTime}</span>
                                     </p>
                                 </div>
                                 <div className="flex items-center gap-3 bg-[#0a0e19]/80 border border-slate-900 px-5 py-3 rounded-2xl shadow-xl backdrop-blur-md">
@@ -505,6 +466,11 @@ const App: React.FC = () => {
                                         <span className="text-5.5xl font-black text-slate-50 tracking-tight text-glow-purple">{payload?.summary.totalNodes || 4}</span>
                                         <span className="text-xs text-slate-500 font-bold uppercase tracking-wider">monitored points</span>
                                     </div>
+                                    <div className="text-[10px] text-slate-500 font-bold uppercase tracking-wider mt-2 flex gap-3 z-10">
+                                        <span className="text-emerald-500">Safe: {safeCount}</span>
+                                        <span className="text-amber-500">Warning: {warningCount}</span>
+                                        <span className="text-red-500">Critical: {criticalCount}</span>
+                                    </div>
                                 </div>
 
                                 <div className="glass-panel-interactive rounded-3xl p-6 relative overflow-hidden flex flex-col justify-between min-h-[160px]">
@@ -531,6 +497,11 @@ const App: React.FC = () => {
                                         <span className={`text-3.5xl font-black tracking-tight uppercase text-glow-emerald ${isSystemOnline ? 'text-emerald-400' : 'text-amber-400'}`}>
                                             {isSystemOnline ? 'Operational' : 'Degraded'}
                                         </span>
+                                    </div>
+                                    <div className="text-[10px] text-slate-500 font-bold uppercase tracking-wider mt-2 flex gap-3 z-10">
+                                        <span>Avg Level: <span className="text-indigo-400 font-mono">{avgWaterLevel.toFixed(1)} cm</span></span>
+                                        <span>Max Rain: <span className="text-cyan-400 font-mono">{maxRainfall.toFixed(1)} mm/h</span></span>
+                                        <span>Risk: <span className="text-purple-400 font-mono">{latestFloodProb}%</span></span>
                                     </div>
                                 </div>
 
@@ -740,6 +711,11 @@ const App: React.FC = () => {
 
                                     {/* Video simulation monitor viewport */}
                                     <div className="flex-1 w-full bg-[#03060c] border border-slate-900 rounded-2xl relative overflow-hidden flex flex-col justify-between p-4 group select-none min-h-[220px]">
+                                        {/* Unsplash Camera image for realistic river monitoring visual */}
+                                        <div 
+                                            className="absolute inset-0 bg-cover bg-center opacity-40 mix-blend-luminosity grayscale contrast-125 pointer-events-none"
+                                            style={{ backgroundImage: `url(${CAMERA_FEED_SLIDES[(payload?.nodes.findIndex(n => n.id === activeStationId) !== -1 ? (payload?.nodes.findIndex(n => n.id === activeStationId) ?? 0) : 0) % CAMERA_FEED_SLIDES.length].url})` }}
+                                        ></div>
                                         <div className="absolute inset-0 bg-gradient-to-t from-emerald-950/20 via-transparent to-transparent opacity-60 z-10 pointer-events-none"></div>
                                         
                                         {/* Grid lines night vision effect */}
@@ -753,7 +729,7 @@ const App: React.FC = () => {
 
                                         {/* night vision camera overlay text */}
                                         <div className="flex justify-between text-[10px] font-mono text-emerald-400/80 z-20 font-bold">
-                                            <span>CAM-02 // RIVER ELEVATION SENSOR</span>
+                                            <span>{CAMERA_FEED_SLIDES[(payload?.nodes.findIndex(n => n.id === activeStationId) !== -1 ? (payload?.nodes.findIndex(n => n.id === activeStationId) ?? 0) : 0) % CAMERA_FEED_SLIDES.length].title.toUpperCase()}</span>
                                             <span>REC [●] 2026-05-21</span>
                                         </div>
 
@@ -1449,8 +1425,6 @@ const App: React.FC = () => {
                 </div>
             </main>
         </div>
-      </main>
-    </div>
   );
 };
 
