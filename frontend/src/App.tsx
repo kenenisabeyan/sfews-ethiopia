@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, Cell } from 'recharts';
 import { SensorNode, DashboardPayload, SystemHealth } from './types';
@@ -56,7 +56,7 @@ const App: React.FC = () => {
 
     // Alerts Tab interactive states
     const [subscribers, setSubscribers] = useState<Subscriber[]>([
-        { id: 'sub-1', name: 'Abebe Bikila', phone: '+251 911 234 567', stationId: 'Awash Alpha Sensor', status: 'Active' },
+        { id: 'sub-1', name: 'Abebe Bikila', phone: '+251 911 234 567', stationId: 'NODE-ALPHA-1', status: 'Active' },
         { id: 'sub-2', name: 'Fatuma Roba', phone: '+251 912 987 654', stationId: 'NODE-BETA-2', status: 'Active' },
         { id: 'sub-3', name: 'Haile Gebrselassie', phone: '+251 910 555 444', stationId: 'NODE-GAMMA-3', status: 'Muted' }
     ]);
@@ -68,6 +68,104 @@ const App: React.FC = () => {
     const [criticalThreshold, setCriticalThreshold] = useState<number>(450);
     const [warningThreshold, setWarningThreshold] = useState<number>(300);
     const [radiusKm, setRadiusKm] = useState<number>(15);
+
+    // Settings DB Synchronizers
+    const fetchSettings = async () => {
+        try {
+            const res = await axios.get(`${API_BASE_URL}/api/v1/system/settings`);
+            if (res.data) {
+                setCriticalThreshold(Math.round(res.data.critical_threshold));
+                setWarningThreshold(Math.round(res.data.warning_threshold));
+                setRadiusKm(Math.round(res.data.radius_km));
+            }
+        } catch (err) {
+            console.error('Settings Fetch Error:', err);
+        }
+    };
+
+    const saveSettings = async () => {
+        try {
+            const payload = {
+                critical_threshold: criticalThreshold,
+                warning_threshold: warningThreshold,
+                radius_km: radiusKm
+            };
+            const res = await axios.post(`${API_BASE_URL}/api/v1/system/settings`, payload);
+            if (res.status === 200) {
+                alert("Configurations successfully synchronized and written to Neon database.");
+            }
+        } catch (err: any) {
+            console.error('Settings Save Error:', err);
+            alert(`Error saving configurations: ${err.message || err}`);
+        }
+    };
+
+    // Futuristic Floating AI Chatbot States
+    interface ChatMessage {
+        sender: 'user' | 'assistant';
+        text: string;
+        timestamp: Date;
+    }
+
+    const [isChatOpen, setIsChatOpen] = useState<boolean>(false);
+    const [chatQuery, setChatQuery] = useState<string>('');
+    const [chatHistory, setChatHistory] = useState<ChatMessage[]>([
+        { 
+            sender: 'assistant', 
+            text: 'Hello, Commander. I am your SFEWS AI Situational Analyst. Ask me anything about river levels, weather forecasts, or sensor telemetry.', 
+            timestamp: new Date() 
+        }
+    ]);
+    const [isTyping, setIsTyping] = useState<boolean>(false);
+    const chatEndRef = useRef<HTMLDivElement | null>(null);
+
+    const scrollToBottom = () => {
+        chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    };
+
+    useEffect(() => {
+        if (isChatOpen) {
+            scrollToBottom();
+        }
+    }, [chatHistory, isChatOpen]);
+
+    const handleSendChat = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!chatQuery.trim()) return;
+        
+        const userMsg: ChatMessage = {
+            sender: 'user',
+            text: chatQuery.trim(),
+            timestamp: new Date()
+        };
+        
+        setChatHistory(prev => [...prev, userMsg]);
+        setChatQuery('');
+        setIsTyping(true);
+        
+        try {
+            const res = await axios.post(`${API_BASE_URL}/api/v1/chat/ask`, {
+                query: userMsg.text
+            });
+            
+            const assistantMsg: ChatMessage = {
+                sender: 'assistant',
+                text: res.data.response || 'No response received from SFEWS Co-Pilot.',
+                timestamp: new Date()
+            };
+            setChatHistory(prev => [...prev, assistantMsg]);
+        } catch (err: any) {
+            console.error('Chat error:', err);
+            const errMsg: ChatMessage = {
+                sender: 'assistant',
+                text: `⚠️ Connection to SFEWS Agent degraded: ${err.message || 'Server returned an error.'}`,
+                timestamp: new Date()
+            };
+            setChatHistory(prev => [...prev, errMsg]);
+        } finally {
+            setIsTyping(false);
+        }
+    };
 
     // Fetch API Health
     const fetchHealth = async () => {
@@ -90,6 +188,7 @@ const App: React.FC = () => {
     // WebSocket implementation (keeps dashboard updated live)
     useEffect(() => {
         fetchHealth();
+        fetchSettings();
         
         const wsUrl = API_BASE_URL.replace(/^http/, 'ws') + '/api/v1/ws/dashboard';
         const ws = new WebSocket(wsUrl);
@@ -150,10 +249,10 @@ const App: React.FC = () => {
     const getMapCoordinates = (nodeId: string, index: number) => {
         // Awash River curving path positions
         const mapPositions: { [key: string]: { x: number; y: number } } = {
+            'NODE-ALPHA-1': { x: 290, y: 200 },
             'NODE-BETA-2': { x: 180, y: 150 },
-            'Awash Alpha Sensor': { x: 290, y: 200 },
             'NODE-GAMMA-3': { x: 400, y: 260 },
-            'Awash Delta unit': { x: 530, y: 190 }
+            'NODE-AWASH-01': { x: 530, y: 190 }
         };
         return mapPositions[nodeId] || { x: 100 + index * 120, y: 150 + (index % 2) * 80 };
     };
@@ -1630,7 +1729,7 @@ const App: React.FC = () => {
 
                             <div className="pt-6 border-t border-slate-900/60 flex justify-end">
                                 <button 
-                                    onClick={() => alert("Configurations successfully written to local memory registers.")}
+                                    onClick={saveSettings}
                                     className="bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-500 hover:to-indigo-600 text-slate-50 px-6 py-3 rounded-2xl font-extrabold text-xs tracking-wider uppercase transition-all shadow-md shadow-indigo-600/10"
                                 >
                                     Write Parameters
@@ -1640,6 +1739,96 @@ const App: React.FC = () => {
                     )}
 
                 </div>
+
+                {/* Collapsible Glassmorphic Floating AI Chatbot Assistant */}
+                {!isChatOpen ? (
+                    <button
+                        onClick={() => setIsChatOpen(true)}
+                        className="fixed bottom-6 right-6 w-14 h-14 rounded-full bg-gradient-to-tr from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white flex items-center justify-center shadow-[0_0_20px_rgba(139,92,246,0.4)] hover:shadow-[0_0_30px_rgba(139,92,246,0.6)] hover:scale-105 transition-all duration-300 z-50 group"
+                        title="Open SFEWS Early Warning AI Assistant"
+                    >
+                        <span className="absolute inset-0 rounded-full border border-purple-400/30 animate-pulse"></span>
+                        <svg className="w-6 h-6 text-white group-hover:rotate-12 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                        </svg>
+                    </button>
+                ) : (
+                    <div className="fixed bottom-6 right-6 w-96 h-[520px] bg-[#050913]/90 border border-purple-500/25 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.8)] backdrop-blur-xl z-50 flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-8 duration-300">
+                        {/* Top Header */}
+                        <div className="p-4 bg-gradient-to-r from-purple-950/40 via-indigo-950/40 to-cyan-950/40 border-b border-slate-900/60 flex items-center justify-between shrink-0">
+                            <div className="flex items-center gap-3">
+                                <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-purple-600 to-cyan-400 flex items-center justify-center shadow-lg relative">
+                                    <span className="w-2 h-2 rounded-full bg-emerald-400 border border-slate-900 absolute -top-0.5 -right-0.5 animate-pulse"></span>
+                                    <svg className="w-4.5 h-4.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 className="text-sm font-extrabold tracking-wide text-slate-100 uppercase">SFEWS AI Co-Pilot</h3>
+                                    <span className="text-[9px] font-bold text-cyan-400 uppercase tracking-widest block font-mono mt-0.5">Online • early warning</span>
+                                </div>
+                            </div>
+                            <button
+                                onClick={() => setIsChatOpen(false)}
+                                className="w-8 h-8 rounded-xl hover:bg-slate-900/60 text-slate-400 hover:text-slate-200 flex items-center justify-center transition-colors border border-transparent hover:border-slate-800/80"
+                            >
+                                <svg className="w-5.5 h-5.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        {/* Messages Container */}
+                        <div className="flex-grow overflow-y-auto p-4.5 space-y-4 min-h-0 custom-scrollbar bg-[#02040a]/40">
+                            {chatHistory.map((msg, i) => {
+                                const isUser = msg.sender === 'user';
+                                return (
+                                    <div key={i} className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}>
+                                        <div className={`max-w-[85%] rounded-2xl p-3.5 text-xs leading-relaxed font-semibold shadow-md ${
+                                            isUser 
+                                                ? 'bg-gradient-to-r from-purple-600/35 to-indigo-600/35 text-slate-100 border border-purple-500/20 rounded-tr-none' 
+                                                : 'bg-[#0b101c]/80 text-slate-250 border border-slate-900 rounded-tl-none'
+                                        }`}>
+                                            <p className="whitespace-pre-line">{msg.text}</p>
+                                            <span className="text-[9px] text-slate-500 block font-mono mt-1.5 text-right">
+                                                {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                            </span>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                            {isTyping && (
+                                <div className="flex justify-start">
+                                    <div className="bg-[#0b101c]/80 text-slate-250 border border-slate-900 rounded-2xl rounded-tl-none p-3.5 flex items-center gap-1.5 shadow-md">
+                                        <span className="w-1.5 h-1.5 bg-indigo-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></span>
+                                        <span className="w-1.5 h-1.5 bg-indigo-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></span>
+                                        <span className="w-1.5 h-1.5 bg-indigo-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></span>
+                                    </div>
+                                </div>
+                            )}
+                            <div ref={chatEndRef} />
+                        </div>
+
+                        {/* Form Input */}
+                        <form onSubmit={handleSendChat} className="p-3 bg-[#040811] border-t border-slate-900/60 flex gap-2 shrink-0">
+                            <input
+                                type="text"
+                                value={chatQuery}
+                                onChange={(e) => setChatQuery(e.target.value)}
+                                placeholder="Ask about nodes, risk metrics, forecasts..."
+                                className="flex-grow bg-[#080d19]/90 border border-slate-800/80 rounded-2xl px-4 py-2.5 text-xs text-slate-250 focus:outline-none focus:border-purple-500/50 placeholder:text-slate-500 font-semibold"
+                            />
+                            <button
+                                type="submit"
+                                disabled={!chatQuery.trim() || isTyping}
+                                className="px-4 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 disabled:from-slate-900 disabled:to-slate-900 disabled:text-slate-600 text-slate-100 rounded-2xl font-extrabold text-xs tracking-wider uppercase transition-all shadow-md flex items-center justify-center shrink-0 border border-transparent hover:shadow-[0_0_15px_rgba(139,92,246,0.3)]"
+                            >
+                                Send
+                            </button>
+                        </form>
+                    </div>
+                )}
+
             </main>
         </div>
   );

@@ -54,3 +54,9 @@ class User(Base):
     hashed_password = Column(String, nullable=False)
     role = Column(String, default="admin")
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+class SystemSetting(Base):
+    __tablename__ = "system_settings"
+    key = Column(String, primary_key=True, index=True)
+    value = Column(Float, nullable=False)
+

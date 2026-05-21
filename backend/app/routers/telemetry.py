@@ -23,7 +23,21 @@ async def ingest_telemetry(payload: schemas.TelemetryData, background_tasks: Bac
     
     # 2. Run ML Pipeline for Risk Prediction
     probability = predict_flood_probability(payload.water_level_cm, payload.rainfall_rate_mm)
-    risk_level = evaluate_risk_tier(probability)
+    
+    # Query system settings from DB to override/evaluate risk based on water level
+    warn_setting = db.query(models.SystemSetting).filter(models.SystemSetting.key == "warning_threshold").first()
+    crit_setting = db.query(models.SystemSetting).filter(models.SystemSetting.key == "critical_threshold").first()
+    
+    warning_val = warn_setting.value if warn_setting else 300.0
+    critical_val = crit_setting.value if crit_setting else 450.0
+    
+    if payload.water_level_cm >= critical_val:
+        risk_level = "Critical"
+    elif payload.water_level_cm >= warning_val:
+        risk_level = "Warning"
+    else:
+        risk_level = "Safe"
+
     
     # 3. Update Node Status & Vitals
     node.battery_level = payload.battery_level
