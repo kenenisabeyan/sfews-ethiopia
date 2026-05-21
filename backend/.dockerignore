@@ -5,3 +5,8 @@ __pycache__
 .env
 .git
 .pytest_cache
+# Prevent copying frontend if build context is accidently set to root
+frontend/
+../frontend/
+node_modules/
+dist/
