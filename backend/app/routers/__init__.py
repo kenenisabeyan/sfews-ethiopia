@@ -1,1 +1,1 @@
-from . import telemetry, dashboard, nodes, system, ws
+from . import telemetry, dashboard, nodes, system, ws, chat

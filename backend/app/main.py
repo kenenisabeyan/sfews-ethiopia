@@ -2,7 +2,7 @@ from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from . import database
 from .database import engine, Base
-from .routers import telemetry, dashboard, nodes, system, ws
+from .routers import telemetry, dashboard, nodes, system, ws, chat
 
 # Automatically create all tables in PostgreSQL
 try:
@@ -27,6 +27,7 @@ app.include_router(dashboard.router)
 app.include_router(nodes.router)
 app.include_router(system.router)
 app.include_router(ws.router)
+app.include_router(chat.router)
 
 from sqlalchemy import text
 from datetime import datetime

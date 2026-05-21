@@ -16,17 +16,13 @@ class ConnectionManager:
         if websocket in self.active_connections:
             self.active_connections.remove(websocket)
 
-    async def broadcast_dashboard(self, db: Session):
+    async def broadcast_dashboard_json(self, json_data: str):
         """
-        Calculates the latest dashboard state and pushes the JSON payload 
-        to all connected clients.
+        Pushes a pre-calculated JSON payload to all connected clients.
         """
         if not self.active_connections:
-            return # No need to query DB if nobody is listening
+            return 
             
-        payload = build_dashboard_payload(db)
-        json_data = payload.model_dump_json(by_alias=True)
-        
         for connection in self.active_connections:
             try:
                 await connection.send_text(json_data)
