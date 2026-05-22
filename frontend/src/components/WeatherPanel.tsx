@@ -1,5 +1,5 @@
 import React from 'react';
-import { WeatherInfo } from '../types/types';
+import { WeatherInfo } from '../types';
 
 interface WeatherPanelProps {
   weather: WeatherInfo;
