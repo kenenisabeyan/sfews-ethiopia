@@ -5,85 +5,134 @@
 @layer base {
   body {
     @apply bg-[#02040a] text-slate-100 antialiased m-0 p-0 overflow-x-hidden;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   }
 }
 
-/* Custom Scrollbar */
+/* Custom Scrollbar for high-tech terminal look */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(3, 7, 18, 0.1);
+  background: rgba(3, 7, 18, 0.05);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(148, 163, 184, 0.15);
+  background: rgba(168, 85, 247, 0.15);
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(148, 163, 184, 0.3);
+  background: rgba(34, 211, 238, 0.35);
+  box-shadow: 0 0 8px rgba(34, 211, 238, 0.5);
 }
 
-/* Cyberpunk and Glassmorphism Utilities */
+/* Premium Glassmorphism Cards */
 .glass-panel {
-  background: rgba(8, 13, 24, 0.6);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(6, 10, 20, 0.65);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.035);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.65);
 }
 
 .glass-panel-interactive {
-  background: rgba(8, 13, 24, 0.5);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.04);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: rgba(6, 10, 20, 0.55);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .glass-panel-interactive:hover {
-  background: rgba(13, 20, 38, 0.7);
-  border-color: rgba(99, 102, 241, 0.25);
-  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.6), 0 0 15px rgba(99, 102, 241, 0.05);
-  transform: translateY(-2px);
+  background: rgba(12, 18, 36, 0.75);
+  border-color: rgba(168, 85, 247, 0.25);
+  box-shadow: 
+    0 30px 60px -15px rgba(0, 0, 0, 0.75), 
+    0 0 20px rgba(168, 85, 247, 0.05),
+    inset 0 0 12px rgba(255, 255, 255, 0.01);
+  transform: translateY(-3px) scale(1.01);
 }
 
-/* Neon Text and Border Glows */
+.glass-panel-premium {
+  background: radial-gradient(120% 120% at 50% 0%, rgba(15, 20, 35, 0.7) 0%, rgba(5, 7, 15, 0.85) 100%);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  box-shadow: 
+    0 35px 70px -15px rgba(0, 0, 0, 0.85),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  position: relative;
+}
+
+.glass-panel-premium::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.15), rgba(34, 211, 238, 0.05), transparent 60%);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: xor;
+  pointer-events: none;
+}
+
+/* Neon Text & Spotlight Glows */
 .text-glow-cyan {
-  text-shadow: 0 0 10px rgba(34, 211, 238, 0.4);
+  text-shadow: 0 0 12px rgba(34, 211, 238, 0.45);
 }
 
 .text-glow-purple {
-  text-shadow: 0 0 10px rgba(168, 85, 247, 0.4);
+  text-shadow: 0 0 12px rgba(168, 85, 247, 0.45);
 }
 
 .text-glow-emerald {
-  text-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
+  text-shadow: 0 0 12px rgba(16, 185, 129, 0.45);
 }
 
-.border-glow-red {
-  box-shadow: 0 0 15px rgba(239, 68, 68, 0.2), inset 0 0 10px rgba(239, 68, 68, 0.05);
+.text-glow-red {
+  text-shadow: 0 0 12px rgba(239, 68, 68, 0.45);
 }
 
-.border-glow-indigo {
-  box-shadow: 0 0 20px rgba(99, 102, 241, 0.15);
+.border-glow-purple {
+  box-shadow: 0 0 25px rgba(168, 85, 247, 0.12), inset 0 0 10px rgba(168, 85, 247, 0.03);
 }
 
-/* Animated Grid Pattern Background */
+.border-glow-cyan {
+  box-shadow: 0 0 25px rgba(34, 211, 238, 0.12), inset 0 0 10px rgba(34, 211, 238, 0.03);
+}
+
+/* Cybernetic Grid & Layout overlays */
 .grid-bg {
-  background-image: linear-gradient(rgba(18, 24, 38, 0.3) 1px, transparent 1px),
-                    linear-gradient(90deg, rgba(18, 24, 38, 0.3) 1px, transparent 1px);
-  background-size: 32px 32px;
+  background-image: 
+    linear-gradient(rgba(148, 163, 184, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 163, 184, 0.02) 1px, transparent 1px);
+  background-size: 40px 40px;
 }
 
-/* Custom Keyframe Animations */
+.cyber-scanner {
+  position: relative;
+  overflow: hidden;
+}
+
+.cyber-scanner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 50%, rgba(34, 211, 238, 0.08) 50%);
+  background-size: 100% 4px;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Animations */
 @keyframes float {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
-  100% { transform: translateY(0px); }
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
 }
 
 @keyframes scanline {
@@ -92,18 +141,91 @@
 }
 
 @keyframes pulse-slow {
-  0%, 100% { opacity: 0.25; }
-  50% { opacity: 0.5; }
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 0.45; }
+}
+
+@keyframes hologram-flicker {
+  0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 70%, 100% {
+    opacity: 0.99;
+    filter: hue-rotate(0deg);
+  }
+  20%, 21.999%, 63%, 63.999%, 65%, 69.999% {
+    opacity: 0.4;
+    filter: hue-rotate(15deg);
+  }
+}
+
+@keyframes wave-flow {
+  0% { transform: translateX(0) translateZ(0) scaleY(1); }
+  50% { transform: translateX(-25%) translateZ(0) scaleY(0.85); }
+  100% { transform: translateX(-50%) translateZ(0) scaleY(1); }
 }
 
 .animate-float {
-  animation: float 6s ease-in-out infinite;
+  animation: float 5s ease-in-out infinite;
 }
 
 .animate-scanline {
-  animation: scanline 8s linear infinite;
+  animation: scanline 6s linear infinite;
 }
 
 .animate-pulse-slow {
-  animation: pulse-slow 3s ease-in-out infinite;
+  animation: pulse-slow 4.5s ease-in-out infinite;
 }
+
+.animate-hologram {
+  animation: hologram-flicker 10s linear infinite;
+}
+
+.animate-wave {
+  animation: wave-flow 12s linear infinite;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+/* GIS Map Command Center Utilities */
+@keyframes radar-sweep {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.4); opacity: 0; }
+  10% { opacity: 0.8; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+
+@keyframes grid-pulse {
+  0%, 100% { opacity: 0.08; }
+  50% { opacity: 0.16; }
+}
+
+.animate-radar-sweep {
+  animation: radar-sweep 12s linear infinite;
+  transform-origin: center;
+}
+
+.animate-pulse-ring {
+  animation: pulse-ring 3s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
+}
+
+.animate-grid-pulse {
+  animation: grid-pulse 6s ease-in-out infinite;
+}
+
+.map-glow-cyan {
+  filter: drop-shadow(0 0 10px rgba(6, 182, 212, 0.45));
+}
+
+.map-glow-purple {
+  filter: drop-shadow(0 0 10px rgba(168, 85, 247, 0.45));
+}
+
+.map-glow-red {
+  filter: drop-shadow(0 0 10px rgba(239, 68, 68, 0.5));
+}
+

@@ -5,46 +5,60 @@ interface LoginPanelProps {
 }
 
 export const LoginPanel: React.FC<LoginPanelProps> = ({ onLoginSuccess }) => {
-  // Inputs & security credentials
+  // Authentication inputs
   const [username, setUsername] = useState('astu-analyst');
   const [password, setPassword] = useState('astu-sfews-2026');
   const [securityCode, setSecurityCode] = useState('');
   const [authError, setAuthError] = useState<string | null>(null);
   
-  // Custom futuristic states
+  // High-fidelity UI States
   const [isDecrypting, setIsDecrypting] = useState(false);
   const [decryptionLogs, setDecryptionLogs] = useState<string[]>([]);
   const [activeInput, setActiveInput] = useState<string | null>(null);
   const [espTemperature, setEspTemperature] = useState(38.6);
   const [espRssi, setEspRssi] = useState(-64);
+  const [activeTab, setActiveTab] = useState<'standard' | 'token'>('standard');
+  const [systemUptime, setSystemUptime] = useState('14d 06h 22m');
 
-  // References for Canvas Particle Emitter
+  // References for Interactive Particle Background
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const mouseRef = useRef({ x: 0, y: 0, radius: 120 });
+  const mouseRef = useRef({ x: -1000, y: -1000, radius: 150 });
 
-  // Blinking/changing ESP32 parameters for dynamic dashboard feel
+  // Fluctuate ESP32 node pool vitals for high-fidelity realism
   useEffect(() => {
-    const interval = setInterval(() => {
-      setEspTemperature(prev => +(prev + (Math.random() * 0.4 - 0.2)).toFixed(1));
+    const vitalsInterval = setInterval(() => {
+      setEspTemperature(prev => +(prev + (Math.random() * 0.6 - 0.3)).toFixed(1));
       setEspRssi(prev => {
         const delta = Math.floor(Math.random() * 3) - 1;
         const next = prev + delta;
-        return next < -72 ? -72 : next > -58 ? -58 : next;
+        return next < -72 ? -72 : next > -56 ? -56 : next;
       });
-    }, 2000);
-    return () => clearInterval(interval);
+    }, 2500);
+
+    // Dynamic Uptime ticker
+    const uptimeInterval = setInterval(() => {
+      const hours = new Date().getHours().toString().padStart(2, '0');
+      const mins = new Date().getMinutes().toString().padStart(2, '0');
+      const secs = new Date().getSeconds().toString().padStart(2, '0');
+      setSystemUptime(`14d ${hours}h ${mins}m ${secs}s`);
+    }, 1000);
+
+    return () => {
+      clearInterval(vitalsInterval);
+      clearInterval(uptimeInterval);
+    };
   }, []);
 
-  // Canvas particle engine
+  // HTML5 Interactive Constellation Particle Engine
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    let animationFrameId: number;
+    let animationId: number;
     let particles: Particle[] = [];
-    const particleCount = 65;
+    const particleCount = 80;
 
     class Particle {
       x: number;
@@ -53,47 +67,59 @@ export const LoginPanel: React.FC<LoginPanelProps> = ({ onLoginSuccess }) => {
       speedX: number;
       speedY: number;
       color: string;
-      alpha: number;
+      glowColor: string;
+      originalSpeedX: number;
+      originalSpeedY: number;
 
       constructor() {
         this.x = Math.random() * (canvas?.width || window.innerWidth);
         this.y = Math.random() * (canvas?.height || window.innerHeight);
-        this.size = Math.random() * 2.5 + 0.8;
-        this.speedX = Math.random() * 0.6 - 0.3;
-        this.speedY = Math.random() * 0.6 - 0.3;
+        this.size = Math.random() * 2 + 0.8;
         
-        // Purple-purple-violet-indigo-cyan theme
-        const colors = [
-          'rgba(168, 85, 247, 0.4)', // purple
-          'rgba(192, 132, 252, 0.3)', // violet
-          'rgba(99, 102, 241, 0.35)', // indigo
-          'rgba(34, 211, 238, 0.25)', // cyan
-          'rgba(139, 92, 246, 0.4)'  // violaceous
+        this.speedX = Math.random() * 0.4 - 0.2;
+        this.speedY = Math.random() * 0.4 - 0.2;
+        this.originalSpeedX = this.speedX;
+        this.originalSpeedY = this.speedY;
+
+        // Cinematic color pool matching purple neon themes
+        const themes = [
+          { color: 'rgba(168, 85, 247, 0.45)', glow: 'rgba(168, 85, 247, 0.8)' },  // Purple Glow
+          { color: 'rgba(129, 140, 248, 0.4)', glow: 'rgba(129, 140, 248, 0.7)' },  // Indigo Glow
+          { color: 'rgba(6, 182, 212, 0.35)', glow: 'rgba(6, 182, 212, 0.65)' },   // Cyan Glow
+          { color: 'rgba(236, 72, 153, 0.3)', glow: 'rgba(236, 72, 153, 0.6)' }    // Pink Glow
         ];
-        this.color = colors[Math.floor(Math.random() * colors.length)];
-        this.alpha = Math.random() * 0.5 + 0.2;
+        const selection = themes[Math.floor(Math.random() * themes.length)];
+        this.color = selection.color;
+        this.glowColor = selection.glow;
       }
 
       update() {
         this.x += this.speedX;
         this.y += this.speedY;
 
-        // Bounce on boundaries
+        // Wall collisions
         if (canvas) {
           if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
           if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
         }
 
-        // Mouse interaction: push away particles slightly
+        // Smooth mouse interactive physics
         const dx = mouseRef.current.x - this.x;
         const dy = mouseRef.current.y - this.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        if (distance < mouseRef.current.radius) {
-          const forceDirectionX = dx / distance;
-          const forceDirectionY = dy / distance;
-          const force = (mouseRef.current.radius - distance) / mouseRef.current.radius;
-          this.x -= forceDirectionX * force * 1.5;
-          this.y -= forceDirectionY * force * 1.5;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        
+        if (dist < mouseRef.current.radius) {
+          const force = (mouseRef.current.radius - dist) / mouseRef.current.radius;
+          const forceDirX = dx / dist;
+          const forceDirY = dy / dist;
+          
+          // Push away from mouse smoothly
+          this.x -= forceDirX * force * 1.8;
+          this.y -= forceDirY * force * 1.8;
+        } else {
+          // Re-establish original slow orbital drift
+          this.speedX = this.speedX * 0.95 + this.originalSpeedX * 0.05;
+          this.speedY = this.speedY * 0.95 + this.originalSpeedY * 0.05;
         }
       }
 
@@ -102,8 +128,8 @@ export const LoginPanel: React.FC<LoginPanelProps> = ({ onLoginSuccess }) => {
         c.beginPath();
         c.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         c.fillStyle = this.color;
-        c.shadowColor = 'rgba(168, 85, 247, 0.6)';
-        c.shadowBlur = this.size > 2 ? 6 : 0;
+        c.shadowColor = this.glowColor;
+        c.shadowBlur = this.size > 1.5 ? 8 : 2;
         c.fill();
         c.restore();
       }
@@ -112,10 +138,7 @@ export const LoginPanel: React.FC<LoginPanelProps> = ({ onLoginSuccess }) => {
     const init = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
-      particles = [];
-      for (let i = 0; i < particleCount; i++) {
-        particles.push(new Particle());
-      }
+      particles = Array.from({ length: particleCount }, () => new Particle());
     };
 
     const handleResize = () => {
@@ -125,26 +148,34 @@ export const LoginPanel: React.FC<LoginPanelProps> = ({ onLoginSuccess }) => {
     };
 
     const handleMouseMove = (e: MouseEvent) => {
-      mouseRef.current.x = e.clientX;
-      mouseRef.current.y = e.clientY;
+      const rect = canvas.getBoundingClientRect();
+      mouseRef.current.x = e.clientX - rect.left;
+      mouseRef.current.y = e.clientY - rect.top;
+    };
+
+    const handleMouseLeave = () => {
+      mouseRef.current.x = -1000;
+      mouseRef.current.y = -1000;
     };
 
     window.addEventListener('resize', handleResize);
     window.addEventListener('mousemove', handleMouseMove);
+    canvas.addEventListener('mouseleave', handleMouseLeave);
     init();
 
-    const connectParticles = (c: CanvasRenderingContext2D) => {
-      const maxDistance = 140;
+    // Draw mesh connection wires
+    const drawConstellationWires = (c: CanvasRenderingContext2D) => {
+      const maxDistance = 120;
       for (let a = 0; a < particles.length; a++) {
-        for (let b = a; b < particles.length; b++) {
+        for (let b = a + 1; b < particles.length; b++) {
           const dx = particles[a].x - particles[b].x;
           const dy = particles[a].y - particles[b].y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
+          const dist = Math.sqrt(dx * dx + dy * dy);
 
-          if (distance < maxDistance) {
-            const alpha = (1 - distance / maxDistance) * 0.12;
-            c.strokeStyle = `rgba(168, 85, 247, ${alpha})`;
-            c.lineWidth = 0.8;
+          if (dist < maxDistance) {
+            const alpha = (1 - dist / maxDistance) * 0.16;
+            c.strokeStyle = `rgba(139, 92, 246, ${alpha})`;
+            c.lineWidth = 0.85;
             c.beginPath();
             c.moveTo(particles[a].x, particles[a].y);
             c.lineTo(particles[b].x, particles[b].y);
@@ -154,70 +185,72 @@ export const LoginPanel: React.FC<LoginPanelProps> = ({ onLoginSuccess }) => {
       }
     };
 
-    const animate = () => {
+    const render = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
-      // Draw grid overlays on background
-      ctx.strokeStyle = 'rgba(148, 163, 184, 0.015)';
+
+      // Render grid matrix cells overlay
+      ctx.strokeStyle = 'rgba(139, 92, 246, 0.015)';
       ctx.lineWidth = 1;
-      const gridSize = 45;
-      for (let x = 0; x < canvas.width; x += gridSize) {
+      const step = 50;
+      for (let x = 0; x < canvas.width; x += step) {
         ctx.beginPath();
         ctx.moveTo(x, 0);
         ctx.lineTo(x, canvas.height);
         ctx.stroke();
       }
-      for (let y = 0; y < canvas.height; y += gridSize) {
+      for (let y = 0; y < canvas.height; y += step) {
         ctx.beginPath();
         ctx.moveTo(0, y);
         ctx.lineTo(canvas.width, y);
         ctx.stroke();
       }
 
-      particles.forEach(particle => {
-        particle.update();
-        particle.draw(ctx);
+      particles.forEach(p => {
+        p.update();
+        p.draw(ctx);
       });
 
-      connectParticles(ctx);
-      animationFrameId = requestAnimationFrame(animate);
+      drawConstellationWires(ctx);
+      animationId = requestAnimationFrame(render);
     };
 
-    animate();
+    render();
 
     return () => {
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('mousemove', handleMouseMove);
-      cancelAnimationFrame(animationFrameId);
+      canvas.removeEventListener('mouseleave', handleMouseLeave);
+      cancelAnimationFrame(animationId);
     };
   }, []);
 
   // Cyber decryption log output simulator
-  const startDecryption = () => {
+  const executeTunnelDecryption = () => {
     setIsDecrypting(true);
     setDecryptionLogs([]);
 
-    const logs = [
-      '⚡ [SYS] INITIATING COMMAND CENTER ACCESS TERMINAL...',
-      '📡 [NET] TUNNELING TO AWASH RIVER LORA-MESH NETWORK...',
-      '🛠️ [HW] ESTABLISHING HANDSHAKE WITH ESP32 (CORE CHIP XTENSA LX6)...',
-      '🔍 [HW] ESP32 CHIP TEMPERATURE: 38.6°C | RSSI: ' + espRssi + ' dBm',
-      '🔑 [CRYPTO] SIGNING KEY PAIR AND VALIDATING CERTIFICATES...',
-      '🧬 [DB] ESTABLISHING ENCRYPTED TUNNEL TO INTEGRITY DB...',
-      '🎓 [AUTH] ADAMA SCIENCE & TECH UNIVERSITY ROOT CERTIFICATE VERIFIED.',
-      '📟 [SYS] RETRIEVING WATER PREDICTION ML VECTOR GRAPHS...',
-      '🛡️ [SUCCESS] ACCESS GRANTED. SYNCING WEBSOCKET CONSOLE...',
+    const steps = [
+      '✨ [INIT] STARTING CRITICAL COMMAND ACCESS LINK DECRYPTOR...',
+      '🛰️ [LINK] CONNECTING TO GEOSPATIAL METEOROLOGY AWASH FEED...',
+      '🔌 [ESP32] SECURING LoRa MESH-MESH AD-HOC GATEWAY CONNECTION...',
+      '🛠️ [HARDWARE] READING BOARD STATE: XTENSA 32-BIT LX6 MCU CHIP INTACT',
+      '🌡️ [VITALS] ESP32 CHIP TEMPERATURE: ' + espTemperature + '°C | SYSTEM PING: 22ms',
+      '📡 [RF] STRENGTH MATRIX (RSSI): ' + espRssi + ' dBm | CRC CHECKSUM: STABLE',
+      '⚡ [DB] SHADOW HANDSHAKE ROUTED TO NEON DATABASES...',
+      '🎓 [CREDENTIALS] ADAMA SCIENCE & TECH UNIVERSITY LAB ROOTS LOADED.',
+      '🚀 [DECRYPT] UNLOCKING LOCAL KEYRING SHA-512 MATRIX FOR SECURED PANEL...',
+      '✅ [SYS] TUNNEL SYNCHRONIZED. INJECTING AWS-AWASH EARLY CONSOLE VECTOR...',
     ];
 
-    logs.forEach((logText, index) => {
+    steps.forEach((step, index) => {
       setTimeout(() => {
-        setDecryptionLogs(prev => [...prev, logText]);
-        if (index === logs.length - 1) {
+        setDecryptionLogs(prev => [...prev, step]);
+        if (index === steps.length - 1) {
           setTimeout(() => {
             onLoginSuccess();
-          }, 900);
+          }, 950);
         }
-      }, (index + 1) * 350);
+      }, (index + 1) * 320);
     });
   };
 
@@ -225,114 +258,128 @@ export const LoginPanel: React.FC<LoginPanelProps> = ({ onLoginSuccess }) => {
     e.preventDefault();
     setAuthError(null);
 
-    // Authentication rule validation
     if (!username.trim() || !password.trim()) {
-      setAuthError('Authentication Error: Username and password must be supplied.');
+      setAuthError('Authentication Shielded: Username and security token are mandatory.');
       return;
     }
 
+    // Default credentials validator
     if (username === 'admin' || username === 'astu-analyst') {
       if (password === 'astu-sfews-2026' || password === 'admin') {
-        startDecryption();
+        executeTunnelDecryption();
         return;
       }
     }
 
-    setAuthError('Access Denied: Invalid credentials or cryptographic key signature mismatch.');
+    setAuthError('CRITICAL_SEC_FAIL: Cryptographic signature mismatch or token credentials invalid.');
   };
 
-  // Matrix Passcode Keypad handler (adds a super sleek cyber touch)
-  const pressMatrixKey = (num: string) => {
+  // Click handler for biometric pin keypad
+  const handleKeypadPress = (digit: string) => {
     if (securityCode.length < 6) {
-      setSecurityCode(prev => prev + num);
-      if (securityCode.length === 5) {
-        // Automatically check/validate password input or append to terminal
+      const nextCode = securityCode + digit;
+      setSecurityCode(nextCode);
+
+      // Auto check override key if it hits 6 digits
+      if (nextCode === '202611') {
+        // Quick biometric simulation override
+        setUsername('astu-analyst');
+        setPassword('astu-sfews-2026');
+        executeTunnelDecryption();
+      } else if (nextCode.length === 6) {
+        setAuthError('OVERRIDE_ERROR: High security token signature invalid. Reset pin.');
+        setSecurityCode('');
       }
     }
   };
 
-  const clearMatrixKeys = () => setSecurityCode('');
+  const clearKeypad = () => {
+    setSecurityCode('');
+    setAuthError(null);
+  };
 
   return (
-    <div className="relative w-full min-h-screen bg-[#02040b] text-slate-200 flex items-center justify-center p-4 md:p-8 overflow-hidden font-sans select-none">
+    <div className="relative w-full min-h-screen bg-[#020308] text-slate-100 flex items-center justify-center p-4 md:p-8 overflow-hidden font-sans select-none">
       
-      {/* Performance optimized vector particle backdrop */}
+      {/* High-Performance Particle Engine */}
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none z-0" />
 
-      {/* Cyber Grid Scanline Overlay */}
+      {/* Cyber Grid & Scanline */}
       <div className="absolute inset-0 bg-transparent z-1 pointer-events-none overflow-hidden">
-        <div className="w-full h-0.5 bg-purple-500/5 absolute animate-scanline"></div>
+        <div className="w-full h-[3px] bg-gradient-to-r from-transparent via-purple-500/10 to-transparent absolute animate-scanline"></div>
       </div>
 
-      {/* Futuristic Purple & Magenta Floating Glows */}
-      <div className="absolute top-[15%] left-[20%] w-[45vw] h-[45vw] bg-purple-600/10 rounded-full blur-[140px] pointer-events-none z-0 animate-pulse-slow"></div>
-      <div className="absolute bottom-[10%] right-[15%] w-[40vw] h-[40vw] bg-indigo-600/10 rounded-full blur-[160px] pointer-events-none z-0"></div>
-      <div className="absolute top-[50%] right-[35%] w-[25vw] h-[25vw] bg-cyan-600/5 rounded-full blur-[120px] pointer-events-none z-0"></div>
+      {/* Futuristic Purple & Indigo Ambient Spherical Glows */}
+      <div className="absolute top-[10%] left-[15%] w-[45vw] h-[45vw] bg-purple-900/10 rounded-full blur-[140px] pointer-events-none z-0 animate-pulse-slow"></div>
+      <div className="absolute bottom-[8%] right-[12%] w-[40vw] h-[40vw] bg-indigo-900/15 rounded-full blur-[160px] pointer-events-none z-0"></div>
+      <div className="absolute top-[45%] right-[30%] w-[30vw] h-[30vw] bg-cyan-950/10 rounded-full blur-[130px] pointer-events-none z-0"></div>
 
-      {/* Core Auth Glass Box container */}
-      <div className="relative z-10 w-full max-w-5xl bg-[#070b16]/55 border border-purple-500/15 rounded-[32px] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)] backdrop-blur-[24px] grid grid-cols-1 lg:grid-cols-12 overflow-hidden min-h-[640px]">
+      {/* Core Auth Panel Wrapper */}
+      <div className="relative z-10 w-full max-w-5xl bg-[#060814]/45 border border-purple-500/15 rounded-[36px] shadow-[0_30px_70px_-15px_rgba(0,0,0,0.85)] backdrop-blur-[24px] grid grid-cols-1 lg:grid-cols-12 overflow-hidden min-h-[660px]">
         
-        {/* Decorative Neon Inner Frame */}
-        <div className="absolute inset-0 rounded-[32px] border border-purple-500/5 pointer-events-none z-10 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_0_40px_rgba(168,85,247,0.02)]"></div>
+        {/* Double-Panel Glowing Neon Inner Frame */}
+        <div className="absolute inset-0 rounded-[36px] border border-purple-500/10 pointer-events-none z-10 shadow-[inset_0_1.5px_0_rgba(255,255,255,0.06),0_0_50px_rgba(168,85,247,0.04)]"></div>
 
-        {/* ================== LEFT SIDEBAR: ESP32 IoT SYSTEM Vitals ================== */}
-        <div className="lg:col-span-5 bg-gradient-to-b from-[#0a0f21]/80 to-[#040813]/85 p-8 border-b lg:border-b-0 lg:border-r border-purple-500/10 flex flex-col justify-between relative overflow-hidden">
+        {/* LEFT COLUMN: SYSTEM VITALS, ASTU BRANDING & ESP32 CONFIGS */}
+        <div className="lg:col-span-5 bg-gradient-to-b from-[#080b1b]/85 to-[#040610]/90 p-8 border-b lg:border-b-0 lg:border-r border-purple-500/15 flex flex-col justify-between relative overflow-hidden">
           
-          {/* Subtle circuit line watermark */}
-          <div className="absolute -bottom-10 -left-10 w-56 h-56 border border-purple-500/5 rounded-full opacity-30 pointer-events-none">
-            <div className="absolute inset-4 border border-purple-500/5 rounded-full"></div>
-            <div className="absolute inset-10 border border-purple-500/5 rounded-full"></div>
+          {/* Subtle ESP32 Circuit Background Watermark */}
+          <div className="absolute -bottom-16 -left-16 w-64 h-64 border border-purple-500/5 rounded-full opacity-30 pointer-events-none flex items-center justify-center">
+            <div className="w-48 h-48 border border-purple-500/5 rounded-full flex items-center justify-center">
+              <div className="w-32 h-32 border border-purple-500/5 rounded-full"></div>
+            </div>
           </div>
 
-          {/* ASTU Branding & Crest */}
+          {/* ASTU Branding Header */}
           <div className="space-y-6 relative z-10">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3.5">
               {/* Premium customized high-fidelity glowing SVG emblem */}
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-600/20 via-indigo-600/20 to-cyan-500/20 border border-purple-500/30 flex items-center justify-center shadow-[0_0_20px_rgba(168,85,247,0.15)] relative">
-                <svg className="w-9 h-9 text-purple-300" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M50 12L85 30V70L50 88L15 70V30L50 12Z" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  <circle cx="50" cy="50" r="16" stroke="currentColor" strokeWidth="2" strokeDasharray="4 2"/>
-                  <path d="M50 34V66M34 50H66" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                  <circle cx="50" cy="50" r="6" fill="#06b6d4"/>
-                  {/* Glowing core */}
-                  <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 absolute animate-ping opacity-60"></span>
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500/20 via-indigo-600/20 to-cyan-500/20 border border-purple-500/30 flex items-center justify-center shadow-[0_0_25px_rgba(168,85,247,0.2)] relative shrink-0">
+                <svg className="w-10 h-10 text-purple-300" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <polygon points="50,10 90,30 90,70 50,90 10,70 10,30" stroke="currentColor" strokeWidth="2.5" strokeLinejoin="round" fill="rgba(168, 85, 247, 0.05)"/>
+                  <circle cx="50" cy="50" r="22" stroke="currentColor" strokeWidth="2" strokeDasharray="3 3"/>
+                  <path d="M35 45 L50 65 L65 45" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  <line x1="50" y1="28" x2="50" y2="72" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
+                  <circle cx="50" cy="50" r="7" fill="#22d3ee" className="animate-pulse"/>
                 </svg>
+                {/* Glowing Core Dot */}
+                <span className="w-2 h-2 rounded-full bg-cyan-400 absolute top-1 right-1 animate-ping"></span>
               </div>
               <div>
-                <h1 className="text-xl font-black tracking-widest text-slate-100 bg-gradient-to-r from-slate-50 via-purple-100 to-indigo-300 bg-clip-text text-transparent">ASTU SFEWS</h1>
-                <p className="text-[9px] font-bold text-cyan-400/90 tracking-widest uppercase font-mono mt-0.5">Hydrology Intelligence Center</p>
+                <h1 className="text-xl font-extrabold tracking-widest text-slate-100 bg-gradient-to-r from-slate-50 via-purple-100 to-indigo-300 bg-clip-text text-transparent">ASTU-SFEWS</h1>
+                <p className="text-[9px] font-bold text-cyan-400/90 tracking-widest uppercase font-mono mt-0.5">Hydrology Research Lab</p>
               </div>
             </div>
 
-            <div className="h-[1px] bg-gradient-to-r from-purple-500/15 via-purple-500/5 to-transparent w-full"></div>
+            <div className="h-[1px] bg-gradient-to-r from-purple-500/20 via-purple-500/5 to-transparent w-full"></div>
 
-            {/* ESP32 Hardware Specs Matrix */}
+            {/* ESP32 Hardware Blueprint / Spec Matrix */}
             <div className="space-y-4">
-              <h3 className="text-slate-400 text-[10px] font-black uppercase tracking-widest flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-purple-500 animate-pulse"></span>
-                ESP32 Hardware Node Pool
-              </h3>
-              
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-purple-500 animate-pulse"></span>
+                <span className="text-[10px] font-black uppercase text-slate-400 tracking-wider font-mono">ESP32 Hardware telemetry</span>
+              </div>
+
               <div className="grid grid-cols-2 gap-3.5">
-                <div className="bg-[#0b1022]/70 border border-slate-900/80 p-3 rounded-xl flex flex-col justify-between">
-                  <span className="text-[9px] text-slate-500 font-bold uppercase tracking-wider">firmware core</span>
-                  <span className="text-[11px] font-mono font-bold text-slate-300 mt-1">SFEWS-ESP32-v4.1</span>
+                <div className="bg-[#080c1e]/60 border border-purple-500/10 p-3 rounded-xl flex flex-col justify-between hover:border-purple-500/20 transition-all duration-300">
+                  <span className="text-[8px] text-slate-500 font-bold uppercase tracking-wider">processor node</span>
+                  <span className="text-[11px] font-mono font-bold text-slate-300 mt-1">Tensilica LX6 Dual-Core</span>
                 </div>
-                <div className="bg-[#0b1022]/70 border border-slate-900/80 p-3 rounded-xl flex flex-col justify-between">
-                  <span className="text-[9px] text-slate-500 font-bold uppercase tracking-wider">lora frequency</span>
-                  <span className="text-[11px] font-mono font-bold text-slate-300 mt-1">433.00 MHz</span>
+                <div className="bg-[#080c1e]/60 border border-purple-500/10 p-3 rounded-xl flex flex-col justify-between hover:border-purple-500/20 transition-all duration-300">
+                  <span className="text-[8px] text-slate-500 font-bold uppercase tracking-wider">transceiver freq</span>
+                  <span className="text-[11px] font-mono font-bold text-slate-300 mt-1">Lora 433 MHz</span>
                 </div>
-                <div className="bg-[#0b1022]/70 border border-slate-900/80 p-3 rounded-xl flex flex-col justify-between">
-                  <span className="text-[9px] text-slate-500 font-bold uppercase tracking-wider">ESP32 Chip Temp</span>
+                <div className="bg-[#080c1e]/60 border border-purple-500/10 p-3 rounded-xl flex flex-col justify-between hover:border-purple-500/20 transition-all duration-300">
+                  <span className="text-[8px] text-slate-500 font-bold uppercase tracking-wider">core chip temp</span>
                   <span className="text-[11px] font-mono font-bold text-amber-400 mt-1 flex items-center gap-1.5">
-                    <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 002 2h2a2 2 0 002-2z" /></svg>
+                    <svg className="w-3.5 h-3.5 text-amber-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
                     {espTemperature}°C
                   </span>
                 </div>
-                <div className="bg-[#0b1022]/70 border border-slate-900/80 p-3 rounded-xl flex flex-col justify-between">
-                  <span className="text-[9px] text-slate-500 font-bold uppercase tracking-wider">mesh link quality</span>
+                <div className="bg-[#080c1e]/60 border border-purple-500/10 p-3 rounded-xl flex flex-col justify-between hover:border-purple-500/20 transition-all duration-300">
+                  <span className="text-[8px] text-slate-500 font-bold uppercase tracking-wider">link status (rssi)</span>
                   <span className="text-[11px] font-mono font-bold text-cyan-400 mt-1 flex items-center gap-1.5">
-                    <svg className="w-3.5 h-3.5 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21a2 2 0 11-4 0 2 2 0 014 0zm5-4a2 2 0 11-4 0 2 2 0 014 0zM7 13a2 2 0 11-4 0 2 2 0 014 0zm15-4a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+                    <svg className="w-3.5 h-3.5 text-cyan-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 002 2h2a2 2 0 002-2z" /></svg>
                     {espRssi} dBm
                   </span>
                 </div>
@@ -340,59 +387,59 @@ export const LoginPanel: React.FC<LoginPanelProps> = ({ onLoginSuccess }) => {
             </div>
           </div>
 
-          {/* Interactive ESP32 Telemetry Status Map (Vertical node cards) */}
+          {/* IoT Telemetry Nodes Stream */}
           <div className="space-y-3.5 my-8 relative z-10">
-            <div className="flex justify-between items-center text-[10px] text-slate-500 font-extrabold uppercase tracking-widest">
-              <span>Syncing telemetry nodes</span>
-              <span className="text-cyan-400 font-mono animate-pulse">4 connected</span>
+            <div className="flex justify-between items-center text-[9px] text-slate-400 font-extrabold uppercase tracking-widest font-mono">
+              <span>Awash telemetry points</span>
+              <span className="text-cyan-400 animate-pulse font-bold">ONLINE</span>
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-2.5">
               {[
-                { name: 'Node-Alpha-1', desc: 'Awash Basin - Semera', level: '142 cm', status: 'Safe', color: 'bg-emerald-500' },
-                { name: 'Node-Beta-2', desc: 'Adama Siphon - Sump', level: '298 cm', status: 'Warning', color: 'bg-amber-500' },
-                { name: 'Node-Gamma-3', desc: 'Awash Melka - Weir', level: '488 cm', status: 'Critical', color: 'bg-red-500' },
+                { name: 'Station Alpha-1', desc: 'Awash Semera Gate', level: '142 cm', status: 'Safe', color: 'bg-emerald-500', text: 'text-emerald-400' },
+                { name: 'Station Beta-2', desc: 'Adama Siphon Flow', level: '298 cm', status: 'Warning', color: 'bg-amber-500', text: 'text-amber-400' },
+                { name: 'Station Gamma-3', desc: 'Awash Melka Sump', level: '488 cm', status: 'Critical', color: 'bg-red-500', text: 'text-red-400' },
               ].map(node => (
-                <div key={node.name} className="bg-[#060a16]/65 border border-purple-500/5 hover:border-purple-500/10 p-3 rounded-xl flex items-center justify-between transition-all duration-200">
-                  <div className="flex items-center gap-2.5">
+                <div key={node.name} className="bg-[#050712]/75 border border-purple-500/5 hover:border-purple-500/15 p-3 rounded-xl flex items-center justify-between transition-all duration-200 group">
+                  <div className="flex items-center gap-3">
                     <div className="w-2 h-2 rounded-full relative">
                       <span className={`absolute inset-0 rounded-full ${node.color} animate-ping opacity-60`}></span>
                       <span className={`relative block w-2 h-2 rounded-full ${node.color}`}></span>
                     </div>
                     <div>
-                      <p className="text-[11px] font-bold text-slate-200">{node.name}</p>
-                      <p className="text-[9px] text-slate-500 font-semibold">{node.desc}</p>
+                      <p className="text-[11px] font-bold text-slate-200 group-hover:text-purple-300 transition-colors">{node.name}</p>
+                      <p className="text-[8px] text-slate-500 font-bold tracking-wider">{node.desc}</p>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <p className="text-[10px] font-mono font-black text-slate-300">{node.level}</p>
-                    <span className="text-[8px] font-bold uppercase tracking-wider text-slate-400">{node.status}</span>
+                  <div className="text-right font-mono">
+                    <p className="text-[10px] font-black text-slate-300">{node.level}</p>
+                    <span className={`text-[8px] font-black uppercase tracking-wider ${node.text}`}>{node.status}</span>
                   </div>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Left bottom branding metadata */}
-          <div className="border-t border-purple-500/10 pt-4.5 z-10 flex items-center justify-between text-[9px] text-slate-500 font-bold uppercase tracking-wider font-mono">
-            <span>ASTU Electrical Eng.</span>
-            <span>Est. 2026</span>
+          {/* Left panel bottom specs */}
+          <div className="border-t border-purple-500/15 pt-4 z-10 flex items-center justify-between text-[9px] text-slate-500 font-bold uppercase tracking-wider font-mono">
+            <span>Uptime: {systemUptime}</span>
+            <span>v4.1-Lora</span>
           </div>
 
         </div>
 
-        {/* ================== RIGHT SIDEBAR: AUTHENTICATION PANEL ================== */}
+        {/* RIGHT COLUMN: AUTHENTICATION PANEL */}
         <div className="lg:col-span-7 p-8 md:p-12 flex flex-col justify-between relative">
           
-          {/* Decryption overlay covering this panel on success */}
+          {/* SECURE DECRYPTION LOOPS OVERLAY */}
           {isDecrypting && (
-            <div className="absolute inset-0 bg-[#040712]/95 backdrop-blur-md z-45 flex flex-col justify-between p-8 md:p-12 animate-in fade-in duration-300">
+            <div className="absolute inset-0 bg-[#04060f]/95 backdrop-blur-md z-40 flex flex-col justify-between p-8 md:p-12 animate-in fade-in duration-300 rounded-r-[36px]">
               <div className="space-y-6">
                 <div className="flex items-center gap-3">
                   <span className="animate-spin w-5 h-5 rounded-full border-2 border-purple-500/20 border-t-purple-500"></span>
-                  <h3 className="text-sm font-extrabold tracking-widest text-purple-400 uppercase font-mono">Decoding Secure Access Hash...</h3>
+                  <h3 className="text-sm font-extrabold tracking-widest text-purple-400 uppercase font-mono">ESTABLISHING ENCRYPTED SESSION HANDSHAKE...</h3>
                 </div>
-                <div className="bg-[#02040b]/90 border border-purple-500/10 rounded-2xl p-5 h-96 overflow-y-auto space-y-2.5 font-mono text-[11px] text-emerald-400 custom-scrollbar">
+                <div className="bg-[#020308]/90 border border-purple-500/15 rounded-2xl p-5 h-96 overflow-y-auto space-y-2.5 font-mono text-[10.5px] text-emerald-400 scrollbar-thin">
                   {decryptionLogs.map((log, index) => (
                     <p key={index} className="leading-relaxed animate-in fade-in slide-in-from-left-4 duration-200">
                       {log}
@@ -400,128 +447,175 @@ export const LoginPanel: React.FC<LoginPanelProps> = ({ onLoginSuccess }) => {
                   ))}
                 </div>
               </div>
-              <div className="flex justify-between items-center text-[9px] text-slate-600 font-bold tracking-widest uppercase font-mono pt-4.5 border-t border-purple-500/5">
-                <span>Handshake Tunnel: SECURE</span>
-                <span>ASTU-SFEWS // A-24</span>
+              <div className="flex justify-between items-center text-[9px] text-slate-500 font-bold tracking-widest uppercase font-mono pt-4 border-t border-purple-500/10">
+                <span>TUNNEL SECURED: AES-GCM-256</span>
+                <span>TUNNEL_SYS_OK // ASTU</span>
               </div>
             </div>
           )}
 
-          {/* Form Header */}
-          <div className="space-y-2.5">
-            <span className="text-[10px] font-black tracking-widest text-purple-400 uppercase font-mono bg-purple-500/5 border border-purple-500/15 px-3 py-1 rounded-full w-max block">
+          {/* Form Header Section */}
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 text-[9px] font-black tracking-widest text-purple-400 uppercase font-mono bg-purple-500/10 border border-purple-500/20 px-3 py-1 rounded-full w-max">
+              <span className="w-1.5 h-1.5 rounded-full bg-purple-500 animate-ping"></span>
               🛡️ Secure Encryption Node
-            </span>
-            <h2 className="text-3xl font-extrabold tracking-tight text-slate-50">Command Access Portal</h2>
-            <p className="text-slate-400 text-xs font-semibold">Enter ASTU command center credentials to synchronize Awash Basin early warnings.</p>
+            </div>
+            <h2 className="text-3xl font-extrabold tracking-tight text-slate-100">Awash Basin Access</h2>
+            <p className="text-slate-400 text-xs font-semibold">Provide credentials or key overrides to authorize synchronization of flood indicators.</p>
           </div>
 
-          {/* Main Auth Form */}
-          <form onSubmit={handleLoginSubmit} className="space-y-6 my-8">
-            
-            {authError && (
-              <div className="bg-red-500/10 border border-red-500/20 text-red-300 text-xs px-4.5 py-3 rounded-xl font-semibold flex items-center gap-3.5 animate-pulse">
-                <svg className="w-5 h-5 text-red-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
-                {authError}
-              </div>
-            )}
-
-            <div className="space-y-5">
-              
-              {/* Username Input Field */}
-              <div className="relative group">
-                <div className={`absolute inset-0 bg-purple-500/5 rounded-2xl transition-all duration-300 ${activeInput === 'username' ? 'opacity-100 blur-[8px]' : 'opacity-0'}`}></div>
-                <div className={`absolute left-4 top-1/2 -translate-y-1/2 transition-colors duration-200 ${activeInput === 'username' ? 'text-purple-400' : 'text-slate-500'}`}>
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.3" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
-                </div>
-                <input
-                  type="text"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  onFocus={() => setActiveInput('username')}
-                  onBlur={() => setActiveInput(null)}
-                  className={`w-full pl-12 pr-4 py-4 bg-[#040710]/80 border ${activeInput === 'username' ? 'border-purple-500/60 shadow-[0_0_15px_rgba(168,85,247,0.1)]' : 'border-purple-500/10'} hover:border-purple-500/25 rounded-2xl text-slate-100 text-sm font-semibold focus:outline-none transition-all duration-300 placeholder:text-slate-600`}
-                  placeholder="Enter Username"
-                />
-                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[9px] font-mono font-bold tracking-widest text-slate-600 uppercase">USR_ID</span>
-              </div>
-
-              {/* Password Input Field */}
-              <div className="relative group">
-                <div className={`absolute inset-0 bg-purple-500/5 rounded-2xl transition-all duration-300 ${activeInput === 'password' ? 'opacity-100 blur-[8px]' : 'opacity-0'}`}></div>
-                <div className={`absolute left-4 top-1/2 -translate-y-1/2 transition-colors duration-200 ${activeInput === 'password' ? 'text-purple-400' : 'text-slate-500'}`}>
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.3" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
-                </div>
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  onFocus={() => setActiveInput('password')}
-                  onBlur={() => setActiveInput(null)}
-                  className={`w-full pl-12 pr-4 py-4 bg-[#040710]/80 border ${activeInput === 'password' ? 'border-purple-500/60 shadow-[0_0_15px_rgba(168,85,247,0.1)]' : 'border-purple-500/10'} hover:border-purple-500/25 rounded-2xl text-slate-100 text-sm font-semibold focus:outline-none transition-all duration-300 placeholder:text-slate-600`}
-                  placeholder="Enter Security Crypt Key"
-                />
-                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[9px] font-mono font-bold tracking-widest text-slate-600 uppercase">HASH_KEY</span>
-              </div>
-            </div>
-
-            {/* Matrix Passcode Selector (Hyper detailed visual panel) */}
-            <div className="bg-[#04060d]/70 border border-purple-500/5 rounded-2xl p-4.5 space-y-4">
-              <div className="flex justify-between items-center border-b border-purple-500/5 pb-2.5">
-                <span className="text-[9px] font-black uppercase text-slate-500 tracking-widest font-mono">Biometric Token Override</span>
-                <span className="text-[10px] font-mono text-glow-purple font-bold tracking-widest text-purple-400">
-                  {securityCode ? securityCode.replace(/./g, '● ') : 'ENTER PIN OVERRIDE'}
-                </span>
-              </div>
-              <div className="grid grid-cols-4 gap-2">
-                {['1', '2', '3', '4', '5', '6', '7', '8'].map(num => (
-                  <button
-                    key={num}
-                    type="button"
-                    onClick={() => pressMatrixKey(num)}
-                    className="py-2.5 bg-[#080d1e]/50 hover:bg-purple-950/20 active:scale-95 border border-purple-500/5 hover:border-purple-500/20 text-slate-400 hover:text-slate-100 font-mono font-bold rounded-lg text-xs transition-all flex items-center justify-center shadow-inner"
-                  >
-                    {num}
-                  </button>
-                ))}
-                <button
-                  type="button"
-                  onClick={clearMatrixKeys}
-                  className="col-span-2 py-2.5 bg-red-950/15 hover:bg-red-950/20 text-red-400 font-mono font-bold text-[9px] tracking-widest rounded-lg transition-all flex items-center justify-center border border-red-500/10"
-                >
-                  CLEAR
-                </button>
-                {['9', '0'].map(num => (
-                  <button
-                    key={num}
-                    type="button"
-                    onClick={() => pressMatrixKey(num)}
-                    className="py-2.5 bg-[#080d1e]/50 hover:bg-purple-950/20 active:scale-95 border border-purple-500/5 hover:border-purple-500/20 text-slate-400 hover:text-slate-100 font-mono font-bold rounded-lg text-xs transition-all flex items-center justify-center"
-                  >
-                    {num}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Glowing Access Button */}
+          {/* Tab Selector */}
+          <div className="flex gap-2.5 bg-[#050711]/80 border border-purple-500/10 p-1.5 rounded-2xl w-max mt-6">
             <button
-              type="submit"
-              className="w-full relative group bg-gradient-to-r from-purple-600 via-indigo-600 to-indigo-700 hover:from-purple-500 hover:to-indigo-500 text-slate-50 py-4.5 rounded-2xl font-black text-sm tracking-widest uppercase transition-all duration-300 shadow-[0_4px_20px_rgba(139,92,246,0.25)] hover:shadow-[0_0_30px_rgba(139,92,246,0.45)] active:scale-[0.98] border border-purple-400/20"
+              onClick={() => setActiveTab('standard')}
+              className={`px-4.5 py-1.5 text-[10px] font-bold uppercase tracking-wider rounded-xl transition-all duration-200 ${activeTab === 'standard' ? 'bg-purple-600 text-slate-50 shadow-md shadow-purple-600/30' : 'text-slate-400 hover:text-slate-200'}`}
             >
-              {/* Pulsating neon accent line */}
-              <span className="absolute inset-x-4 top-0.5 h-[1px] bg-gradient-to-r from-transparent via-purple-300 to-transparent opacity-60"></span>
-              AUTHORIZE ACCESS
+              Credentials Gate
             </button>
-          </form>
+            <button
+              onClick={() => setActiveTab('token')}
+              className={`px-4.5 py-1.5 text-[10px] font-bold uppercase tracking-wider rounded-xl transition-all duration-200 ${activeTab === 'token' ? 'bg-purple-600 text-slate-50 shadow-md shadow-purple-600/30' : 'text-slate-400 hover:text-slate-200'}`}
+            >
+              Token Override
+            </button>
+          </div>
 
-          {/* Secure Center Footer */}
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-3 border-t border-purple-500/5 pt-5 text-[9px] text-slate-600 font-bold uppercase tracking-widest font-mono">
+          {/* Standard Authentication Form */}
+          {activeTab === 'standard' ? (
+            <form onSubmit={handleLoginSubmit} className="space-y-5 my-6">
+              
+              {authError && (
+                <div className="bg-red-500/10 border border-red-500/20 text-red-300 text-xs px-4 py-3 rounded-xl font-semibold flex items-center gap-3 animate-pulse">
+                  <svg className="w-5 h-5 text-red-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                  <span className="font-mono text-[10.5px]">{authError}</span>
+                </div>
+              )}
+
+              <div className="space-y-4">
+                {/* Username Field */}
+                <div className="relative">
+                  <div className={`absolute inset-0 bg-purple-500/5 rounded-2xl transition-all duration-300 ${activeInput === 'username' ? 'opacity-100 blur-[8px]' : 'opacity-0'}`}></div>
+                  <div className={`absolute left-4 top-1/2 -translate-y-1/2 transition-colors duration-200 ${activeInput === 'username' ? 'text-purple-400' : 'text-slate-500'}`}>
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                  </div>
+                  <input
+                    type="text"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    onFocus={() => setActiveInput('username')}
+                    onBlur={() => setActiveInput(null)}
+                    className={`w-full pl-12 pr-4 py-4 bg-[#04060f]/80 border ${activeInput === 'username' ? 'border-purple-500/60 shadow-[0_0_15px_rgba(168,85,247,0.15)] text-slate-100' : 'border-purple-500/10 text-slate-300'} hover:border-purple-500/30 rounded-2xl text-sm font-semibold focus:outline-none transition-all duration-300 placeholder:text-slate-600`}
+                    placeholder="Enter Analyst Username"
+                  />
+                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[8px] font-mono font-bold tracking-widest text-slate-600">USR_ID</span>
+                </div>
+
+                {/* Password / Crypto-Key Field */}
+                <div className="relative">
+                  <div className={`absolute inset-0 bg-purple-500/5 rounded-2xl transition-all duration-300 ${activeInput === 'password' ? 'opacity-100 blur-[8px]' : 'opacity-0'}`}></div>
+                  <div className={`absolute left-4 top-1/2 -translate-y-1/2 transition-colors duration-200 ${activeInput === 'password' ? 'text-purple-400' : 'text-slate-500'}`}>
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                  </div>
+                  <input
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    onFocus={() => setActiveInput('password')}
+                    onBlur={() => setActiveInput(null)}
+                    className={`w-full pl-12 pr-4 py-4 bg-[#04060f]/80 border ${activeInput === 'password' ? 'border-purple-500/60 shadow-[0_0_15px_rgba(168,85,247,0.15)] text-slate-100' : 'border-purple-500/10 text-slate-300'} hover:border-purple-500/30 rounded-2xl text-sm font-semibold focus:outline-none transition-all duration-300 placeholder:text-slate-600`}
+                    placeholder="Enter Secure Security Key"
+                  />
+                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[8px] font-mono font-bold tracking-widest text-slate-600">HASH_KEY</span>
+                </div>
+              </div>
+
+              {/* Demo Helper Box */}
+              <div className="bg-[#050712]/90 border border-purple-500/5 p-3 rounded-2xl">
+                <p className="text-[9px] font-mono text-purple-400/80 leading-relaxed font-bold">
+                  🗝️ CONFIG VITALS FOR DEMONSTRATION:<br />
+                  User ID: <span className="text-cyan-400">astu-analyst</span> | Hash Key: <span className="text-cyan-400">astu-sfews-2026</span>
+                </p>
+              </div>
+
+              {/* Action login button with sweeping pulse line */}
+              <button
+                type="submit"
+                className="w-full relative overflow-hidden group bg-gradient-to-r from-purple-600 via-indigo-600 to-indigo-700 hover:from-purple-500 hover:to-indigo-500 text-slate-50 py-4.5 rounded-2xl font-black text-sm tracking-widest uppercase transition-all duration-300 shadow-[0_4px_25px_rgba(139,92,246,0.3)] hover:shadow-[0_0_35px_rgba(139,92,246,0.55)] active:scale-[0.98] border border-purple-400/20"
+              >
+                <span className="absolute inset-x-4 top-0.5 h-[1.5px] bg-gradient-to-r from-transparent via-purple-300 to-transparent opacity-50"></span>
+                AUTHORIZE LINK PORTAL
+              </button>
+
+            </form>
+          ) : (
+            /* Biometric Pin Keypad Override Selection */
+            <div className="space-y-5 my-6 animate-in fade-in zoom-in-95 duration-200">
+              
+              {authError && (
+                <div className="bg-red-500/10 border border-red-500/20 text-red-300 text-xs px-4 py-2 rounded-xl font-mono text-[10.5px]">
+                  {authError}
+                </div>
+              )}
+
+              <div className="bg-[#03050c]/85 border border-purple-500/10 rounded-2xl p-4.5 space-y-4">
+                <div className="flex justify-between items-center border-b border-purple-500/10 pb-3">
+                  <span className="text-[8.5px] font-extrabold uppercase text-slate-500 tracking-widest font-mono">Biometric Token Buffer</span>
+                  <span className="text-xs font-mono font-bold tracking-widest text-purple-400">
+                    {securityCode ? securityCode.split('').map(() => '●').join(' ') : 'KEYPAD OVERRIDE'}
+                  </span>
+                </div>
+                
+                <div className="grid grid-cols-4 gap-2.5">
+                  {['1', '2', '3', '4', '5', '6', '7', '8'].map(num => (
+                    <button
+                      key={num}
+                      type="button"
+                      onClick={() => handleKeypadPress(num)}
+                      className="py-3 bg-[#080b1e]/50 hover:bg-purple-950/20 active:scale-95 border border-purple-500/5 hover:border-purple-500/25 text-slate-300 hover:text-slate-50 font-mono font-bold rounded-xl text-sm transition-all flex items-center justify-center shadow-inner"
+                    >
+                      {num}
+                    </button>
+                  ))}
+                  
+                  <button
+                    type="button"
+                    onClick={clearKeypad}
+                    className="col-span-2 py-3 bg-red-950/15 hover:bg-red-950/25 text-red-400 hover:text-red-300 font-mono font-bold text-[9px] tracking-widest rounded-xl transition-all flex items-center justify-center border border-red-500/15"
+                  >
+                    RESET BUFFER
+                  </button>
+
+                  {['9', '0'].map(num => (
+                    <button
+                      key={num}
+                      type="button"
+                      onClick={() => handleKeypadPress(num)}
+                      className="py-3 bg-[#080b1e]/50 hover:bg-purple-950/20 active:scale-95 border border-purple-500/5 hover:border-purple-500/25 text-slate-300 hover:text-slate-50 font-mono font-bold rounded-xl text-sm transition-all flex items-center justify-center"
+                    >
+                      {num}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* PIN Code Hint for easy testing */}
+              <div className="bg-[#050712]/90 border border-purple-500/5 p-3 rounded-2xl">
+                <p className="text-[9px] font-mono text-purple-400/80 leading-relaxed font-bold">
+                  🔑 SECURITY PIN OVERRIDE CODE:<br />
+                  Input Override Sequence: <span className="text-cyan-400">202611</span>
+                </p>
+              </div>
+
+            </div>
+          )}
+
+          {/* Secure SSL Panel Footer */}
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-3 border-t border-purple-500/10 pt-5 text-[9px] text-slate-500 font-bold uppercase tracking-widest font-mono">
             <span className="flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
-              SSL SECURITY SHA-256
+              ENC-KEY: AES-SHA-256
             </span>
-            <span>SYSTEM ENCRYPTED SHA-512</span>
+            <span>SYSTEM ENCRYPTED SFEWS SEC</span>
           </div>
 
         </div>
