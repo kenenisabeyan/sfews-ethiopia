@@ -6,7 +6,6 @@ interface WeatherPanelProps {
 }
 
 export const WeatherPanel: React.FC<WeatherPanelProps> = ({ weather }) => {
-  // SVG weather icons
   const getWeatherIcon = (cond: string, size = 'w-12 h-12') => {
     switch (cond) {
       case 'Rainy':
@@ -43,10 +42,8 @@ export const WeatherPanel: React.FC<WeatherPanelProps> = ({ weather }) => {
 
   return (
     <div className="w-full bg-[#0b0f19] border border-slate-800/80 rounded-2xl p-6 relative overflow-hidden flex flex-col h-full shadow-2xl">
-      {/* Decorative layout elements */}
       <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none"></div>
 
-      {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 z-10 gap-3 border-b border-slate-800/60 pb-4">
         <div>
           <h2 className="text-base font-bold text-slate-100 uppercase tracking-widest flex items-center gap-2">
@@ -61,7 +58,6 @@ export const WeatherPanel: React.FC<WeatherPanelProps> = ({ weather }) => {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch z-10">
         
-        {/* Core Local Climate status card */}
         <div className="lg:col-span-1 bg-gradient-to-br from-indigo-950/45 to-[#080c14] border border-indigo-500/15 rounded-2xl p-6 flex flex-col justify-between relative overflow-hidden min-h-[220px]">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(99,102,241,0.06),transparent)] pointer-events-none"></div>
           
@@ -99,7 +95,6 @@ export const WeatherPanel: React.FC<WeatherPanelProps> = ({ weather }) => {
           </div>
         </div>
 
-        {/* 7-Day Forecast Grid */}
         <div className="lg:col-span-2 bg-[#080c14] border border-slate-900 rounded-2xl p-6 flex flex-col justify-between">
           <h4 className="text-xs font-bold text-slate-300 uppercase tracking-widest border-b border-slate-900 pb-3 mb-4">
             7-Day Regional Hydrological Forecast

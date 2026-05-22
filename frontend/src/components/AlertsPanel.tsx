@@ -1,328 +1,169 @@
 import React, { useState } from 'react';
-import { Subscriber, DispatchLog, PilotStation } from '../types/types';
+import { SensorNode } from '../types';
 
-interface AlertsPanelProps {
-  stations: PilotStation[];
-  subscribers: Subscriber[];
-  dispatchLogs: DispatchLog[];
-  onManualBroadcast: (msg: string, stationName: string) => void;
+export interface Subscriber {
+  id: string;
+  name: string;
+  phone: string;
+  stationId: string;
+  status: 'Active' | 'Muted';
 }
 
-type AlertFilter = 'ALL' | 'DANGER' | 'WARNING' | 'MODERATE' | 'SAFE';
+interface AlertsPanelProps {
+  nodes: SensorNode[];
+  subscribers: Subscriber[];
+  onAddSubscriber: (name: string, phone: string, stationId: string) => void;
+  onToggleSubscriber: (id: string) => void;
+  onDeleteSubscriber: (id: string) => void;
+}
 
 export const AlertsPanel: React.FC<AlertsPanelProps> = ({
-  stations,
+  nodes,
   subscribers,
-  dispatchLogs,
-  onManualBroadcast,
+  onAddSubscriber,
+  onToggleSubscriber,
+  onDeleteSubscriber,
 }) => {
-  const [selectedFilter, setSelectedFilter] = useState<AlertFilter>('ALL');
-  const [isOverrideOpen, setIsOverrideOpen] = useState<boolean>(false);
-  const [customMsg, setCustomMsg] = useState<string>('');
-  const [selectedStation, setSelectedStation] = useState<string>(stations[0]?.name || 'Upper Awash Basin');
+  const [newSubName, setNewSubName] = useState<string>('');
+  const [newSubPhone, setNewSubPhone] = useState<string>('');
+  const [newSubStation, setNewSubStation] = useState<string>('');
 
-  // Convert station states into list of alerts
-  const alertList = stations.map((st) => {
-    let msg = 'Fluid column behaves within safe thresholds.';
-    let time = '1 hour ago';
-    let level: 'High' | 'Warning' | 'Moderate' | 'Safe' = 'Safe';
-
-    if (st.status === 'DANGER') {
-      msg = 'Fluid telemetry exceeds critical tension limit! Column SNAP risk.';
-      time = '10 min ago';
-      level = 'High';
-    } else if (st.status === 'WARNING') {
-      msg = 'Viscosity falling rapidly under heavy shear-thinning siphon rate.';
-      time = '25 min ago';
-      level = 'Warning';
-    } else if (st.adc_value > 300) {
-      msg = 'Mild upward climbing action detected. Flow is stable.';
-      time = '3 hours ago';
-      level = 'Moderate';
-    } else {
-      level = 'Safe';
-      time = '4 hours ago';
-    }
-
-    return {
-      id: st.id,
-      location: st.name,
-      level,
-      message: msg,
-      time,
-      status: st.status,
-    };
-  });
-
-  // Filter based on active tab selection
-  const filteredAlerts = alertList.filter((al) => {
-    if (selectedFilter === 'ALL') return true;
-    if (selectedFilter === 'DANGER' && al.level === 'High') return true;
-    if (selectedFilter === 'WARNING' && al.level === 'Warning') return true;
-    if (selectedFilter === 'MODERATE' && al.level === 'Moderate') return true;
-    if (selectedFilter === 'SAFE' && al.level === 'Safe') return true;
-    return false;
-  });
-
-  const handleBroadcastSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!customMsg.trim()) return;
-    onManualBroadcast(customMsg, selectedStation);
-    setCustomMsg('');
-    setIsOverrideOpen(false);
-  };
-
-  const getAlertBadgeStyle = (level: string) => {
-    switch (level) {
-      case 'High':
-        return 'text-red-400 border-red-500/30 bg-red-500/10';
-      case 'Warning':
-        return 'text-amber-400 border-amber-500/30 bg-amber-500/10';
-      case 'Moderate':
-        return 'text-orange-400 border-orange-500/30 bg-orange-500/10';
-      case 'Safe':
-      default:
-        return 'text-emerald-400 border-emerald-500/30 bg-emerald-500/10';
-    }
+    if (!newSubName || !newSubPhone || !newSubStation) return;
+    onAddSubscriber(newSubName, newSubPhone, newSubStation);
+    setNewSubName('');
+    setNewSubPhone('');
+    setNewSubStation('');
   };
 
   return (
-    <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 relative">
-      
-      {/* Column 1 & 2: Alert Feeds & SMS Dispatches */}
-      <div className="xl:col-span-2 space-y-6 flex flex-col">
-        
-        {/* Panel A: Live Alert Ingress */}
-        <div className="bg-[#0b0f19] border border-slate-800/80 rounded-2xl p-6 relative overflow-hidden flex flex-col flex-1 shadow-2xl">
-          <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 to-transparent pointer-events-none"></div>
+    <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
+      {/* Proximity Subscribers List */}
+      <div className="xl:col-span-2 glass-panel rounded-3xl p-7 space-y-6">
+        <div>
+          <h2 className="text-lg font-extrabold text-slate-100 tracking-wide uppercase">
+            Awash Proximity Alert Subscribers
+          </h2>
+          <p className="text-xs text-slate-500 mt-0.5 font-bold uppercase tracking-wider">
+            Configure telemetry link and manage early warning SMS notification targets
+          </p>
+        </div>
 
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-slate-800/60 pb-4 mb-4 gap-3">
-            <div>
-              <h2 className="text-base font-bold text-slate-100 uppercase tracking-widest flex items-center gap-2">
-                <span className="w-2.5 h-2.5 bg-red-500 rounded-full animate-ping"></span>
-                Active Telemetry Incident Alerts
-              </h2>
-              <p className="text-xs text-slate-400 mt-0.5">Real-time status breaches and warning notifications</p>
-            </div>
-            
-            {/* Filter buttons matching mockup precisely */}
-            <div className="flex flex-wrap gap-1.5 text-[9px] font-bold font-mono uppercase bg-slate-950 p-1 rounded-lg border border-slate-850">
-              {(['ALL', 'DANGER', 'WARNING', 'MODERATE', 'SAFE'] as AlertFilter[]).map((fl) => (
-                <button
-                  key={fl}
-                  onClick={() => setSelectedFilter(fl)}
-                  className={`px-3 py-1.5 rounded-md transition-all duration-150 ${
-                    selectedFilter === fl 
-                      ? 'bg-purple-600 text-white font-bold' 
-                      : 'text-slate-400 hover:text-slate-200'
-                  }`}
-                >
-                  {fl === 'DANGER' ? 'HIGH' : fl}
-                </button>
+        <div className="overflow-x-auto">
+          <table className="w-full text-left border-collapse text-xs md:text-sm">
+            <thead>
+              <tr className="border-b border-slate-900 text-slate-400 font-extrabold uppercase tracking-widest text-[10px] pb-4">
+                <th className="py-3 px-4">Subscriber Name</th>
+                <th className="py-3 px-4">SMS Phone target</th>
+                <th className="py-3 px-4">Telemetry Anchor Point</th>
+                <th className="py-3 px-4 text-center">Warning Link Status</th>
+                <th className="py-3 px-4 text-right">Settings</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-900/60 font-semibold">
+              {subscribers.map((sub) => (
+                <tr key={sub.id} className="hover:bg-slate-900/10 transition-colors">
+                  <td className="py-4 px-4 font-bold text-slate-150">{sub.name}</td>
+                  <td className="py-4 px-4 font-mono text-slate-400">{sub.phone}</td>
+                  <td className="py-4 px-4 text-indigo-400 font-bold">{sub.stationId}</td>
+                  <td className="py-4 px-4 text-center">
+                    <button
+                      onClick={() => onToggleSubscriber(sub.id)}
+                      className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border transition-all
+                        ${
+                          sub.status === 'Active'
+                            ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400'
+                            : 'bg-slate-900 border-slate-800/80 text-slate-500'
+                        }`}
+                    >
+                      {sub.status}
+                    </button>
+                  </td>
+                  <td className="py-4 px-4 text-right">
+                    <button
+                      onClick={() => onDeleteSubscriber(sub.id)}
+                      className="text-slate-500 hover:text-red-400 font-extrabold text-xs uppercase tracking-wider transition-colors"
+                    >
+                      Disconnect
+                    </button>
+                  </td>
+                </tr>
               ))}
-            </div>
-          </div>
-
-          <div className="overflow-x-auto flex-1">
-            <table className="w-full text-left font-mono text-xs border-collapse">
-              <thead>
-                <tr className="text-slate-500 border-b border-slate-800/60 pb-2">
-                  <th className="py-2.5 font-bold uppercase">Location</th>
-                  <th className="py-2.5 font-bold uppercase text-center">Alert Level</th>
-                  <th className="py-2.5 font-bold uppercase">Incident Message</th>
-                  <th className="py-2.5 font-bold uppercase text-right">Registered Time</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-800/30">
-                {filteredAlerts.map((al) => (
-                  <tr key={al.id} className="text-slate-300 hover:bg-slate-900/30 transition-colors">
-                    <td className="py-3 font-semibold text-slate-200">{al.location}</td>
-                    <td className="py-3 text-center">
-                      <span className={`border px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase inline-block ${getAlertBadgeStyle(al.level)}`}>
-                        {al.level}
-                      </span>
-                    </td>
-                    <td className="py-3 text-slate-400 text-[11px] max-w-[280px] truncate">{al.message}</td>
-                    <td className="py-3 text-right text-slate-500">{al.time}</td>
-                  </tr>
-                ))}
-                {filteredAlerts.length === 0 && (
-                  <tr>
-                    <td colSpan={4} className="text-center py-8 text-slate-600">
-                      No active anomalies registered on this filter.
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
+            </tbody>
+          </table>
         </div>
+      </div>
 
-        {/* Panel B: Live Dispatch Logs table */}
-        <div className="bg-[#0b0f19] border border-slate-800/80 rounded-2xl p-6 relative overflow-hidden flex flex-col shadow-2xl min-h-[260px]">
-          <h3 className="text-xs font-bold text-slate-300 uppercase tracking-widest border-b border-slate-800/80 pb-3 mb-4 flex justify-between items-center">
-            <span>Automated Emergency Broadcast Registry Logs</span>
-            <span className="text-[10px] font-mono font-bold bg-[#c084fc]/10 text-[#c084fc] border border-[#c084fc]/20 px-2 py-0.5 rounded">
-              GATEWAY: SMS-V3
-            </span>
+      {/* Add Subscriber Panel */}
+      <div className="glass-panel rounded-3xl p-7 min-h-[450px]">
+        <div className="border-b border-slate-900/60 pb-5 mb-6 text-center">
+          <h3 className="text-lg font-extrabold text-slate-100 tracking-wide uppercase">
+            Register Alert Target
           </h3>
-
-          <div className="overflow-y-auto max-h-[220px] pr-2">
-            <table className="w-full text-left font-mono text-[11px] border-collapse">
-              <thead>
-                <tr className="text-slate-500 border-b border-slate-900 pb-2">
-                  <th className="py-2 font-bold uppercase">Timestamp</th>
-                  <th className="py-2 font-bold uppercase">Siphon Node</th>
-                  <th className="py-2 font-bold uppercase">Type</th>
-                  <th className="py-2 font-bold uppercase">Transmission SMS Dispatch</th>
-                  <th className="py-2 font-bold uppercase text-right">Status</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-900/40">
-                {dispatchLogs.map((lg) => (
-                  <tr key={lg.id} className="text-slate-300 hover:bg-slate-900/20">
-                    <td className="py-2.5 text-slate-500">{new Date(lg.timestamp).toLocaleTimeString()}</td>
-                    <td className="py-2.5 font-bold text-slate-200">{lg.stationName.split(' ')[0]}</td>
-                    <td className="py-2.5">
-                      <span className={`text-[9px] px-1.5 py-0.5 rounded font-black ${
-                        lg.type === 'AUTO' 
-                          ? 'bg-[#22d3ee]/10 text-cyan-400 border border-cyan-400/20' 
-                          : 'bg-[#d946ef]/10 text-purple-400 border border-purple-400/20'
-                      }`}>
-                        {lg.type}
-                      </span>
-                    </td>
-                    <td className="py-2.5 text-slate-400 max-w-[200px] truncate">{lg.message}</td>
-                    <td className="py-2.5 text-right">
-                      <span className="text-emerald-400 font-bold text-[10px] bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
-                        {lg.status}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-                {dispatchLogs.length === 0 && (
-                  <tr>
-                    <td colSpan={5} className="text-center py-6 text-slate-600">
-                      No broadcast signals transmitted yet.
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
+          <p className="text-xs text-slate-500 mt-0.5 font-bold uppercase tracking-wider">
+            Anchor new subscriber SMS targets to spatial sensors
+          </p>
         </div>
-      </div>
 
-      {/* Column 3: Subscriber & Dispatch Management */}
-      <div className="xl:col-span-1 space-y-6 flex flex-col">
-        
-        {/* Subscriber Registry card */}
-        <div className="bg-[#0b0f19] border border-slate-800/80 rounded-2xl p-6 relative overflow-hidden flex flex-col flex-1 shadow-2xl">
-          <div className="absolute inset-0 bg-gradient-to-b from-indigo-500/5 to-transparent pointer-events-none"></div>
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div className="space-y-2">
+            <label className="text-[10px] text-slate-500 font-extrabold uppercase tracking-widest block">
+              Subscriber Name
+            </label>
+            <input
+              type="text"
+              placeholder="Enter Full Name..."
+              value={newSubName}
+              onChange={(e) => setNewSubName(e.target.value)}
+              className="w-full bg-[#050911]/80 border border-slate-900 text-slate-355 placeholder-slate-600 text-xs px-5 py-3 rounded-2xl focus:outline-none focus:border-indigo-500/40 transition-colors"
+              required
+            />
+          </div>
 
-          <div className="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
-            <h3 className="text-xs font-bold text-slate-200 uppercase tracking-widest">
-              Subscriber SMS Registry
-            </h3>
-            <button
-              onClick={() => setIsOverrideOpen(true)}
-              className="bg-purple-600 hover:bg-purple-500 text-white font-bold text-[10px] uppercase tracking-wider px-3 py-1.5 rounded-lg border border-purple-500/30 transition-all shadow-md shadow-purple-600/15"
+          <div className="space-y-2">
+            <label className="text-[10px] text-slate-500 font-extrabold uppercase tracking-widest block">
+              SMS Phone Number
+            </label>
+            <input
+              type="tel"
+              placeholder="+251 9XX XXX XXX"
+              value={newSubPhone}
+              onChange={(e) => setNewSubPhone(e.target.value)}
+              className="w-full bg-[#050911]/80 border border-slate-900 text-slate-355 placeholder-slate-600 text-xs px-5 py-3 rounded-2xl focus:outline-none focus:border-indigo-500/40 transition-colors"
+              required
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-[10px] text-slate-500 font-extrabold uppercase tracking-widest block">
+              Spatial Telemetry Anchor Station
+            </label>
+            <select
+              value={newSubStation}
+              onChange={(e) => setNewSubStation(e.target.value)}
+              className="w-full bg-[#050911]/80 border border-slate-900 text-slate-355 text-xs px-5 py-3 rounded-2xl focus:outline-none focus:border-indigo-500/40 transition-colors"
+              required
             >
-              Broadcast Override
-            </button>
+              <option value="" disabled>
+                Select active station...
+              </option>
+              {nodes.map((node) => (
+                <option key={node.id} value={node.name}>
+                  {node.name}
+                </option>
+              ))}
+            </select>
           </div>
 
-          <div className="space-y-3 overflow-y-auto max-h-[360px] pr-2">
-            {subscribers.map((sb) => (
-              <div key={sb.id} className="bg-[#070b13] border border-slate-900 hover:border-slate-800 rounded-xl p-3 flex justify-between items-center transition-all duration-200">
-                <div>
-                  <div className="text-xs font-bold text-slate-100">{sb.name}</div>
-                  <div className="text-[10px] font-mono text-slate-500 mt-0.5">{sb.phone}</div>
-                  <div className="text-[9px] font-mono text-slate-400 mt-1 bg-slate-900 border border-slate-850 px-2 py-0.5 rounded-full inline-block">
-                    Zone: {sb.zone}
-                  </div>
-                </div>
-                <div className="flex flex-col items-end gap-1.5">
-                  <span className={`text-[8px] font-black font-mono border px-2 py-0.5 rounded-full uppercase ${
-                    sb.status === 'Active' 
-                      ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400' 
-                      : 'bg-slate-800 border-slate-700 text-slate-400'
-                  }`}>
-                    {sb.status}
-                  </span>
-                  <span className="text-[8px] font-mono text-slate-600 uppercase">SYS: ACTIVE</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+          <button
+            type="submit"
+            className="w-full mt-8 bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-500 hover:to-indigo-600 text-slate-50 py-3.5 rounded-2xl font-extrabold text-xs tracking-wider uppercase transition-all shadow-md shadow-indigo-600/10"
+          >
+            Register Subscriber Link
+          </button>
+        </form>
       </div>
-
-      {/* Manual Override modal overlay */}
-      {isOverrideOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4 animate-[fadeIn_0.2s_ease-out]">
-          <div className="bg-[#0b0f19] border border-purple-500/40 rounded-2xl p-6 w-full max-w-md shadow-2xl relative">
-            <h3 className="text-base font-bold text-slate-100 uppercase tracking-widest border-b border-slate-800 pb-3 mb-4 flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-purple-500 animate-ping"></span>
-              Manual Broadcast Override
-            </h3>
-            
-            <form onSubmit={handleBroadcastSubmit} className="space-y-4">
-              <div>
-                <label className="block text-[10px] font-mono font-bold text-slate-400 uppercase mb-1.5">
-                  Target Siphon Region / Station
-                </label>
-                <select
-                  value={selectedStation}
-                  onChange={(e) => setSelectedStation(e.target.value)}
-                  className="w-full bg-[#070b13] border border-slate-800 rounded-lg p-2.5 text-xs text-slate-300 font-mono focus:border-purple-500 focus:outline-none"
-                >
-                  <option value="Upper Awash Basin">Global Upper Awash Basin</option>
-                  {stations.map((st) => (
-                    <option key={st.id + '_opt'} value={st.name}>
-                      {st.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-[10px] font-mono font-bold text-slate-400 uppercase mb-1.5">
-                  Custom Warning Dispatch SMS
-                </label>
-                <textarea
-                  value={customMsg}
-                  onChange={(e) => setCustomMsg(e.target.value)}
-                  placeholder="ALERT: Viscoelastic polymer stress levels have reached threshold levels. Elevating siphon evacuation pipelines immediately."
-                  rows={4}
-                  className="w-full bg-[#070b13] border border-slate-800 rounded-lg p-2.5 text-xs text-slate-300 font-mono focus:border-purple-500 focus:outline-none resize-none placeholder:text-slate-650"
-                  required
-                />
-              </div>
-
-              <div className="bg-purple-950/20 border border-purple-500/20 rounded-xl p-3.5 text-[10px] font-mono text-purple-400">
-                ⚠️ <span className="font-bold uppercase text-purple-300">Security warning:</span> Manual override sends instant bulk SMS packets directly to active village registry subscribers via cellular base towers.
-              </div>
-
-              <div className="flex justify-end gap-3 pt-2">
-                <button
-                  type="button"
-                  onClick={() => setIsOverrideOpen(false)}
-                  className="px-4 py-2 bg-slate-900 border border-slate-800 hover:bg-slate-800 text-slate-300 rounded-xl font-bold text-xs uppercase tracking-wider transition-all"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-4 py-2 bg-purple-600 border border-purple-500/30 hover:bg-purple-500 text-white rounded-xl font-bold text-xs uppercase tracking-wider transition-all shadow-md shadow-purple-600/15"
-                >
-                  Transmit Override
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
