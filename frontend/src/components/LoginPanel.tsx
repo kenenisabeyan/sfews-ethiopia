@@ -347,7 +347,7 @@ export const LoginPanel: React.FC<LoginPanelProps> = ({ onLoginSuccess }) => {
               </div>
               <div>
                 <h1 className="text-xl font-extrabold tracking-widest text-slate-100 bg-gradient-to-r from-slate-50 via-purple-100 to-indigo-300 bg-clip-text text-transparent">ASTU-SFEWS</h1>
-                <p className="text-[9px] font-bold text-cyan-400/90 tracking-widest uppercase font-mono mt-0.5">Hydrology Research Lab</p>
+                <p className="text-[9px] font-bold text-cyan-400/90 tracking-widest font-mono mt-0.5">Hydrology Research Lab</p>
               </div>
             </div>
 
@@ -357,20 +357,20 @@ export const LoginPanel: React.FC<LoginPanelProps> = ({ onLoginSuccess }) => {
             <div className="space-y-4">
               <div className="flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-purple-500 animate-pulse"></span>
-                <span className="text-[10px] font-black uppercase text-slate-400 tracking-wider font-mono">ESP32 Hardware telemetry</span>
+                <span className="text-[10px] font-black text-slate-400 tracking-wider font-mono">ESP32 Hardware telemetry</span>
               </div>
 
               <div className="grid grid-cols-2 gap-3.5">
                 <div className="bg-[#080c1e]/60 border border-purple-500/10 p-3 rounded-xl flex flex-col justify-between hover:border-purple-500/20 transition-all duration-300">
-                  <span className="text-[8px] text-slate-500 font-bold uppercase tracking-wider">processor node</span>
+                  <span className="text-[8px] text-slate-500 font-bold tracking-wider">processor node</span>
                   <span className="text-[11px] font-mono font-bold text-slate-300 mt-1">Tensilica LX6 Dual-Core</span>
                 </div>
                 <div className="bg-[#080c1e]/60 border border-purple-500/10 p-3 rounded-xl flex flex-col justify-between hover:border-purple-500/20 transition-all duration-300">
-                  <span className="text-[8px] text-slate-500 font-bold uppercase tracking-wider">transceiver freq</span>
+                  <span className="text-[8px] text-slate-500 font-bold tracking-wider">transceiver freq</span>
                   <span className="text-[11px] font-mono font-bold text-slate-300 mt-1">Lora 433 MHz</span>
                 </div>
                 <div className="bg-[#080c1e]/60 border border-purple-500/10 p-3 rounded-xl flex flex-col justify-between hover:border-purple-500/20 transition-all duration-300">
-                  <span className="text-[8px] text-slate-500 font-bold uppercase tracking-wider">core chip temp</span>
+                  <span className="text-[8px] text-slate-500 font-bold tracking-wider">core chip temp</span>
                   <span className="text-[11px] font-mono font-bold text-amber-400 mt-1 flex items-center gap-1.5">
                     <svg className="w-3.5 h-3.5 text-amber-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
                     {espTemperature}°C

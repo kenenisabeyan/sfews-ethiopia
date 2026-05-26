@@ -9,6 +9,8 @@ import { ReportsPanel } from './components/ReportsPanel';
 import { WaterLevelsPanel } from './components/WaterLevelsPanel';
 import { AlertsPanel } from './components/AlertsPanel';
 import { SettingsPanel } from './components/SettingsPanel';
+import { IoTPanel } from './components/IoTPanel';
+import { SimpleSimPanel } from './components/SimpleSimPanel';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
@@ -284,6 +286,12 @@ const App: React.FC = () => {
         { id: 'reports', label: 'Compliance Reports', icon: (
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
         )},
+        { id: 'iot', label: 'IoT Diagnostics', icon: (
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 5h10a2 2 0 012 2v10a2 2 0 01-2 2H7a2 2 0 01-2-2V7a2 2 0 012-2z" /></svg>
+        )},
+        { id: 'simplesim', label: 'SFEWS Core Sim', icon: (
+            <svg className="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" /></svg>
+        )},
         { id: 'settings', label: 'Warning Configs', icon: (
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
         )}
@@ -325,7 +333,7 @@ const App: React.FC = () => {
                     </div>
                     <div>
                         <h2 className="text-xl font-extrabold tracking-tight bg-gradient-to-r from-slate-100 via-indigo-100 to-indigo-300 bg-clip-text text-transparent">SFEWS Awash</h2>
-                        <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest block font-mono mt-0.5">Basin Early Warning</span>
+                        <span className="text-[10px] font-bold text-slate-500 tracking-widest block font-mono mt-0.5">Basin Early Warning</span>
                     </div>
                 </div>
 
@@ -495,6 +503,20 @@ const App: React.FC = () => {
                         />
                     )}
 
+                    {/* TAB H: FUTURISTIC IOT DEVICE DIAGNOSTICS */}
+                    {activeTab === 'iot' && (
+                        <IoTPanel
+                            payload={payload}
+                            activeStationId={activeStationId}
+                            setActiveStationId={setActiveStationId}
+                        />
+                    )}
+
+                    {/* TAB I: SFEWS CORE SIMULATION */}
+                    {activeTab === 'simplesim' && (
+                        <SimpleSimPanel />
+                    )}
+
                 </div>
 
                 {/* Collapsible Glassmorphic Floating AI Chatbot Assistant */}
@@ -521,8 +543,8 @@ const App: React.FC = () => {
                                     </svg>
                                 </div>
                                 <div>
-                                    <h3 className="text-sm font-extrabold tracking-wide text-slate-100 uppercase">SFEWS AI Co-Pilot</h3>
-                                    <span className="text-[9px] font-bold text-cyan-400 uppercase tracking-widest block font-mono mt-0.5">Online • early warning</span>
+                                    <h3 className="text-sm font-extrabold tracking-wide text-slate-100">SFEWS AI Co-Pilot</h3>
+                                    <span className="text-[9px] font-bold text-cyan-400 tracking-widest block font-mono mt-0.5">Online • early warning</span>
                                 </div>
                             </div>
                             <button
@@ -578,7 +600,7 @@ const App: React.FC = () => {
                             <button
                                 type="submit"
                                 disabled={!chatQuery.trim() || isTyping}
-                                className="px-4 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 disabled:from-slate-900 disabled:to-slate-900 disabled:text-slate-600 text-slate-100 rounded-2xl font-extrabold text-xs tracking-wider uppercase transition-all shadow-md flex items-center justify-center shrink-0 border border-transparent hover:shadow-[0_0_15px_rgba(139,92,246,0.3)]"
+                                className="px-4 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 disabled:from-slate-900 disabled:to-slate-900 disabled:text-slate-600 text-slate-100 rounded-2xl font-extrabold text-xs tracking-wider transition-all shadow-md flex items-center justify-center shrink-0 border border-transparent hover:shadow-[0_0_15px_rgba(139,92,246,0.3)]"
                             >
                                 Send
                             </button>
