@@ -165,5 +165,5 @@ export const AlertsPanel: React.FC<AlertsPanelProps> = ({
         </form>
       </div>
     </div>
-  );
+  );//
 };
