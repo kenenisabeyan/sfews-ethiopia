@@ -38,3 +38,21 @@ export interface SystemHealth {
     database_connection: string;
     server_time: string;
 }
+
+export interface WeatherForecast {
+    day: string;
+    tempMax: number;
+    tempMin: number;
+    condition: 'Rainy' | 'Cloudy' | 'Sunny' | 'Stormy';
+}
+
+export interface WeatherInfo {
+    temp: number;
+    condition: string;
+    humidity: number;
+    windSpeed: number;
+    rainfall24h: number;
+    location: string;
+    forecast: WeatherForecast[];
+}
+

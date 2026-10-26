@@ -88,32 +88,32 @@ export const MapTab: React.FC<MapTabProps> = ({
     };
 
     return (
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
             
             {/* GIS Control Room Dashboard Console (Main section takes 3 columns) */}
-            <div className="lg:col-span-3 flex flex-col gap-6">
+            <div className="lg:col-span-3 flex flex-col gap-4 sm:gap-6">
                 
                 {/* 1. Futuristic GIS Control Panel Menu & Horizon Slider */}
-                <div className="glass-panel rounded-3xl p-5 relative overflow-hidden">
+                <div className="glass-panel rounded-2xl sm:rounded-3xl p-4 sm:p-5 relative overflow-hidden">
                     <div className="absolute inset-0 bg-gradient-to-r from-purple-900/5 to-cyan-900/5 pointer-events-none" />
                     
-                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-5 relative z-10">
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-5 relative z-10">
                         {/* Title details */}
                         <div>
-                            <h2 className="text-sm font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                            <h2 className="text-xs sm:text-sm font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
                                 <span className="w-2 h-2 rounded-full bg-purple-500 border border-purple-400 animate-pulse" />
                                 GIS Control Console
                             </h2>
-                            <p className="text-lg font-black text-slate-100 mt-1 uppercase tracking-wide">
+                            <p className="text-base sm:text-lg font-black text-slate-100 mt-0.5 sm:mt-1 uppercase tracking-wide">
                                 Awash River Basin Satellite Command
                             </p>
                         </div>
 
                         {/* Layer Switchers Grid */}
-                        <div className="flex flex-wrap items-center gap-2">
+                        <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
                             <button 
                                 onClick={() => setShowSatellite(!showSatellite)}
-                                className={`px-3 py-1.5 rounded-xl border text-[10px] font-black uppercase tracking-wider transition-all duration-300 ${
+                                className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl border text-[9px] sm:text-[10px] font-black uppercase tracking-wider transition-all duration-300 ${
                                     showSatellite 
                                         ? 'bg-purple-600/20 text-purple-300 border-purple-500/40 shadow-[0_0_12px_rgba(168,85,247,0.15)]' 
                                         : 'bg-slate-950/40 text-slate-500 border-slate-800 hover:text-slate-300 hover:border-slate-700'
@@ -123,7 +123,7 @@ export const MapTab: React.FC<MapTabProps> = ({
                             </button>
                             <button 
                                 onClick={() => setShowContours(!showContours)}
-                                className={`px-3 py-1.5 rounded-xl border text-[10px] font-black uppercase tracking-wider transition-all duration-300 ${
+                                className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl border text-[9px] sm:text-[10px] font-black uppercase tracking-wider transition-all duration-300 ${
                                     showContours 
                                         ? 'bg-purple-600/20 text-purple-300 border-purple-500/40 shadow-[0_0_12px_rgba(168,85,247,0.15)]' 
                                         : 'bg-slate-950/40 text-slate-500 border-slate-800 hover:text-slate-300 hover:border-slate-700'
@@ -133,7 +133,7 @@ export const MapTab: React.FC<MapTabProps> = ({
                             </button>
                             <button 
                                 onClick={() => setShowRadar(!showRadar)}
-                                className={`px-3 py-1.5 rounded-xl border text-[10px] font-black uppercase tracking-wider transition-all duration-300 ${
+                                className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl border text-[9px] sm:text-[10px] font-black uppercase tracking-wider transition-all duration-300 ${
                                     showRadar 
                                         ? 'bg-cyan-600/20 text-cyan-300 border-cyan-500/40 shadow-[0_0_12px_rgba(34,211,238,0.15)]' 
                                         : 'bg-slate-950/40 text-slate-500 border-slate-800 hover:text-slate-300 hover:border-slate-700'
@@ -143,7 +143,7 @@ export const MapTab: React.FC<MapTabProps> = ({
                             </button>
                             <button 
                                 onClick={() => setShowHeatzones(!showHeatzones)}
-                                className={`px-3 py-1.5 rounded-xl border text-[10px] font-black uppercase tracking-wider transition-all duration-300 ${
+                                className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl border text-[9px] sm:text-[10px] font-black uppercase tracking-wider transition-all duration-300 ${
                                     showHeatzones 
                                         ? 'bg-red-600/20 text-red-300 border-red-500/40 shadow-[0_0_12px_rgba(239,68,68,0.15)]' 
                                         : 'bg-slate-950/40 text-slate-500 border-slate-800 hover:text-slate-300 hover:border-slate-700'
@@ -153,9 +153,9 @@ export const MapTab: React.FC<MapTabProps> = ({
                             </button>
                             <button 
                                 onClick={() => setShowEvac(!showEvac)}
-                                className={`px-3 py-1.5 rounded-xl border text-[10px] font-black uppercase tracking-wider transition-all duration-300 ${
+                                className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl border text-[9px] sm:text-[10px] font-black uppercase tracking-wider transition-all duration-300 ${
                                     showEvac 
-                                        ? 'bg-emerald-600/20 text-emerald-300 border-emerald-500/40 shadow-[0_0_12px_rgba(16,185,129,0.15)]' 
+                                        ? 'bg-emerald-600/20 text-emerald-300 border-emerald-500/40 shadow-[0_0_12px_rgba(168,85,247,0.15)]' 
                                         : 'bg-slate-950/40 text-slate-500 border-slate-800 hover:text-slate-300 hover:border-slate-700'
                                 }`}
                             >
@@ -165,20 +165,21 @@ export const MapTab: React.FC<MapTabProps> = ({
                     </div>
 
                     {/* Simulation Engine Slider bar */}
-                    <div className="mt-5 pt-4 border-t border-slate-900/60 flex flex-col md:flex-row md:items-center gap-4.5 relative z-10">
+                    <div className="mt-4 sm:mt-5 pt-3 sm:pt-4 border-t border-slate-900/60 flex flex-col md:flex-row md:items-center gap-3 sm:gap-4.5 relative z-10">
                         <div className="flex items-center gap-3 min-w-[200px]">
                             <button 
                                 onClick={() => setIsSimulating(!isSimulating)}
-                                className={`w-10 h-10 rounded-full flex items-center justify-center border transition-all duration-300 ${
+                                className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center border transition-all duration-300 flex-shrink-0 ${
                                     isSimulating 
                                         ? 'bg-red-600/20 text-red-400 border-red-500/40 animate-pulse' 
                                         : 'bg-cyan-600/20 text-cyan-400 border-cyan-500/40 hover:bg-cyan-600/30'
                                 }`}
+                                title={isSimulating ? "Pause Simulation" : "Start Simulation"}
                             >
                                 {isSimulating ? (
-                                    <svg className="w-4.5 h-4.5" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
                                 ) : (
-                                    <svg className="w-4.5 h-4.5 translate-x-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                                    <svg className="w-4 h-4 translate-x-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                                 )}
                             </button>
                             <div>
@@ -209,7 +210,7 @@ export const MapTab: React.FC<MapTabProps> = ({
                 </div>
 
                 {/* 2. Interactive SVG Map View Grid */}
-                <div className="bg-[#03060c] border border-slate-900 rounded-3xl relative overflow-hidden flex flex-col min-h-[520px] shadow-2xl p-2.5">
+                <div className="bg-[#03060c] border border-slate-900 rounded-2xl sm:rounded-3xl relative overflow-hidden flex flex-col min-h-[340px] sm:min-h-[520px] shadow-2xl p-2 sm:p-2.5">
                     
                     {/* Futuristic Grid Layer */}
                     <div className="absolute inset-0 grid-bg opacity-[0.25] pointer-events-none" />
@@ -222,36 +223,36 @@ export const MapTab: React.FC<MapTabProps> = ({
                     </div>
 
                     {/* Compass Ring & Reticles */}
-                    <div className="absolute top-8 right-8 z-10 w-20 h-20 border border-slate-900/60 rounded-full flex items-center justify-center opacity-60">
-                        <div className="absolute w-16 h-16 border border-dashed border-purple-500/25 rounded-full animate-[spin_40s_linear_infinite]" />
-                        <span className="text-[8px] font-mono font-bold text-slate-600 absolute -top-1.5">N</span>
-                        <span className="text-[8px] font-mono font-bold text-slate-600 absolute -bottom-1.5">S</span>
-                        <span className="text-[8px] font-mono font-bold text-slate-600 absolute -left-1">W</span>
-                        <span className="text-[8px] font-mono font-bold text-slate-600 absolute -right-1">E</span>
+                    <div className="absolute top-4 right-4 sm:top-8 sm:right-8 z-10 w-12 h-12 sm:w-20 sm:h-20 border border-slate-900/60 rounded-full flex items-center justify-center opacity-60 pointer-events-none">
+                        <div className="absolute w-10 h-10 sm:w-16 sm:h-16 border border-dashed border-purple-500/25 rounded-full animate-[spin_40s_linear_infinite]" />
+                        <span className="text-[7px] sm:text-[8px] font-mono font-bold text-slate-600 absolute -top-1 sm:-top-1.5">N</span>
+                        <span className="text-[7px] sm:text-[8px] font-mono font-bold text-slate-600 absolute -bottom-1 sm:-bottom-1.5">S</span>
+                        <span className="text-[7px] sm:text-[8px] font-mono font-bold text-slate-600 absolute -left-1">W</span>
+                        <span className="text-[7px] sm:text-[8px] font-mono font-bold text-slate-600 absolute -right-1">E</span>
                         <div className="w-1.5 h-1.5 bg-cyan-400/40 rounded-full" />
                     </div>
 
                     {/* Scale Calibration HUD */}
-                    <div className="absolute bottom-6 right-6 z-10 glass-panel-premium border border-slate-900/70 p-3 rounded-2xl text-[9px] font-mono text-slate-400 space-y-1 backdrop-blur-md">
-                        <div className="flex items-center gap-1.5 text-cyan-400 font-bold">
+                    <div className="absolute bottom-3 right-3 sm:bottom-6 sm:right-6 z-10 glass-panel-premium border border-slate-900/70 p-2 sm:p-3 rounded-xl sm:rounded-2xl text-[8px] sm:text-[9px] font-mono text-slate-400 space-y-0.5 sm:space-y-1 backdrop-blur-md">
+                        <div className="flex items-center gap-1 sm:gap-1.5 text-cyan-400 font-bold">
                             <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
-                            AWASH SATELLITE T-06
+                            AWASH T-06
                         </div>
-                        <div>SCALE: 1 : 12,500 CONT.</div>
-                        <div className="flex justify-between font-bold text-[8px] text-slate-600">
+                        <div className="hidden xs:block">SCALE 1:12.5K</div>
+                        <div className="flex justify-between font-bold text-[7px] sm:text-[8px] text-slate-600">
                             <span>0m</span>
                             <span>250m</span>
                         </div>
-                        <div className="h-1 bg-slate-950 border border-slate-900 rounded relative overflow-hidden">
+                        <div className="h-1 bg-slate-950 border border-slate-900 rounded relative overflow-hidden w-16 sm:w-20">
                             <div className="absolute left-0 top-0 h-full w-3/5 bg-gradient-to-r from-purple-500 to-cyan-500 shadow-[0_0_6px_rgba(34,211,238,0.5)]" />
                         </div>
                     </div>
 
                     {/* Live update status banner (top left) */}
-                    <div className="absolute top-6 left-6 z-10 flex items-center gap-2.5 bg-[#03060c]/90 border border-slate-900/80 px-3.5 py-2 rounded-2xl backdrop-blur-md">
+                    <div className="absolute top-3 left-3 sm:top-6 sm:left-6 z-10 flex items-center gap-2 bg-[#03060c]/90 border border-slate-900/80 px-2.5 sm:px-3.5 py-1 sm:py-2 rounded-xl sm:rounded-2xl backdrop-blur-md">
                         <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
-                        <div className="text-[10px] font-mono font-black text-slate-300 tracking-wider">
-                            ACTIVE RADAR SWEEPING: <span className="text-[#a855f7] font-bold">433.92 MHz</span>
+                        <div className="text-[9px] sm:text-[10px] font-mono font-black text-slate-300 tracking-wider">
+                            RADAR: <span className="text-[#a855f7] font-bold">433.92 MHz</span>
                         </div>
                     </div>
 
@@ -516,13 +517,13 @@ export const MapTab: React.FC<MapTabProps> = ({
                     </div>
 
                     {/* 3. Floating HUD Analytics Cards Overlaid on bottom of Map area */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4.5 border-t border-slate-900/60 bg-[#040811]/40 rounded-b-3xl">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 p-3.5 sm:p-4.5 border-t border-slate-900/60 bg-[#040811]/40 rounded-b-2xl sm:rounded-b-3xl">
                         
                         {/* Card A: Basin Hydration Overlays */}
-                        <div className="glass-panel p-3.5 rounded-2xl flex items-center justify-between border-slate-900">
+                        <div className="glass-panel p-3 sm:p-3.5 rounded-2xl flex items-center justify-between border-slate-900">
                             <div>
                                 <span className="text-[8px] font-bold text-slate-500 uppercase tracking-widest block">Average volume</span>
-                                <span className="text-sm font-black text-cyan-400 font-mono mt-1 block">
+                                <span className="text-sm font-black text-cyan-400 font-mono mt-0.5 sm:mt-1 block">
                                     {(145 + (simulationLevel * 2.2)).toFixed(1)} <span className="text-[9px] text-slate-500 font-medium">cm</span>
                                 </span>
                             </div>
@@ -535,10 +536,10 @@ export const MapTab: React.FC<MapTabProps> = ({
                         </div>
 
                         {/* Card B: Mesh Network Ping Oscillations */}
-                        <div className="glass-panel p-3.5 rounded-2xl flex items-center justify-between border-slate-900">
+                        <div className="glass-panel p-3 sm:p-3.5 rounded-2xl flex items-center justify-between border-slate-900">
                             <div>
                                 <span className="text-[8px] font-bold text-slate-500 uppercase tracking-widest block">Mesh Ping / Packets</span>
-                                <span className="text-sm font-black text-purple-400 font-mono mt-1 block">
+                                <span className="text-sm font-black text-purple-400 font-mono mt-0.5 sm:mt-1 block">
                                     {meshPing}ms / {meshPackets} pkts
                                 </span>
                             </div>
@@ -548,10 +549,10 @@ export const MapTab: React.FC<MapTabProps> = ({
                         </div>
 
                         {/* Card C: Battery Energy Matrix */}
-                        <div className="glass-panel p-3.5 rounded-2xl flex items-center justify-between border-slate-900">
+                        <div className="glass-panel p-3 sm:p-3.5 rounded-2xl flex items-center justify-between border-slate-900 sm:col-span-2 lg:col-span-1">
                             <div>
                                 <span className="text-[8px] font-bold text-slate-500 uppercase tracking-widest block">Solar efficiency</span>
-                                <span className="text-sm font-black text-emerald-400 font-mono mt-1 block">
+                                <span className="text-sm font-black text-emerald-400 font-mono mt-0.5 sm:mt-1 block">
                                     {meshSolarEff.toFixed(1)}%
                                 </span>
                             </div>
@@ -564,15 +565,15 @@ export const MapTab: React.FC<MapTabProps> = ({
             </div>
 
             {/* Night-Vision Station Telemetry diagnostics sidebar (Takes 1 column) */}
-            <div className="lg:col-span-1 flex flex-col justify-between glass-panel rounded-3xl p-6 min-h-[580px] relative overflow-hidden">
+            <div className="lg:col-span-1 flex flex-col justify-between glass-panel rounded-2xl sm:rounded-3xl p-4 sm:p-6 min-h-0 sm:min-h-[580px] relative overflow-hidden">
                 <div className="absolute inset-0 bg-[#03070f]/90 pointer-events-none" />
                 <div className="absolute inset-0 cyber-scanner pointer-events-none opacity-10" />
 
-                <div className="relative z-10 space-y-6">
+                <div className="relative z-10 space-y-4 sm:space-y-6">
                     {/* Panel Header */}
-                    <div className="border-b border-slate-900/60 pb-5 text-center">
+                    <div className="border-b border-slate-900/60 pb-3 sm:pb-5 text-center">
                         <h3 className="text-xs font-black text-purple-400 tracking-widest uppercase">Telemetry Receiver</h3>
-                        <h2 className="text-base font-black text-slate-100 mt-1 uppercase tracking-wide">
+                        <h2 className="text-sm sm:text-base font-black text-slate-100 mt-1 uppercase tracking-wide">
                             Night-Vision HUD
                         </h2>
                     </div>

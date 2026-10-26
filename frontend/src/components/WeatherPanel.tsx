@@ -1,5 +1,5 @@
 import React from 'react';
-import { WeatherInfo } from '../types/types';
+import { WeatherInfo } from '../types';
 
 interface WeatherPanelProps {
   weather: WeatherInfo;
@@ -41,45 +41,45 @@ export const WeatherPanel: React.FC<WeatherPanelProps> = ({ weather }) => {
   };
 
   return (
-    <div className="w-full bg-[#0b0f19] border border-slate-800/80 rounded-2xl p-6 relative overflow-hidden flex flex-col h-full shadow-2xl">
+    <div className="w-full bg-[#0b0f19] border border-slate-800/80 rounded-2xl sm:rounded-3xl p-4 sm:p-6 relative overflow-hidden flex flex-col h-full shadow-2xl">
       <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none"></div>
 
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 z-10 gap-3 border-b border-slate-800/60 pb-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6 z-10 gap-3 border-b border-slate-800/60 pb-3 sm:pb-4">
         <div>
-          <h2 className="text-base font-bold text-slate-100 uppercase tracking-widest flex items-center gap-2">
+          <h2 className="text-sm sm:text-base font-bold text-slate-100 uppercase tracking-widest flex items-center gap-2">
             🌍 Atmospheric Climate Telemetry
           </h2>
-          <p className="text-xs text-slate-400 mt-0.5">Hydrological and Weather Station Indicators</p>
+          <p className="text-[11px] sm:text-xs text-slate-400 mt-0.5">Hydrological and Weather Station Indicators</p>
         </div>
-        <div className="bg-slate-900 border border-slate-800 px-3.5 py-1.5 rounded-lg text-[10px] font-mono text-slate-400">
+        <div className="bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-lg text-[9px] sm:text-[10px] font-mono text-slate-400 self-start sm:self-auto">
           BAROMETER: <span className="text-cyan-400 font-bold">1013 hPa</span> (STABLE)
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch z-10">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 items-stretch z-10">
         
-        <div className="lg:col-span-1 bg-gradient-to-br from-indigo-950/45 to-[#080c14] border border-indigo-500/15 rounded-2xl p-6 flex flex-col justify-between relative overflow-hidden min-h-[220px]">
+        <div className="lg:col-span-1 bg-gradient-to-br from-indigo-950/45 to-[#080c14] border border-indigo-500/15 rounded-2xl p-4 sm:p-6 flex flex-col justify-between relative overflow-hidden min-h-0 sm:min-h-[220px]">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(99,102,241,0.06),transparent)] pointer-events-none"></div>
           
           <div>
             <div className="flex justify-between items-start">
               <div>
-                <h3 className="text-2xl font-black text-slate-100 font-mono tracking-tight">
+                <h3 className="text-2xl sm:text-3xl font-black text-slate-100 font-mono tracking-tight">
                   {weather.temp}°C
                 </h3>
                 <p className="text-[#c084fc] font-bold text-xs uppercase tracking-wider mt-0.5">
                   {weather.condition} Conditions
                 </p>
               </div>
-              <div>{getWeatherIcon(weather.condition as any, 'w-14 h-14')}</div>
+              <div>{getWeatherIcon(weather.condition as any, 'w-12 h-12 sm:w-14 sm:h-14')}</div>
             </div>
             
-            <p className="text-xs text-slate-400 mt-4 font-medium flex items-center gap-1.5">
+            <p className="text-xs text-slate-400 mt-3 sm:mt-4 font-medium flex items-center gap-1.5">
               <span>📍</span> {weather.location}
             </p>
           </div>
 
-          <div className="grid grid-cols-3 gap-2 border-t border-indigo-950/40 pt-4 mt-6 text-center font-mono text-[9px]">
+          <div className="grid grid-cols-3 gap-2 border-t border-indigo-950/40 pt-3 sm:pt-4 mt-4 sm:mt-6 text-center font-mono text-[9px]">
             <div className="bg-slate-950/50 p-2 rounded-lg border border-slate-900">
               <span className="text-slate-500 uppercase font-semibold">HUMIDITY</span>
               <div className="text-slate-200 font-bold text-xs mt-0.5">{weather.humidity}%</div>
@@ -95,19 +95,19 @@ export const WeatherPanel: React.FC<WeatherPanelProps> = ({ weather }) => {
           </div>
         </div>
 
-        <div className="lg:col-span-2 bg-[#080c14] border border-slate-900 rounded-2xl p-6 flex flex-col justify-between">
-          <h4 className="text-xs font-bold text-slate-300 uppercase tracking-widest border-b border-slate-900 pb-3 mb-4">
+        <div className="lg:col-span-2 bg-[#080c14] border border-slate-900 rounded-2xl p-4 sm:p-6 flex flex-col justify-between">
+          <h4 className="text-xs font-bold text-slate-300 uppercase tracking-widest border-b border-slate-900 pb-2.5 sm:pb-3 mb-3 sm:mb-4">
             7-Day Regional Hydrological Forecast
           </h4>
           
-          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3.5">
+          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2.5 sm:gap-3.5">
             {weather.forecast.map((fc, idx) => (
               <div
                 key={fc.day + idx}
-                className="bg-slate-950/40 border border-slate-900 hover:border-slate-850 hover:bg-slate-900/10 p-3.5 rounded-xl flex flex-col items-center justify-between text-center transition-all duration-200"
+                className="bg-slate-950/40 border border-slate-900 hover:border-slate-800 hover:bg-slate-900/10 p-2.5 sm:p-3.5 rounded-xl flex flex-col items-center justify-between text-center transition-all duration-200"
               >
                 <span className="text-[10px] font-bold text-slate-400 font-mono uppercase">{fc.day}</span>
-                <div className="my-2.5">{getWeatherIcon(fc.condition, 'w-8 h-8')}</div>
+                <div className="my-1.5 sm:my-2.5">{getWeatherIcon(fc.condition, 'w-7 h-7 sm:w-8 sm:h-8')}</div>
                 <div className="text-[10px] font-mono font-bold space-y-0.5">
                   <div className="text-slate-200">{fc.tempMax}°C</div>
                   <div className="text-slate-500">{fc.tempMin}°C</div>

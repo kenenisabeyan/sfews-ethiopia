@@ -9,6 +9,8 @@ import { ReportsPanel } from './components/ReportsPanel';
 import { WaterLevelsPanel } from './components/WaterLevelsPanel';
 import { AlertsPanel } from './components/AlertsPanel';
 import { SettingsPanel } from './components/SettingsPanel';
+import { IoTPanel } from './components/IoTPanel';
+import { SimpleSimPanel } from './components/SimpleSimPanel';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
@@ -37,6 +39,7 @@ const App: React.FC = () => {
     const [activeTab, setActiveTab] = useState<string>('dashboard');
     const [activeStationId, setActiveStationId] = useState<string>('');
     const [selectedMapNode, setSelectedMapNode] = useState<SensorNode | null>(null);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
 
 
 
@@ -284,6 +287,12 @@ const App: React.FC = () => {
         { id: 'reports', label: 'Compliance Reports', icon: (
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
         )},
+        { id: 'iot', label: 'IoT Diagnostics', icon: (
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 5h10a2 2 0 012 2v10a2 2 0 01-2 2H7a2 2 0 01-2-2V7a2 2 0 012-2z" /></svg>
+        )},
+        { id: 'simplesim', label: 'SFEWS Core Sim', icon: (
+            <svg className="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" /></svg>
+        )},
         { id: 'settings', label: 'Warning Configs', icon: (
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
         )}
@@ -314,40 +323,64 @@ const App: React.FC = () => {
 
 
 
-            {/* SIDEBAR NAVIGATION */}
-            <aside className="w-80 border-r border-slate-900/60 bg-[#040810]/70 backdrop-blur-xl flex flex-col shrink-0 relative z-30 select-none">
+            {/* BACKDROP OVERLAY FOR MOBILE SIDEBAR */}
+            {isMobileMenuOpen && (
+                <div 
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="fixed inset-0 bg-black/75 backdrop-blur-sm z-40 lg:hidden animate-in fade-in duration-200"
+                    aria-hidden="true"
+                />
+            )}
+
+            {/* SIDEBAR NAVIGATION (Desktop Static, Mobile Off-Canvas Drawer) */}
+            <aside className={`fixed inset-y-0 left-0 z-50 w-72 sm:w-80 border-r border-slate-900/60 bg-[#040810]/95 lg:bg-[#040810]/70 backdrop-blur-xl flex flex-col shrink-0 select-none transition-transform duration-300 ease-in-out lg:static lg:translate-x-0 ${
+                isMobileMenuOpen ? 'translate-x-0 shadow-[0_0_50px_rgba(0,0,0,0.95)]' : '-translate-x-full'
+            }`}>
                 
                 {/* Logo / Title Branding */}
-                <div className="p-7 border-b border-slate-900/40 flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-indigo-600 to-cyan-400 flex items-center justify-center shadow-lg shadow-indigo-600/20 relative">
-                        <span className="animate-ping absolute inline-flex h-4 w-4 rounded-full bg-cyan-400 opacity-30 -top-1 -right-1"></span>
-                        <svg className="w-5.5 h-5.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                <div className="p-5 sm:p-7 border-b border-slate-900/40 flex items-center justify-between">
+                    <div className="flex items-center gap-3 sm:gap-4">
+                        <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-indigo-600 to-cyan-400 flex items-center justify-center shadow-lg shadow-indigo-600/20 relative shrink-0">
+                            <span className="animate-ping absolute inline-flex h-4 w-4 rounded-full bg-cyan-400 opacity-30 -top-1 -right-1"></span>
+                            <svg className="w-5.5 h-5.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                        </div>
+                        <div>
+                            <h2 className="text-lg sm:text-xl font-extrabold tracking-tight bg-gradient-to-r from-slate-100 via-indigo-100 to-indigo-300 bg-clip-text text-transparent">SFEWS Awash</h2>
+                            <span className="text-[10px] font-bold text-slate-500 tracking-widest block font-mono mt-0.5">Basin Early Warning</span>
+                        </div>
                     </div>
-                    <div>
-                        <h2 className="text-xl font-extrabold tracking-tight bg-gradient-to-r from-slate-100 via-indigo-100 to-indigo-300 bg-clip-text text-transparent">SFEWS Awash</h2>
-                        <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest block font-mono mt-0.5">Basin Early Warning</span>
-                    </div>
+                    {/* Close button for mobile drawer */}
+                    <button 
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="lg:hidden w-8 h-8 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-400 hover:text-slate-100 flex items-center justify-center border border-slate-800 transition-colors"
+                        aria-label="Close navigation drawer"
+                    >
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                    </button>
                 </div>
 
                 {/* Nav Items */}
-                <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
+                <nav className="flex-1 px-3 sm:px-4 py-4 sm:py-6 space-y-1.5 sm:space-y-2 overflow-y-auto custom-scrollbar">
                     {navItems.map(item => {
                         const isActive = activeTab === item.id;
                         return (
                             <button
                                 key={item.id}
-                                onClick={() => setActiveTab(item.id)}
-                                className={`w-full flex items-center gap-4 px-4.5 py-3.5 rounded-2xl text-sm font-bold tracking-wide transition-all duration-200 group
+                                onClick={() => {
+                                    setActiveTab(item.id);
+                                    setIsMobileMenuOpen(false);
+                                }}
+                                className={`w-full flex items-center gap-3.5 sm:gap-4 px-3.5 sm:px-4.5 py-3 sm:py-3.5 rounded-2xl text-xs sm:text-sm font-bold tracking-wide transition-all duration-200 group
                                     ${isActive 
                                         ? 'bg-gradient-to-r from-indigo-600/20 to-cyan-500/10 text-indigo-300 border border-indigo-500/20 shadow-md shadow-indigo-500/5' 
                                         : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/30 border border-transparent'}`}
                             >
-                                <span className={`transition-colors duration-200 ${isActive ? 'text-indigo-400' : 'text-slate-500 group-hover:text-slate-300'}`}>
+                                <span className={`transition-colors duration-200 shrink-0 ${isActive ? 'text-indigo-400' : 'text-slate-500 group-hover:text-slate-300'}`}>
                                     {item.icon}
                                 </span>
-                                {item.label}
+                                <span className="truncate">{item.label}</span>
                                 {isActive && (
-                                    <span className="ml-auto w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.8)]"></span>
+                                    <span className="ml-auto w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.8)] shrink-0"></span>
                                 )}
                             </button>
                         );
@@ -355,25 +388,25 @@ const App: React.FC = () => {
                 </nav>
 
                 {/* Sidebar Footer Metrics */}
-                <div className="p-6 border-t border-slate-900/60 bg-[#03060c]/40 space-y-4">
+                <div className="p-4 sm:p-6 border-t border-slate-900/60 bg-[#03060c]/40 space-y-3 sm:space-y-4">
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center font-bold text-sm text-slate-300 uppercase tracking-wider font-mono">
+                        <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center font-bold text-xs sm:text-sm text-slate-300 uppercase tracking-wider font-mono shrink-0">
                             C
                         </div>
-                        <div>
-                            <p className="text-xs text-slate-500 font-bold uppercase tracking-wider">Authenticated Role</p>
-                            <p className="text-sm font-bold text-slate-300">Command Center Admin</p>
+                        <div className="min-w-0">
+                            <p className="text-[10px] sm:text-xs text-slate-500 font-bold uppercase tracking-wider truncate">Authenticated Role</p>
+                            <p className="text-xs sm:text-sm font-bold text-slate-300 truncate">Command Center Admin</p>
                         </div>
                     </div>
 
-                    <div className="pt-2 flex flex-col gap-2.5">
-                        <div className="flex items-center justify-between text-[11px] font-bold text-slate-400 tracking-wider">
+                    <div className="pt-2 flex flex-col gap-2">
+                        <div className="flex items-center justify-between text-[10px] sm:text-[11px] font-bold text-slate-400 tracking-wider">
                             <span>SFEWS CORE API:</span>
                             <span className={`px-2 py-0.5 rounded font-mono ${isSystemOnline ? 'bg-emerald-500/10 text-emerald-400' : 'bg-red-500/10 text-red-400'}`}>
                                 {isSystemOnline ? 'ONLINE' : 'OFFLINE'}
                             </span>
                         </div>
-                        <div className="flex items-center justify-between text-[11px] font-bold text-slate-400 tracking-wider">
+                        <div className="flex items-center justify-between text-[10px] sm:text-[11px] font-bold text-slate-400 tracking-wider">
                             <span>TELEMETRY SYNC:</span>
                             <span className="px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-400 font-mono">ACTIVE</span>
                         </div>
@@ -382,7 +415,7 @@ const App: React.FC = () => {
                                 sessionStorage.removeItem('sfews_authenticated');
                                 setIsAuthenticated(false);
                             }}
-                            className="w-full mt-2.5 py-2.5 bg-red-950/20 hover:bg-red-950/40 text-red-400 border border-red-500/10 hover:border-red-500/20 rounded-xl text-xs font-extrabold tracking-widest transition-all uppercase flex items-center justify-center gap-2"
+                            className="w-full mt-2 py-2 sm:py-2.5 bg-red-950/20 hover:bg-red-950/40 text-red-400 border border-red-500/10 hover:border-red-500/20 rounded-xl text-xs font-extrabold tracking-widest transition-all uppercase flex items-center justify-center gap-2"
                         >
                             <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
                             Secure Log Out
@@ -391,14 +424,48 @@ const App: React.FC = () => {
                 </div>
             </aside>
 
-            {/* MAIN MAIN CONTENT CONTAINER */}
-            <main className="flex-1 flex flex-col overflow-hidden relative z-10 grid-bg">
+            {/* MAIN CONTENT CONTAINER */}
+            <main className="flex-1 flex flex-col min-w-0 overflow-hidden relative z-10 grid-bg">
                 
+                {/* MOBILE TOP NAVIGATION BAR (Visible on screens < lg) */}
+                <header className="lg:hidden bg-[#040812]/90 border-b border-slate-900/80 px-4 py-3 flex items-center justify-between backdrop-blur-xl shrink-0 z-30">
+                    <div className="flex items-center gap-3">
+                        <button
+                            onClick={() => setIsMobileMenuOpen(true)}
+                            className="w-10 h-10 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-slate-800 text-slate-200 flex items-center justify-center transition-colors active:scale-95"
+                            aria-label="Open Navigation Drawer"
+                        >
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 6h16M4 12h16M4 18h16" />
+                            </svg>
+                        </button>
+                        <div className="flex items-center gap-2.5">
+                            <div className="w-7 h-7 rounded-xl bg-gradient-to-tr from-indigo-600 to-cyan-400 flex items-center justify-center shadow-md shrink-0">
+                                <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                </svg>
+                            </div>
+                            <div className="min-w-0">
+                                <h1 className="text-sm font-extrabold text-slate-100 leading-tight truncate">SFEWS Awash</h1>
+                                <span className="text-[9px] font-mono font-bold text-cyan-400 uppercase tracking-widest block truncate">
+                                    {navItems.find(n => n.id === activeTab)?.label || 'Console'}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div className="flex items-center gap-2">
+                        <span className={`px-2 py-0.5 rounded text-[9px] font-mono font-bold ${isSystemOnline ? 'bg-emerald-500/10 text-emerald-400' : 'bg-red-500/10 text-red-400'}`}>
+                            {isSystemOnline ? 'ONLINE' : 'OFFLINE'}
+                        </span>
+                    </div>
+                </header>
+
                 {/* GLOBAL ERROR HEADER */}
                 {error && (
-                    <div className="bg-red-950/30 border-b border-red-500/25 px-8 py-3.5 flex items-center justify-between backdrop-blur-md relative z-25">
+                    <div className="bg-red-950/30 border-b border-red-500/25 px-4 sm:px-8 py-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 backdrop-blur-md relative z-25">
                         <div className="flex items-center gap-3">
-                            <span className="flex h-2.5 w-2.5 relative">
+                            <span className="flex h-2.5 w-2.5 relative shrink-0">
                                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
                                 <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
                             </span>
@@ -406,7 +473,7 @@ const App: React.FC = () => {
                         </div>
                         <button 
                             onClick={handleReconnect} 
-                            className="px-4.5 py-1.5 bg-red-500/10 hover:bg-red-500/20 text-red-300 border border-red-500/20 rounded-xl text-xs font-extrabold tracking-widest transition-all uppercase"
+                            className="px-3.5 py-1.5 bg-red-500/10 hover:bg-red-500/20 text-red-300 border border-red-500/20 rounded-xl text-xs font-extrabold tracking-widest transition-all uppercase shrink-0"
                         >
                             Establish Link
                         </button>
@@ -414,8 +481,8 @@ const App: React.FC = () => {
                 )}
 
                 {/* TABS VIEWPORT */}
-                <div className="flex-1 overflow-y-auto p-6 md:p-8 space-y-8 max-w-[1600px] w-full mx-auto">
-                               {/* TAB A: DASHBOARD VIEW */}
+                <div className="flex-1 overflow-y-auto p-3.5 sm:p-5 md:p-8 space-y-6 md:space-y-8 max-w-[1600px] w-full mx-auto custom-scrollbar">
+                    {/* TAB A: DASHBOARD VIEW */}
                     {activeTab === 'dashboard' && (
                         <DashboardTab
                             payload={payload}
@@ -437,7 +504,9 @@ const App: React.FC = () => {
                             setSelectedMapNode={setSelectedMapNode}
                             broadcastEmergencySMS={broadcastEmergencySMS}
                         />
-                    )}                    {/* TAB C: WATER LEVELS TABULAR SEARCH GRID */}
+                    )}
+
+                    {/* TAB C: WATER LEVELS TABULAR SEARCH GRID */}
                     {activeTab === 'levels' && (
                         <WaterLevelsPanel
                             nodes={payload?.nodes || []}
@@ -495,58 +564,74 @@ const App: React.FC = () => {
                         />
                     )}
 
+                    {/* TAB H: FUTURISTIC IOT DEVICE DIAGNOSTICS */}
+                    {activeTab === 'iot' && (
+                        <IoTPanel
+                            payload={payload}
+                            activeStationId={activeStationId}
+                            setActiveStationId={setActiveStationId}
+                        />
+                    )}
+
+                    {/* TAB I: SFEWS CORE SIMULATION */}
+                    {activeTab === 'simplesim' && (
+                        <SimpleSimPanel />
+                    )}
+
                 </div>
 
-                {/* Collapsible Glassmorphic Floating AI Chatbot Assistant */}
+                {/* Collapsible Glassmorphic Floating AI Chatbot Assistant (Fully Adaptive for Mobile & Desktop) */}
                 {!isChatOpen ? (
                     <button
                         onClick={() => setIsChatOpen(true)}
-                        className="fixed bottom-6 right-6 w-14 h-14 rounded-full bg-gradient-to-tr from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white flex items-center justify-center shadow-[0_0_20px_rgba(139,92,246,0.4)] hover:shadow-[0_0_30px_rgba(139,92,246,0.6)] hover:scale-105 transition-all duration-300 z-50 group"
+                        className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-tr from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white flex items-center justify-center shadow-[0_0_20px_rgba(139,92,246,0.4)] hover:shadow-[0_0_30px_rgba(139,92,246,0.6)] hover:scale-105 active:scale-95 transition-all duration-300 z-50 group"
                         title="Open SFEWS Early Warning AI Assistant"
+                        aria-label="Open AI Assistant"
                     >
                         <span className="absolute inset-0 rounded-full border border-purple-400/30 animate-pulse"></span>
-                        <svg className="w-6 h-6 text-white group-hover:rotate-12 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white group-hover:rotate-12 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                         </svg>
                     </button>
                 ) : (
-                    <div className="fixed bottom-6 right-6 w-96 h-[520px] bg-[#050913]/90 border border-purple-500/25 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.8)] backdrop-blur-xl z-50 flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-8 duration-300">
+                    <div className="fixed inset-x-3 bottom-3 sm:inset-auto sm:bottom-6 sm:right-6 sm:w-96 sm:max-w-md h-[82vh] sm:h-[520px] max-w-full bg-[#050913]/95 border border-purple-500/25 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.95)] backdrop-blur-xl z-50 flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-8 duration-300">
                         {/* Top Header */}
-                        <div className="p-4 bg-gradient-to-r from-purple-950/40 via-indigo-950/40 to-cyan-950/40 border-b border-slate-900/60 flex items-center justify-between shrink-0">
+                        <div className="p-3.5 sm:p-4 bg-gradient-to-r from-purple-950/40 via-indigo-950/40 to-cyan-950/40 border-b border-slate-900/60 flex items-center justify-between shrink-0">
                             <div className="flex items-center gap-3">
-                                <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-purple-600 to-cyan-400 flex items-center justify-center shadow-lg relative">
+                                <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-purple-600 to-cyan-400 flex items-center justify-center shadow-lg relative shrink-0">
                                     <span className="w-2 h-2 rounded-full bg-emerald-400 border border-slate-900 absolute -top-0.5 -right-0.5 animate-pulse"></span>
                                     <svg className="w-4.5 h-4.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M13 10V3L4 14h7v7l9-11h-7z" />
                                     </svg>
                                 </div>
-                                <div>
-                                    <h3 className="text-sm font-extrabold tracking-wide text-slate-100 uppercase">SFEWS AI Co-Pilot</h3>
-                                    <span className="text-[9px] font-bold text-cyan-400 uppercase tracking-widest block font-mono mt-0.5">Online • early warning</span>
+                                <div className="min-w-0">
+                                    <h3 className="text-xs sm:text-sm font-extrabold tracking-wide text-slate-100 truncate">SFEWS AI Co-Pilot</h3>
+                                    <span className="text-[9px] font-bold text-cyan-400 tracking-widest block font-mono mt-0.5">Online • early warning</span>
                                 </div>
                             </div>
                             <button
                                 onClick={() => setIsChatOpen(false)}
-                                className="w-8 h-8 rounded-xl hover:bg-slate-900/60 text-slate-400 hover:text-slate-200 flex items-center justify-center transition-colors border border-transparent hover:border-slate-800/80"
+                                className="w-8 h-8 rounded-xl hover:bg-slate-900/60 text-slate-400 hover:text-slate-200 flex items-center justify-center transition-colors border border-transparent hover:border-slate-800/80 shrink-0"
+                                aria-label="Close chat"
                             >
-                                <svg className="w-5.5 h-5.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" />
                                 </svg>
                             </button>
                         </div>
 
                         {/* Messages Container */}
-                        <div className="flex-grow overflow-y-auto p-4.5 space-y-4 min-h-0 custom-scrollbar bg-[#02040a]/40">
+                        <div className="flex-grow overflow-y-auto p-3.5 sm:p-4.5 space-y-3.5 sm:space-y-4 min-h-0 custom-scrollbar bg-[#02040a]/40">
                             {chatHistory.map((msg, i) => {
                                 const isUser = msg.sender === 'user';
                                 return (
                                     <div key={i} className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}>
-                                        <div className={`max-w-[85%] rounded-2xl p-3.5 text-xs leading-relaxed font-semibold shadow-md ${
+                                        <div className={`max-w-[88%] sm:max-w-[85%] rounded-2xl p-3 sm:p-3.5 text-xs leading-relaxed font-semibold shadow-md ${
                                             isUser 
                                                 ? 'bg-gradient-to-r from-purple-600/35 to-indigo-600/35 text-slate-100 border border-purple-500/20 rounded-tr-none' 
                                                 : 'bg-[#0b101c]/80 text-slate-250 border border-slate-900 rounded-tl-none'
                                         }`}>
-                                            <p className="whitespace-pre-line">{msg.text}</p>
+                                            <p className="whitespace-pre-line break-words">{msg.text}</p>
                                             <span className="text-[9px] text-slate-500 block font-mono mt-1.5 text-right">
                                                 {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                             </span>
@@ -567,18 +652,18 @@ const App: React.FC = () => {
                         </div>
 
                         {/* Form Input */}
-                        <form onSubmit={handleSendChat} className="p-3 bg-[#040811] border-t border-slate-900/60 flex gap-2 shrink-0">
+                        <form onSubmit={handleSendChat} className="p-2.5 sm:p-3 bg-[#040811] border-t border-slate-900/60 flex gap-2 shrink-0">
                             <input
                                 type="text"
                                 value={chatQuery}
                                 onChange={(e) => setChatQuery(e.target.value)}
-                                placeholder="Ask about nodes, risk metrics, forecasts..."
-                                className="flex-grow bg-[#080d19]/90 border border-slate-800/80 rounded-2xl px-4 py-2.5 text-xs text-slate-250 focus:outline-none focus:border-purple-500/50 placeholder:text-slate-500 font-semibold"
+                                placeholder="Ask about nodes, risk metrics..."
+                                className="flex-grow min-w-0 bg-[#080d19]/90 border border-slate-800/80 rounded-2xl px-3.5 sm:px-4 py-2 sm:py-2.5 text-xs text-slate-250 focus:outline-none focus:border-purple-500/50 placeholder:text-slate-500 font-semibold"
                             />
                             <button
                                 type="submit"
                                 disabled={!chatQuery.trim() || isTyping}
-                                className="px-4 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 disabled:from-slate-900 disabled:to-slate-900 disabled:text-slate-600 text-slate-100 rounded-2xl font-extrabold text-xs tracking-wider uppercase transition-all shadow-md flex items-center justify-center shrink-0 border border-transparent hover:shadow-[0_0_15px_rgba(139,92,246,0.3)]"
+                                className="px-3.5 sm:px-4 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 disabled:from-slate-900 disabled:to-slate-900 disabled:text-slate-600 text-slate-100 rounded-2xl font-extrabold text-xs tracking-wider transition-all shadow-md flex items-center justify-center shrink-0 border border-transparent hover:shadow-[0_0_15px_rgba(139,92,246,0.3)]"
                             >
                                 Send
                             </button>
@@ -592,3 +677,4 @@ const App: React.FC = () => {
 };
 
 export default App;
+
