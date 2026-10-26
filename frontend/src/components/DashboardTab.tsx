@@ -257,28 +257,28 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
       </div>
 
       {/* 3. Middle Row: Main Hydrological Graph & AI Danger Status Radial Ring */}
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 sm:gap-8">
         
         {/* Basin Hydrological Trends Area Chart */}
-        <div className="xl:col-span-2 glass-panel rounded-3xl p-7 flex flex-col min-h-[500px] relative">
+        <div className="xl:col-span-2 glass-panel rounded-3xl p-4 sm:p-7 flex flex-col min-h-[380px] sm:min-h-[500px] relative">
           <div className="absolute top-0 left-1/4 w-[50%] h-[1px] bg-gradient-to-r from-transparent via-purple-500/20 to-transparent"></div>
           
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 sm:gap-4 mb-5 sm:mb-8">
             <div>
-              <h2 className="text-lg font-extrabold text-slate-100 tracking-wide uppercase">Basin Hydrological Vitals Chart</h2>
-              <p className="text-xs text-slate-500 mt-1.5 font-bold uppercase tracking-widest font-mono">River level (cm) correlated against precipitation patterns (mm/h)</p>
+              <h2 className="text-base sm:text-lg font-extrabold text-slate-100 tracking-wide uppercase">Basin Hydrological Vitals Chart</h2>
+              <p className="text-[10px] sm:text-xs text-slate-500 mt-1 sm:mt-1.5 font-bold uppercase tracking-widest font-mono">River level (cm) correlated against precipitation patterns (mm/h)</p>
             </div>
-            <div className="flex gap-2.5">
-              <span className="flex items-center gap-2 px-3.5 py-1.5 bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 text-[10px] font-black rounded-xl uppercase tracking-wider shadow-[0_0_8px_rgba(99,102,241,0.05)]">
+            <div className="flex flex-wrap gap-2 sm:gap-2.5">
+              <span className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1 sm:py-1.5 bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 text-[9px] sm:text-[10px] font-black rounded-xl uppercase tracking-wider shadow-[0_0_8px_rgba(99,102,241,0.05)]">
                 <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 shadow-[0_0_8px_#6366f1] animate-pulse"></span> Water Level (cm)
               </span>
-              <span className="flex items-center gap-2 px-3.5 py-1.5 bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-[10px] font-black rounded-xl uppercase tracking-wider shadow-[0_0_8px_rgba(34,211,238,0.05)]">
-                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_8px_#22d3ee] animate-pulse"></span> Precipitation (mm/h)
+              <span className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1 sm:py-1.5 bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-[9px] sm:text-[10px] font-black rounded-xl uppercase tracking-wider shadow-[0_0_8px_rgba(34,211,238,0.05)]">
+                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_8px_#22d3ee] animate-pulse"></span> Rain (mm/h)
               </span>
             </div>
           </div>
 
-          <div className="flex-grow w-full relative min-h-[360px]">
+          <div className="flex-grow w-full relative min-h-[260px] sm:min-h-[360px]">
             {loading && !payload ? (
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="w-10 h-10 border-4 border-purple-500/20 border-t-purple-500 rounded-full animate-spin"></div>
@@ -321,12 +321,12 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
                       borderColor: 'rgba(168, 85, 247, 0.3)', 
                       borderRadius: '1.25rem', 
                       boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.85)',
-                      padding: '1.25rem',
+                      padding: '1rem',
                       borderWidth: '1.5px',
                       backdropFilter: 'blur(12px)',
                     }}
                     itemStyle={{ color: '#f8fafc', fontWeight: 700 }}
-                    labelStyle={{ color: '#c084fc', marginBottom: '0.75rem', fontWeight: 900, fontSize: '0.8rem', textTransform: 'uppercase', fontFamily: 'monospace', letterSpacing: '0.1em' }}
+                    labelStyle={{ color: '#c084fc', marginBottom: '0.5rem', fontWeight: 900, fontSize: '0.75rem', textTransform: 'uppercase', fontFamily: 'monospace', letterSpacing: '0.1em' }}
                     labelFormatter={(val) => new Date(val).toLocaleString()}
                   />
                   <Area 
@@ -352,7 +352,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
                 </AreaChart>
               </ResponsiveContainer>
             ) : (
-              <div className="absolute inset-0 flex items-center justify-center text-slate-500 font-bold text-xs tracking-widest uppercase font-mono">
+              <div className="absolute inset-0 flex items-center justify-center text-slate-500 font-bold text-xs tracking-widest uppercase font-mono text-center p-4">
                 Awaiting hydrological telemetry sync...
               </div>
             )}
@@ -360,16 +360,16 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
         </div>
 
         {/* Holographic AI Danger Status Radial Ring Widget */}
-        <div className="glass-panel rounded-3xl p-7 flex flex-col items-center justify-between min-h-[500px] relative">
+        <div className="glass-panel rounded-3xl p-5 sm:p-7 flex flex-col items-center justify-between min-h-0 sm:min-h-[500px] relative">
           <div className="absolute top-0 right-1/4 w-[50%] h-[1px] bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent"></div>
           
           <div className="text-center w-full">
-            <h2 className="text-lg font-extrabold text-slate-100 tracking-wide uppercase">AI Basin Risk Assessment</h2>
-            <p className="text-xs text-slate-500 mt-1.5 font-bold uppercase tracking-widest font-mono">Real-time ML early warning probability</p>
+            <h2 className="text-base sm:text-lg font-extrabold text-slate-100 tracking-wide uppercase">AI Basin Risk Assessment</h2>
+            <p className="text-[10px] sm:text-xs text-slate-500 mt-1 sm:mt-1.5 font-bold uppercase tracking-widest font-mono">Real-time ML early warning probability</p>
           </div>
 
           {/* Holographic Radial Progress Indicator with sweep lines */}
-          <div className="relative w-56 h-56 flex items-center justify-center my-6">
+          <div className="relative w-44 h-44 sm:w-56 sm:h-56 flex items-center justify-center my-4 sm:my-6">
             <div className="absolute inset-2 border border-purple-500/10 rounded-full animate-pulse-slow opacity-40"></div>
             <div className="absolute inset-6 border border-cyan-500/5 rounded-full opacity-30"></div>
             
@@ -397,17 +397,17 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
               </defs>
             </svg>
             <div className="absolute flex flex-col items-center justify-center">
-              <span className="text-6xl font-black text-slate-50 tracking-tight font-mono text-glow-purple animate-pulse">{latestFloodProb}%</span>
-              <span className="text-[9px] text-purple-400 font-black tracking-widest uppercase mt-1">HIGH RISK BIAS</span>
+              <span className="text-4xl sm:text-6xl font-black text-slate-50 tracking-tight font-mono text-glow-purple animate-pulse">{latestFloodProb}%</span>
+              <span className="text-[8px] sm:text-[9px] text-purple-400 font-black tracking-widest uppercase mt-1">HIGH RISK BIAS</span>
             </div>
           </div>
 
           {/* Detailed Forecast Metrics */}
-          <div className="w-full bg-[#040812] border border-purple-500/15 rounded-2.5xl p-5 text-center">
-            <span className={`px-3 py-1 rounded-full border text-[9px] font-black uppercase tracking-widest block mx-auto w-fit mb-3 ${latestFloodProb > 75 ? 'bg-red-500/10 border-red-500/30 text-red-400 animate-pulse shadow-[0_0_12px_rgba(239,68,68,0.2)]' : 'bg-amber-500/10 border-amber-500/30 text-amber-400'}`}>
+          <div className="w-full bg-[#040812] border border-purple-500/15 rounded-2.5xl p-4 sm:p-5 text-center">
+            <span className={`px-3 py-1 rounded-full border text-[8.5px] sm:text-[9px] font-black uppercase tracking-widest block mx-auto w-fit mb-2.5 sm:mb-3 ${latestFloodProb > 75 ? 'bg-red-500/10 border-red-500/30 text-red-400 animate-pulse shadow-[0_0_12px_rgba(239,68,68,0.2)]' : 'bg-amber-500/10 border-amber-500/30 text-amber-400'}`}>
               {latestFloodProb > 75 ? '⚠️ NEURAL OVERFLOW DETECTED' : '⚠️ ELEVATED OUTFLOW STATUS'}
             </span>
-            <p className="text-slate-300 text-xs font-semibold leading-relaxed">
+            <p className="text-slate-300 text-[11px] sm:text-xs font-semibold leading-relaxed">
               {latestFloodProb > 75 
                 ? 'ML networks compute imminent channel overflow at Melka Weir within a +6 Hour horizon. SMS dispatching ready.' 
                 : 'River discharge rate accelerated by upstream precipitation. LoRa telemetry registers are normal.'}
@@ -418,13 +418,13 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
       </div>
 
       {/* 4. Bottom Row: ESP32 Node Vitals Telemetry Widgets & scrolling live matrix activity feed */}
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 sm:gap-8">
         
         {/* ESP32 Hardware Telemetry widgets matrix */}
-        <div className="glass-panel rounded-3xl p-7 flex flex-col justify-between min-h-[420px]">
+        <div className="glass-panel rounded-3xl p-5 sm:p-7 flex flex-col justify-between min-h-0 sm:min-h-[420px]">
           <div>
-            <h2 className="text-lg font-extrabold text-slate-100 tracking-wide uppercase">ESP32 IoT Node Vitals</h2>
-            <p className="text-xs text-slate-500 mt-1.5 font-bold uppercase tracking-widest font-mono">Microcontroller diagnostic parameters</p>
+            <h2 className="text-base sm:text-lg font-extrabold text-slate-100 tracking-wide uppercase">ESP32 IoT Node Vitals</h2>
+            <p className="text-[10px] sm:text-xs text-slate-500 mt-1 sm:mt-1.5 font-bold uppercase tracking-widest font-mono">Microcontroller diagnostic parameters</p>
           </div>
 
           <div className="grid grid-cols-2 gap-4.5 my-6">
