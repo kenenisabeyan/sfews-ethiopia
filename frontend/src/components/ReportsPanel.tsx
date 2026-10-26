@@ -158,25 +158,5 @@ export const ReportsPanel: React.FC<ReportsPanelProps> = ({ activeStationName })
 
       </div>
     </div>
-                    borderColor: '#c084fc',
-                    borderRadius: '12px',
-                    fontSize: '11px',
-                    fontFamily: 'monospace',
-                    color: '#e2e8f0',
-                  }}
-                />
-                <Bar
-                  dataKey="level"
-                  fill="url(#barGradient)"
-                  radius={[6, 6, 0, 0]}
-                  maxBarSize={45}
-                />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
-      </div>
-    </div>
   );
 };
