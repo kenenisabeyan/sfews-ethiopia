@@ -503,31 +503,31 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
       </div>
 
       {/* 5. CCTV Night Vision monitor & Meteorology Outlook */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
         
         {/* Early Warning Proximity Responders */}
-        <div className="glass-panel rounded-3xl p-7 space-y-6">
+        <div className="glass-panel rounded-3xl p-4 sm:p-7 space-y-4 sm:space-y-6">
           <div>
-            <h2 className="text-lg font-extrabold text-slate-100 tracking-wide uppercase">Early Warning Proximity Responders</h2>
-            <p className="text-xs text-slate-500 mt-1.5 font-bold uppercase tracking-widest font-mono">Emergency broadcast dispatch centers for active mesh nodes</p>
+            <h2 className="text-base sm:text-lg font-extrabold text-slate-100 tracking-wide uppercase">Early Warning Proximity Responders</h2>
+            <p className="text-[10px] sm:text-xs text-slate-500 mt-1 sm:mt-1.5 font-bold uppercase tracking-widest font-mono">Emergency broadcast dispatch centers for active mesh nodes</p>
           </div>
 
-          <div className="space-y-4 max-h-[350px] overflow-y-auto pr-1.5 scrollbar-thin">
+          <div className="space-y-3 sm:space-y-4 max-h-[350px] overflow-y-auto pr-1 sm:pr-1.5 custom-scrollbar">
             {payload?.nodes.map((node) => (
               <div 
                 key={node.id} 
-                className={`bg-[#030610]/80 border rounded-2.5xl p-5 flex items-center justify-between transition-all duration-300 hover:scale-[1.01]
+                className={`bg-[#030610]/80 border rounded-2.5xl p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3.5 transition-all duration-300 hover:scale-[1.01]
                   ${node.currentRisk === 'Critical' ? 'border-red-500/35 shadow-[0_0_15px_rgba(239,68,68,0.15)] bg-red-950/5' : 'border-purple-500/10 hover:border-purple-500/25'}`}
               >
-                <div className="space-y-2">
-                  <div className="flex items-center gap-3">
-                    <h4 className="font-extrabold text-slate-50 text-sm">{node.name}</h4>
-                    <span className={`px-2.5 py-0.5 rounded-md text-[9px] font-black uppercase tracking-widest border ${getAlertColors(node.currentRisk)}`}>
+                <div className="space-y-1.5 sm:space-y-2 min-w-0">
+                  <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                    <h4 className="font-extrabold text-slate-50 text-sm truncate">{node.name}</h4>
+                    <span className={`px-2.5 py-0.5 rounded-md text-[8.5px] sm:text-[9px] font-black uppercase tracking-widest border shrink-0 ${getAlertColors(node.currentRisk)}`}>
                       {node.currentRisk || 'STANDBY'}
                     </span>
                   </div>
-                  <p className="text-xs text-slate-500 font-mono">LAT {node.latitude.toFixed(4)} • LON {node.longitude.toFixed(4)}</p>
-                  <div className="flex gap-4 text-xs font-bold text-slate-350 font-mono">
+                  <p className="text-[10px] sm:text-xs text-slate-500 font-mono">LAT {node.latitude.toFixed(4)} • LON {node.longitude.toFixed(4)}</p>
+                  <div className="flex flex-wrap gap-3 sm:gap-4 text-xs font-bold text-slate-350 font-mono">
                     <span>Water: <strong className="text-indigo-400 font-black">{node.waterLevelCm?.toFixed(1) || '0.0'} cm</strong></span>
                     <span>Rain: <strong className="text-cyan-400 font-black">{node.rainfallRateMm?.toFixed(1) || '0.0'} mm/h</strong></span>
                   </div>
@@ -535,7 +535,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
 
                 <button 
                   onClick={() => broadcastEmergencySMS(node)}
-                  className={`px-5 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all duration-300 shrink-0 border active:scale-95
+                  className={`w-full sm:w-auto px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all duration-300 shrink-0 border active:scale-95 text-center
                     ${node.currentRisk === 'Critical' 
                       ? 'bg-red-550/20 hover:bg-red-600/30 text-red-300 border-red-500/40 shadow-[0_0_12px_rgba(239,68,68,0.2)]' 
                       : 'bg-[#060a16] hover:bg-purple-950/30 text-slate-300 hover:text-white border-purple-500/20 hover:border-purple-500/40'}`}
@@ -548,21 +548,21 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
         </div>
 
         {/* Night vision live camera surveillance stream with radar controls */}
-        <div className="glass-panel rounded-3xl p-7 flex flex-col justify-between min-h-[440px] relative">
+        <div className="glass-panel rounded-3xl p-4 sm:p-7 flex flex-col justify-between min-h-0 sm:min-h-[440px] relative">
           <div className="absolute top-0 right-1/4 w-[50%] h-[1px] bg-gradient-to-r from-transparent via-emerald-500/20 to-transparent"></div>
           
-          <div className="flex justify-between items-center mb-5">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4 sm:mb-5">
             <div>
-              <h2 className="text-lg font-extrabold text-slate-100 tracking-wide uppercase">Pilot Basin Optical Stream</h2>
-              <p className="text-xs text-slate-500 mt-1.5 font-bold uppercase tracking-widest font-mono">Live CCTV river night surveillance matrix</p>
+              <h2 className="text-base sm:text-lg font-extrabold text-slate-100 tracking-wide uppercase">Pilot Basin Optical Stream</h2>
+              <p className="text-[10px] sm:text-xs text-slate-500 mt-0.5 sm:mt-1.5 font-bold uppercase tracking-widest font-mono">Live CCTV river night surveillance matrix</p>
             </div>
-            <div className="flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/30 px-3.5 py-1.5 rounded-xl text-[9px] font-black tracking-widest text-emerald-400 uppercase">
+            <div className="flex items-center gap-1.5 sm:gap-2 bg-emerald-500/10 border border-emerald-500/30 px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-xl text-[8.5px] sm:text-[9px] font-black tracking-widest text-emerald-400 uppercase shrink-0">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span> • NIGHT VISION FEED
             </div>
           </div>
 
           {/* Video simulation monitor viewport */}
-          <div className="flex-grow w-full bg-[#020409] border border-purple-500/10 rounded-2.5xl relative overflow-hidden flex flex-col justify-between p-5 group select-none min-h-[230px] shadow-[inset_0_0_30px_rgba(0,0,0,0.9)]">
+          <div className="flex-grow w-full bg-[#020409] border border-purple-500/10 rounded-2.5xl relative overflow-hidden flex flex-col justify-between p-3.5 sm:p-5 group select-none min-h-[200px] sm:min-h-[230px] shadow-[inset_0_0_30px_rgba(0,0,0,0.9)]">
             {/* Unsplash Camera image for realistic river monitoring visual */}
             <div 
               className="absolute inset-0 bg-cover bg-center opacity-30 mix-blend-luminosity grayscale contrast-125 pointer-events-none transition-all duration-700"
@@ -583,47 +583,49 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
             <div className="absolute inset-x-0 h-0.5 bg-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.7)] opacity-40 z-10 animate-scanline pointer-events-none"></div>
 
             {/* night vision camera overlay text */}
-            <div className="flex justify-between text-[9px] font-mono text-emerald-400 z-20 font-black tracking-widest uppercase">
-              <span>{CAMERA_FEED_SLIDES[(payload?.nodes.findIndex(n => n.id === activeStationId) !== -1 ? (payload?.nodes.findIndex(n => n.id === activeStationId) ?? 0) : 0) % CAMERA_FEED_SLIDES.length].title.toUpperCase()}</span>
-              <span>REC [●] {new Date().toISOString().slice(0, 10)}</span>
+            <div className="flex justify-between text-[8px] sm:text-[9px] font-mono text-emerald-400 z-20 font-black tracking-widest uppercase">
+              <span className="truncate max-w-[60%]">{CAMERA_FEED_SLIDES[(payload?.nodes.findIndex(n => n.id === activeStationId) !== -1 ? (payload?.nodes.findIndex(n => n.id === activeStationId) ?? 0) : 0) % CAMERA_FEED_SLIDES.length].title.toUpperCase()}</span>
+              <span>REC [●]</span>
             </div>
 
             {/* Diagnostic target reticle */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-15 opacity-50">
-              <div className="w-20 h-20 border border-dashed border-emerald-500/80 rounded-full animate-spin-slow"></div>
-              <div className="w-3 h-3 bg-emerald-500 rounded-full absolute shadow-[0_0_8px_#10b981]"></div>
-              <div className="w-28 h-[1px] bg-emerald-500/40 absolute"></div>
-              <div className="w-[1px] h-28 bg-emerald-500/40 absolute"></div>
+              <div className="w-16 h-16 sm:w-20 sm:h-20 border border-dashed border-emerald-500/80 rounded-full animate-spin-slow"></div>
+              <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 bg-emerald-500 rounded-full absolute shadow-[0_0_8px_#10b981]"></div>
+              <div className="w-24 sm:w-28 h-[1px] bg-emerald-500/40 absolute"></div>
+              <div className="w-[1px] h-24 sm:h-28 bg-emerald-500/40 absolute"></div>
             </div>
 
             {/* Animated Wave SVG graphics representing water currents */}
-            <div className="w-full flex-grow flex items-center justify-center relative overflow-hidden min-h-[140px]">
-              <svg className="w-full h-full max-h-[100px] text-emerald-500/15 absolute bottom-0 left-0" viewBox="0 0 100 20" preserveAspectRatio="none">
+            <div className="w-full flex-grow flex items-center justify-center relative overflow-hidden min-h-[100px] sm:min-h-[140px]">
+              <svg className="w-full h-full max-h-[80px] sm:max-h-[100px] text-emerald-500/15 absolute bottom-0 left-0" viewBox="0 0 100 20" preserveAspectRatio="none">
                 <path d="M0,10 C30,12 70,8 100,10 L100,20 L0,20 Z" fill="currentColor" className="animate-wave"></path>
                 <path d="M0,12 C40,7 60,13 100,12 L100,20 L0,20 Z" fill="currentColor" opacity="0.5" style={{ animationDelay: '2s' }} className="animate-wave"></path>
               </svg>
-              <div className="absolute flex flex-col items-center justify-center text-center text-emerald-450 font-mono text-[10px] gap-2.5 z-20 font-black tracking-widest">
-                <svg className="w-8 h-8 opacity-80 animate-pulse text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="absolute flex flex-col items-center justify-center text-center text-emerald-450 font-mono text-[9px] sm:text-[10px] gap-2 z-20 font-black tracking-widest">
+                <svg className="w-6 h-6 sm:w-8 sm:h-8 opacity-80 animate-pulse text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
                 </svg>
-                <span className="text-glow-emerald bg-emerald-950/20 px-3.5 py-1 rounded-md border border-emerald-500/20">OPTICAL ACTIVE LINK — {activeStation?.name || 'NODE-BETA-2'}</span>
+                <span className="text-glow-emerald bg-emerald-950/40 px-2.5 sm:px-3.5 py-0.5 sm:py-1 rounded-md border border-emerald-500/20 truncate max-w-full">
+                  OPTICAL LINK — {activeStation?.name || 'NODE-BETA-2'}
+                </span>
               </div>
             </div>
 
             {/* Bottom camera diagnostics */}
-            <div className="flex justify-between text-[9px] font-mono text-emerald-450 z-20 font-bold border-t border-emerald-950/30 pt-2.5 tracking-widest font-mono">
-              <span>ISO 1250 • f/1.8 • night scope</span>
-              <span>VOLUMETRIC DISCHARGE: ~124.5 m³/s</span>
+            <div className="flex justify-between text-[8px] sm:text-[9px] font-mono text-emerald-450 z-20 font-bold border-t border-emerald-950/30 pt-2 tracking-widest font-mono">
+              <span>ISO 1250 • f/1.8</span>
+              <span>VOLUMETRIC: ~124.5 m³/s</span>
             </div>
           </div>
 
           {/* Station select list */}
-          <div className="mt-4.5 flex gap-2.5 overflow-x-auto pb-1.5 scrollbar-thin">
+          <div className="mt-3.5 sm:mt-4.5 flex gap-2 overflow-x-auto pb-1.5 custom-scrollbar">
             {payload?.nodes.map((s) => (
               <button 
                 key={s.id} 
                 onClick={() => setActiveStationId(s.id)}
-                className={`px-4.5 py-2.5 rounded-xl text-[10px] font-black whitespace-nowrap border transition-all duration-300 uppercase tracking-widest active:scale-95
+                className={`px-3.5 sm:px-4.5 py-2 sm:py-2.5 rounded-xl text-[9px] sm:text-[10px] font-black whitespace-nowrap border transition-all duration-300 uppercase tracking-widest active:scale-95
                   ${activeStationId === s.id 
                     ? 'bg-emerald-500/10 border-emerald-500/40 text-emerald-400 shadow-[0_0_12px_rgba(16,185,129,0.1)]' 
                     : 'bg-[#030610] border-white/5 text-slate-400 hover:text-slate-200 hover:border-purple-500/20'}`}
@@ -637,26 +639,26 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
       </div>
 
       {/* 6. Awash GIS Map & Weather Outlook Widgets */}
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 sm:gap-8">
         
         {/* SVG GIS Map Vector Panel */}
-        <div className="xl:col-span-2 glass-panel rounded-3xl p-7 flex flex-col min-h-[490px]">
-          <div className="mb-7 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="xl:col-span-2 glass-panel rounded-3xl p-4 sm:p-7 flex flex-col min-h-0 sm:min-h-[490px]">
+          <div className="mb-5 sm:mb-7 flex flex-col md:flex-row md:items-center justify-between gap-3 sm:gap-4">
             <div>
-              <h2 className="text-lg font-extrabold text-slate-100 tracking-wide uppercase">Awash Basin Topographic Map</h2>
-              <p className="text-xs text-slate-500 mt-1.5 font-bold uppercase tracking-widest font-mono">Spatial vector coordinate layout linking monitored stations</p>
+              <h2 className="text-base sm:text-lg font-extrabold text-slate-100 tracking-wide uppercase">Awash Basin Topographic Map</h2>
+              <p className="text-[10px] sm:text-xs text-slate-500 mt-1 sm:mt-1.5 font-bold uppercase tracking-widest font-mono">Spatial vector coordinate layout linking monitored stations</p>
             </div>
             
             {/* Map Legends */}
-            <div className="flex flex-wrap gap-4">
-              <span className="flex items-center gap-2 text-[10px] text-slate-400 font-extrabold tracking-widest uppercase font-mono"><span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_8px_#10b981]"></span> Safe</span>
-              <span className="flex items-center gap-2 text-[10px] text-slate-400 font-extrabold tracking-widest uppercase font-mono"><span className="w-2.5 h-2.5 rounded-full bg-amber-500 shadow-[0_0_8px_#f59e0b]"></span> Warning</span>
-              <span className="flex items-center gap-2 text-[10px] text-slate-400 font-extrabold tracking-widest uppercase font-mono"><span className="w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_8px_#ef4444] animate-pulse"></span> Critical</span>
+            <div className="flex flex-wrap gap-3 sm:gap-4">
+              <span className="flex items-center gap-1.5 sm:gap-2 text-[9px] sm:text-[10px] text-slate-400 font-extrabold tracking-widest uppercase font-mono"><span className="w-2 sm:w-2.5 h-2 sm:h-2.5 rounded-full bg-emerald-500 shadow-[0_0_8px_#10b981]"></span> Safe</span>
+              <span className="flex items-center gap-1.5 sm:gap-2 text-[9px] sm:text-[10px] text-slate-400 font-extrabold tracking-widest uppercase font-mono"><span className="w-2 sm:w-2.5 h-2 sm:h-2.5 rounded-full bg-amber-500 shadow-[0_0_8px_#f59e0b]"></span> Warning</span>
+              <span className="flex items-center gap-1.5 sm:gap-2 text-[9px] sm:text-[10px] text-slate-400 font-extrabold tracking-widest uppercase font-mono"><span className="w-2 sm:w-2.5 h-2 sm:h-2.5 rounded-full bg-red-500 shadow-[0_0_8px_#ef4444] animate-pulse"></span> Critical</span>
             </div>
           </div>
 
           {/* Custom SVG Interactive Map */}
-          <div className="flex-grow w-full bg-[#010308]/90 border border-purple-500/10 rounded-3xl relative overflow-hidden flex items-center justify-center min-h-[320px] p-5 shadow-[inset_0_4px_30px_rgba(0,0,0,0.8)]">
+          <div className="flex-grow w-full bg-[#010308]/90 border border-purple-500/10 rounded-2xl sm:rounded-3xl relative overflow-hidden flex items-center justify-center min-h-[260px] sm:min-h-[320px] p-2 sm:p-5 shadow-[inset_0_4px_30px_rgba(0,0,0,0.8)]">
             <svg className="w-full h-full max-w-[720px] max-h-[310px] text-slate-800" viewBox="0 0 600 300" fill="none">
               
               {/* Curvy River Path representing the Awash River flow */}
@@ -735,29 +737,29 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
         </div>
 
         {/* Modern Meteorology Weather Outlook */}
-        <div className="glass-panel rounded-3xl p-7 flex flex-col justify-between min-h-[490px]">
+        <div className="glass-panel rounded-3xl p-4 sm:p-7 flex flex-col justify-between min-h-0 sm:min-h-[490px]">
           <div className="text-center w-full">
-            <h2 className="text-lg font-extrabold text-slate-100 tracking-wide uppercase">Meteorological Outlook</h2>
-            <p className="text-xs text-slate-500 mt-1.5 font-bold uppercase tracking-widest font-mono">Semera Region Weather Station</p>
+            <h2 className="text-base sm:text-lg font-extrabold text-slate-100 tracking-wide uppercase">Meteorological Outlook</h2>
+            <p className="text-[10px] sm:text-xs text-slate-500 mt-1 sm:mt-1.5 font-bold uppercase tracking-widest font-mono">Semera Region Weather Station</p>
           </div>
 
-          <div className="flex flex-col items-center justify-center my-6 space-y-2">
-            <span className="text-glow-purple text-6xl font-black text-slate-50 font-mono tracking-tight flex items-start">
-              24<span className="text-2.5xl text-purple-400 font-medium font-sans mt-1">°C</span>
+          <div className="flex flex-col items-center justify-center my-4 sm:my-6 space-y-1.5 sm:space-y-2">
+            <span className="text-glow-purple text-4xl sm:text-6xl font-black text-slate-50 font-mono tracking-tight flex items-start">
+              24<span className="text-2xl sm:text-2.5xl text-purple-400 font-medium font-sans mt-1">°C</span>
             </span>
             <div className="text-center">
-              <p className="text-sm font-black text-slate-100 uppercase tracking-wider">Heavy Rain Watch</p>
-              <span className="text-[9.5px] text-slate-500 font-bold uppercase tracking-widest font-mono">humidity: 89% | wind velocity: 12km/h</span>
+              <p className="text-xs sm:text-sm font-black text-slate-100 uppercase tracking-wider">Heavy Rain Watch</p>
+              <span className="text-[9px] sm:text-[9.5px] text-slate-500 font-bold uppercase tracking-widest font-mono">humidity: 89% | wind: 12km/h</span>
             </div>
           </div>
 
-          <div className="space-y-4">
-            <div className="text-[10px] text-slate-500 font-black uppercase tracking-widest border-b border-white/5 pb-2.5 font-mono">3-Day Forecast Grid</div>
-            <div className="grid grid-cols-3 gap-3">
+          <div className="space-y-3 sm:space-y-4">
+            <div className="text-[9px] sm:text-[10px] text-slate-500 font-black uppercase tracking-widest border-b border-white/5 pb-2 font-mono">3-Day Forecast Grid</div>
+            <div className="grid grid-cols-3 gap-2 sm:gap-3">
               {weatherForecast.slice(0, 3).map((fc, i) => (
-                <div key={i} className="bg-[#030610] border border-purple-500/10 p-3.5 rounded-2xl flex flex-col items-center justify-center text-center hover:border-purple-500/20 transition-all hover:scale-102">
-                  <span className="text-slate-500 font-extrabold text-[8.5px] uppercase tracking-widest font-mono">{fc.day}</span>
-                  <div className="w-7 h-7 my-2 text-indigo-400">
+                <div key={i} className="bg-[#030610] border border-purple-500/10 p-2.5 sm:p-3.5 rounded-2xl flex flex-col items-center justify-center text-center hover:border-purple-500/20 transition-all hover:scale-102">
+                  <span className="text-slate-500 font-extrabold text-[8px] sm:text-[8.5px] uppercase tracking-widest font-mono">{fc.day}</span>
+                  <div className="w-5 h-5 sm:w-7 sm:h-7 my-1.5 sm:my-2 text-indigo-400">
                     {fc.icon === 'cloud' && (
                       <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" /></svg>
                     )}
@@ -771,7 +773,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
                       <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z" /></svg>
                     )}
                   </div>
-                  <span className="font-mono text-slate-200 font-bold text-xs">{fc.temp}</span>
+                  <span className="font-mono text-slate-200 font-bold text-[11px] sm:text-xs">{fc.temp}</span>
                 </div>
               ))}
             </div>
@@ -781,27 +783,27 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
       </div>
 
       {/* 7. Modern Event Activity Table Log */}
-      <div className="glass-panel rounded-3xl p-7 space-y-6">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="glass-panel rounded-3xl p-4 sm:p-7 space-y-4 sm:space-y-6">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 sm:gap-4">
           <div>
-            <h2 className="text-lg font-extrabold text-slate-100 tracking-wide uppercase">Command Center Activity Event log</h2>
-            <p className="text-xs text-slate-500 mt-1.5 font-bold uppercase tracking-widest font-mono">Aggregated database ledger and automated early warnings dispatches</p>
+            <h2 className="text-base sm:text-lg font-extrabold text-slate-100 tracking-wide uppercase">Command Center Activity Event log</h2>
+            <p className="text-[10px] sm:text-xs text-slate-500 mt-1 sm:mt-1.5 font-bold uppercase tracking-widest font-mono">Aggregated database ledger and automated early warnings dispatches</p>
           </div>
-          <span className="px-3.5 py-1.5 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-400 font-extrabold text-[9px] uppercase tracking-widest font-mono">
+          <span className="px-3 sm:px-3.5 py-1 sm:py-1.5 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-400 font-extrabold text-[8.5px] sm:text-[9px] uppercase tracking-widest font-mono w-fit">
             SECURE COMPLIANCE TRANSCRIPT
           </span>
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse text-xs md:text-sm">
+        <div className="overflow-x-auto custom-scrollbar">
+          <table className="w-full text-left border-collapse text-xs md:text-sm min-w-[640px]">
             <thead>
-              <tr className="border-b border-white/5 text-slate-400 font-black uppercase tracking-widest text-[9.5px] font-mono">
-                <th className="py-4.5 px-6">Event ID</th>
-                <th className="py-4.5 px-6">Source Node Station</th>
-                <th className="py-4.5 px-6">Hydrological Metrics Trigger</th>
-                <th className="py-4.5 px-6">Risk Category</th>
-                <th className="py-4.5 px-6">Dispatch System Response</th>
-                <th className="py-4.5 px-6 text-right">Activity Timestamp</th>
+              <tr className="border-b border-white/5 text-slate-400 font-black uppercase tracking-widest text-[9px] sm:text-[9.5px] font-mono">
+                <th className="py-3 sm:py-4.5 px-3 sm:px-6">Event ID</th>
+                <th className="py-3 sm:py-4.5 px-3 sm:px-6">Source Node Station</th>
+                <th className="py-3 sm:py-4.5 px-3 sm:px-6">Hydrological Metrics Trigger</th>
+                <th className="py-3 sm:py-4.5 px-3 sm:px-6">Risk Category</th>
+                <th className="py-3 sm:py-4.5 px-3 sm:px-6">Dispatch System Response</th>
+                <th className="py-3 sm:py-4.5 px-3 sm:px-6 text-right">Activity Timestamp</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5 font-semibold text-slate-350">
@@ -821,27 +823,27 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
 
                 return (
                   <tr key={node.id} className="hover:bg-white/5 transition-all">
-                    <td className="py-4.5 px-6 font-mono text-slate-500 text-xs font-bold">{eventId}</td>
-                    <td className="py-4.5 px-6">
+                    <td className="py-3 sm:py-4.5 px-3 sm:px-6 font-mono text-slate-500 text-xs font-bold">{eventId}</td>
+                    <td className="py-3 sm:py-4.5 px-3 sm:px-6">
                       <div className="font-extrabold text-slate-100">{node.name}</div>
                       <div className="text-[9px] text-slate-500 font-mono uppercase mt-0.5">{node.id}</div>
                     </td>
-                    <td className="py-4.5 px-6">
+                    <td className="py-3 sm:py-4.5 px-3 sm:px-6">
                       <span className="font-mono text-xs text-indigo-400 font-black">{triggerVal}</span>
                       <span className="text-[9px] text-slate-500 font-bold block font-mono">Rainfall: {node.rainfallRateMm?.toFixed(1) || '0.0'} mm/h</span>
                     </td>
-                    <td className="py-4.5 px-6">
-                      <span className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest border inline-block ${getAlertColors(node.currentRisk)}`}>
+                    <td className="py-3 sm:py-4.5 px-3 sm:px-6">
+                      <span className={`px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full text-[8.5px] sm:text-[9px] font-black uppercase tracking-widest border inline-block ${getAlertColors(node.currentRisk)}`}>
                         {riskText}
                       </span>
                     </td>
-                    <td className="py-4.5 px-6">
+                    <td className="py-3 sm:py-4.5 px-3 sm:px-6">
                       <div className="flex items-center gap-2">
                         <span className={`w-1.5 h-1.5 rounded-full ${node.currentRisk === 'Critical' ? 'bg-red-500 shadow-[0_0_8px_#ef4444] animate-ping' : node.currentRisk === 'Warning' ? 'bg-amber-500 shadow-[0_0_8px_#f59e0b]' : 'bg-emerald-500 shadow-[0_0_8px_#10b981]'}`}></span>
-                        <span className="text-xs">{responseText}</span>
+                        <span className="text-xs truncate">{responseText}</span>
                       </div>
                     </td>
-                    <td className="py-4.5 px-6 text-right text-slate-400 text-xs font-mono">
+                    <td className="py-3 sm:py-4.5 px-3 sm:px-6 text-right text-slate-400 text-xs font-mono whitespace-nowrap">
                       {i === 0 ? 'Just Now' : `${i * 12} min ago`}
                     </td>
                   </tr>
@@ -851,6 +853,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
           </table>
         </div>
       </div>
+
       
     </div>
   );
