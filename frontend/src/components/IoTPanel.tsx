@@ -238,44 +238,44 @@ export const IoTPanel: React.FC<IoTPanelProps> = ({
 
 
   return (
-    <div className="space-y-8 animate-hologram">
+    <div className="space-y-6 sm:space-y-8 animate-hologram">
       
       {/* 1. Header Bar */}
-      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 pb-5 border-b border-white/5 relative">
+      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 sm:gap-6 pb-4 sm:pb-5 border-b border-white/5 relative">
         <div className="absolute bottom-0 left-0 w-24 h-0.5 bg-gradient-to-r from-purple-500 to-cyan-400"></div>
         <div>
-          <div className="flex flex-wrap items-center gap-3">
-            <span className="text-[10px] font-black uppercase text-purple-400 tracking-widest font-mono bg-purple-500/10 border border-purple-500/20 px-3.5 py-1 rounded-full">
-              🔌 INTEGRATED CIRCUIT DIAGNOSTICS
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+            <span className="text-[9px] sm:text-[10px] font-black uppercase text-purple-400 tracking-widest font-mono bg-purple-500/10 border border-purple-500/20 px-2.5 sm:px-3.5 py-1 rounded-full">
+              🔌 IC DIAGNOSTICS
             </span>
-            <span className="text-[10px] font-black uppercase text-cyan-400 tracking-widest font-mono bg-cyan-500/10 border border-cyan-500/20 px-3.5 py-1 rounded-full">
-              ESP32 SYSTEM DIAG
+            <span className="text-[9px] sm:text-[10px] font-black uppercase text-cyan-400 tracking-widest font-mono bg-cyan-500/10 border border-cyan-500/20 px-2.5 sm:px-3.5 py-1 rounded-full">
+              ESP32 DIAG
             </span>
-            <span className="text-[10px] font-black text-slate-400 tracking-widest font-mono bg-white/5 border border-white/10 px-3 py-1 rounded-full">
-              CORE VOLTAGE: 3.30V
+            <span className="text-[9px] sm:text-[10px] font-black text-slate-400 tracking-widest font-mono bg-white/5 border border-white/10 px-2.5 sm:px-3 py-1 rounded-full">
+              CORE: 3.30V
             </span>
           </div>
-          <h1 className="text-4xl md:text-5xl font-black tracking-tight bg-gradient-to-r from-slate-50 via-slate-100 to-indigo-300 bg-clip-text text-transparent mt-3.5">
+          <h1 className="text-2xl sm:text-4xl md:text-5xl font-black tracking-tight bg-gradient-to-r from-slate-50 via-slate-100 to-indigo-300 bg-clip-text text-transparent mt-2 sm:mt-3.5">
             IoT Edge System Console
           </h1>
-          <p className="text-slate-400 mt-1.5 text-sm font-semibold tracking-wide">
+          <p className="text-slate-400 mt-1 sm:mt-1.5 text-xs sm:text-sm font-semibold tracking-wide">
             Live Embedded Microcontroller Core Diagnostics — <span className="font-mono text-cyan-400 text-glow-cyan font-bold">{activeStationName}</span>
           </p>
         </div>
 
         {/* System Vitals Indicators */}
-        <div className="flex items-center gap-6">
-          <div className="hidden sm:flex flex-col text-right font-mono text-[10px] text-slate-500 leading-snug">
+        <div className="flex flex-wrap items-center gap-3 sm:gap-6">
+          <div className="flex flex-col font-mono text-[9px] sm:text-[10px] text-slate-500 leading-snug">
             <span className="font-bold text-slate-400 uppercase tracking-widest">LoRa Link Speed</span>
             <span className="text-cyan-400 font-extrabold text-xs text-glow-cyan mt-0.5">{pingRate} ms (CONNECTED)</span>
           </div>
 
-          <div className="flex items-center gap-3 bg-[#060a16] border border-purple-500/20 px-5 py-3.5 rounded-2xl shadow-[0_4px_30px_rgba(0,0,0,0.5)] backdrop-blur-md">
-            <div className="relative flex h-2.5 w-2.5 shrink-0">
+          <div className="flex items-center gap-2.5 sm:gap-3 bg-[#060a16] border border-purple-500/20 px-3.5 sm:px-5 py-2.5 sm:py-3.5 rounded-xl sm:rounded-2xl shadow-[0_4px_30px_rgba(0,0,0,0.5)] backdrop-blur-md">
+            <div className="relative flex h-2 sm:h-2.5 w-2 sm:w-2.5 shrink-0">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-cyan-500 shadow-[0_0_8px_rgba(34,211,238,0.8)]"></span>
+              <span className="relative inline-flex rounded-full h-2 sm:h-2.5 w-2 sm:w-2.5 bg-cyan-500 shadow-[0_0_8px_rgba(34,211,238,0.8)]"></span>
             </div>
-            <span className="text-[10px] font-mono font-black tracking-widest text-slate-350 uppercase shrink-0">
+            <span className="text-[9px] sm:text-[10px] font-mono font-black tracking-widest text-slate-350 uppercase shrink-0">
               TELEMETRY DENSE MODE
             </span>
           </div>
@@ -283,20 +283,20 @@ export const IoTPanel: React.FC<IoTPanelProps> = ({
       </div>
 
       {/* 2. Selection grid & Spec card */}
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
         
         {/* Node selector & active hardware specifications */}
-        <div className="xl:col-span-1 glass-panel rounded-3xl p-7 flex flex-col justify-between min-h-[300px]">
+        <div className="lg:col-span-1 glass-panel rounded-2xl sm:rounded-3xl p-4 sm:p-7 flex flex-col justify-between min-h-0 sm:min-h-[300px]">
           <div>
-            <h2 className="text-lg font-extrabold text-slate-100 tracking-wide uppercase">Node Selector</h2>
-            <p className="text-xs text-slate-500 mt-1.5 font-bold uppercase tracking-widest font-mono mb-4">Choose an active edge board to inspect</p>
+            <h2 className="text-base sm:text-lg font-extrabold text-slate-100 tracking-wide uppercase">Node Selector</h2>
+            <p className="text-[11px] sm:text-xs text-slate-500 mt-1 font-bold uppercase tracking-widest font-mono mb-3 sm:mb-4">Choose an active edge board to inspect</p>
             
-            <div className="flex flex-wrap gap-2.5 mb-6">
+            <div className="flex flex-wrap gap-2 sm:gap-2.5 mb-4 sm:mb-6">
               {payload?.nodes.map((s) => (
                 <button
                   key={s.id}
                   onClick={() => setActiveStationId(s.id)}
-                  className={`px-4.5 py-3 rounded-xl text-xs font-black border transition-all duration-300 uppercase tracking-widest active:scale-95 flex items-center gap-2
+                  className={`px-3.5 sm:px-4.5 py-2 sm:py-3 rounded-xl text-[11px] sm:text-xs font-black border transition-all duration-300 uppercase tracking-widest active:scale-95 flex items-center gap-2
                     ${activeStationId === s.id
                       ? 'bg-gradient-to-r from-purple-600/20 to-cyan-500/10 border-cyan-500/40 text-cyan-400 shadow-[0_0_12px_rgba(34,211,238,0.15)]'
                       : 'bg-[#030610] border-white/5 text-slate-400 hover:text-slate-200 hover:border-purple-500/20'}`}
@@ -308,42 +308,42 @@ export const IoTPanel: React.FC<IoTPanelProps> = ({
             </div>
           </div>
 
-          <div className="bg-[#030610]/80 border border-purple-500/10 rounded-2.5xl p-5 space-y-4">
+          <div className="bg-[#030610]/80 border border-purple-500/10 rounded-2xl p-3.5 sm:p-5 space-y-3 sm:space-y-4">
             <h3 className="text-xs font-black text-purple-400 tracking-widest uppercase font-mono">Microcontroller Specs</h3>
             
-            <div className="space-y-2 text-xs font-mono">
-              <div className="flex justify-between border-b border-white/5 pb-2">
-                <span className="text-slate-500">MCU:</span>
-                <span className="text-slate-350 font-bold">ESP32-D0WDQ6-V3</span>
+            <div className="space-y-1.5 sm:space-y-2 text-xs font-mono">
+              <div className="flex justify-between border-b border-white/5 pb-1.5 sm:pb-2">
+                <span className="text-slate-500 text-[11px]">MCU:</span>
+                <span className="text-slate-350 font-bold text-[11px]">ESP32-D0WDQ6-V3</span>
               </div>
-              <div className="flex justify-between border-b border-white/5 pb-2">
-                <span className="text-slate-500">CPU Clock:</span>
-                <span className="text-slate-350 font-bold">240 MHz (Dual-Core)</span>
+              <div className="flex justify-between border-b border-white/5 pb-1.5 sm:pb-2">
+                <span className="text-slate-500 text-[11px]">CPU Clock:</span>
+                <span className="text-slate-350 font-bold text-[11px]">240 MHz (Dual-Core)</span>
               </div>
-              <div className="flex justify-between border-b border-white/5 pb-2">
-                <span className="text-slate-500">Flash Size:</span>
-                <span className="text-slate-350 font-bold">4 MB (SPIFFS Ext)</span>
+              <div className="flex justify-between border-b border-white/5 pb-1.5 sm:pb-2">
+                <span className="text-slate-500 text-[11px]">Flash Size:</span>
+                <span className="text-slate-350 font-bold text-[11px]">4 MB (SPIFFS Ext)</span>
               </div>
-              <div className="flex justify-between border-b border-white/5 pb-2">
-                <span className="text-slate-500">LoRa RF Module:</span>
-                <span className="text-cyan-400 font-bold text-glow-cyan">RFM95W (868MHz)</span>
+              <div className="flex justify-between border-b border-white/5 pb-1.5 sm:pb-2">
+                <span className="text-slate-500 text-[11px]">LoRa RF Module:</span>
+                <span className="text-cyan-400 font-bold text-glow-cyan text-[11px]">RFM95W (868MHz)</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-500">Firmware:</span>
-                <span className="text-purple-400 font-bold">SFEWS-v4.2.1-ASTU</span>
+                <span className="text-slate-500 text-[11px]">Firmware:</span>
+                <span className="text-purple-400 font-bold text-[11px]">SFEWS-v4.2.1-ASTU</span>
               </div>
             </div>
           </div>
         </div>
 
         {/* High-Fidelity Diagnostic gauges (Solar battery, solar watts, temperatures) */}
-        <div className="xl:col-span-2 glass-panel rounded-3xl p-7 flex flex-col justify-between">
+        <div className="lg:col-span-2 glass-panel rounded-2xl sm:rounded-3xl p-4 sm:p-7 flex flex-col justify-between">
           <div>
-            <h2 className="text-lg font-extrabold text-slate-100 tracking-wide uppercase">Core Power & Environment</h2>
-            <p className="text-xs text-slate-500 mt-1.5 font-bold uppercase tracking-widest font-mono">Real-time solar panel and battery stack telemetry</p>
+            <h2 className="text-base sm:text-lg font-extrabold text-slate-100 tracking-wide uppercase">Core Power & Environment</h2>
+            <p className="text-[11px] sm:text-xs text-slate-500 mt-1 font-bold uppercase tracking-widest font-mono">Real-time solar panel and battery stack telemetry</p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 my-6">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-5 my-4 sm:my-6">
             
             {/* Battery state of charge */}
             <div className="bg-[#030610] border border-purple-500/10 p-5 rounded-2.5xl flex flex-col justify-between hover:border-purple-500/20 transition-all">
@@ -474,94 +474,102 @@ export const IoTPanel: React.FC<IoTPanelProps> = ({
         </div>
 
         {/* Center column: Visual ESP32 Chip layout */}
-        <div className="xl:col-span-2 glass-panel rounded-3xl p-7 flex flex-col items-center justify-between min-h-[500px] relative">
+        <div className="lg:col-span-2 glass-panel rounded-2xl sm:rounded-3xl p-4 sm:p-7 flex flex-col items-center justify-between min-h-0 sm:min-h-[500px] relative">
           <div className="absolute top-0 right-1/4 w-[50%] h-[1px] bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent"></div>
           
           <div className="text-center w-full">
-            <h2 className="text-lg font-extrabold text-slate-100 tracking-wide uppercase">Physical GPIO Pin Breakout</h2>
-            <p className="text-xs text-slate-500 mt-1.5 font-bold uppercase tracking-widest font-mono">ESP32 DevKitC 38-Pin Layout Microchip Mockup</p>
+            <h2 className="text-base sm:text-lg font-extrabold text-slate-100 tracking-wide uppercase">Physical GPIO Pin Breakout</h2>
+            <p className="text-[11px] sm:text-xs text-slate-500 mt-1 font-bold uppercase tracking-widest font-mono">ESP32 DevKitC 38-Pin Layout Microchip Mockup</p>
           </div>
 
-          {/* Microcontroller visualization wrapper */}
-          <div className="w-full max-w-[640px] my-6 bg-[#020409]/95 border border-purple-500/10 rounded-3xl p-6 flex flex-row justify-between items-stretch gap-6 relative shadow-[inset_0_4px_30px_rgba(0,0,0,0.9)] overflow-x-auto min-w-[500px]">
-            
-            {/* Left Pin column buttons flanking */}
-            <div className="flex flex-col justify-between gap-1 z-20 shrink-0 pr-2 border-r border-slate-900/60">
-              {leftPins.map(pin => (
-                <button
-                  key={pin.pinNumber}
-                  onClick={() => setSelectedPin(pin)}
-                  className={`w-28 px-2 py-1 text-[9.5px] font-black font-mono border rounded-lg flex items-center justify-between transition-all duration-200 active:scale-95
-                    ${selectedPin?.pinNumber === pin.pinNumber
-                      ? 'bg-gradient-to-r from-cyan-500/20 to-purple-500/20 border-cyan-400 text-cyan-300 shadow-[0_0_8px_rgba(34,211,238,0.2)]'
-                      : 'bg-[#040813] border-white/5 text-slate-400 hover:text-slate-200 hover:border-slate-800'}`}
-                >
-                  <span className="opacity-40">{pin.pinNumber}</span>
-                  <span className="tracking-wide uppercase font-extrabold">{pin.label}</span>
-                  <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${pin.state === 'HIGH' ? 'bg-emerald-400 shadow-[0_0_5px_rgba(16,185,129,0.8)]' : pin.state === 'LOW' ? 'bg-red-400 shadow-[0_0_5px_rgba(239,68,68,0.8)]' : pin.state === 'ANALOG' ? 'bg-amber-400 animate-pulse' : 'bg-slate-700'}`}></span>
-                </button>
-              ))}
-            </div>
+          {/* Mobile swipe hint */}
+          <div className="md:hidden flex items-center justify-between text-[10px] font-mono text-slate-500 mt-3 w-full px-1">
+            <span>38-Pin Microchip layout</span>
+            <span className="text-cyan-400 font-bold">← Swipe pins →</span>
+          </div>
 
-            {/* Central Microprocessor Core Design */}
-            <div className="flex-grow flex flex-col justify-center items-center relative py-6 px-4">
+          {/* Microcontroller visualization wrapper with responsive scroll */}
+          <div className="w-full overflow-x-auto custom-scrollbar my-4 sm:my-6 pb-2 -mx-4 sm:mx-0 px-4 sm:px-0">
+            <div className="min-w-[480px] max-w-[640px] mx-auto bg-[#020409]/95 border border-purple-500/10 rounded-2xl sm:rounded-3xl p-4 sm:p-6 flex flex-row justify-between items-stretch gap-4 sm:gap-6 relative shadow-[inset_0_4px_30px_rgba(0,0,0,0.9)]">
               
-              {/* SVG vector chip background */}
-              <div className="w-full max-w-[200px] aspect-[4/5] bg-gradient-to-br from-[#0c1224] to-[#04060c] border border-slate-800 rounded-2xl flex flex-col justify-between p-4 relative shadow-[0_0_40px_rgba(0,0,0,0.8)] z-10">
-                <div className="absolute inset-0 bg-[#0c1224]/10 rounded-2xl blur-lg pointer-events-none"></div>
+              {/* Left Pin column buttons flanking */}
+              <div className="flex flex-col justify-between gap-1 z-20 shrink-0 pr-2 border-r border-slate-900/60">
+                {leftPins.map(pin => (
+                  <button
+                    key={pin.pinNumber}
+                    onClick={() => setSelectedPin(pin)}
+                    className={`w-24 sm:w-28 px-1.5 sm:px-2 py-1 text-[9px] sm:text-[9.5px] font-black font-mono border rounded-lg flex items-center justify-between transition-all duration-200 active:scale-95
+                      ${selectedPin?.pinNumber === pin.pinNumber
+                        ? 'bg-gradient-to-r from-cyan-500/20 to-purple-500/20 border-cyan-400 text-cyan-300 shadow-[0_0_8px_rgba(34,211,238,0.2)]'
+                        : 'bg-[#040813] border-white/5 text-slate-400 hover:text-slate-200 hover:border-slate-800'}`}
+                  >
+                    <span className="opacity-40">{pin.pinNumber}</span>
+                    <span className="tracking-wide uppercase font-extrabold">{pin.label}</span>
+                    <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${pin.state === 'HIGH' ? 'bg-emerald-400 shadow-[0_0_5px_rgba(16,185,129,0.8)]' : pin.state === 'LOW' ? 'bg-red-400 shadow-[0_0_5px_rgba(239,68,68,0.8)]' : pin.state === 'ANALOG' ? 'bg-amber-400 animate-pulse' : 'bg-slate-700'}`}></span>
+                  </button>
+                ))}
+              </div>
+
+              {/* Central Microprocessor Core Design */}
+              <div className="flex-grow flex flex-col justify-center items-center relative py-4 sm:py-6 px-2 sm:px-4">
                 
-                {/* Metallic shine detail line */}
-                <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
-                <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/5 to-transparent"></div>
+                {/* SVG vector chip background */}
+                <div className="w-full max-w-[180px] sm:max-w-[200px] aspect-[4/5] bg-gradient-to-br from-[#0c1224] to-[#04060c] border border-slate-800 rounded-2xl flex flex-col justify-between p-3 sm:p-4 relative shadow-[0_0_40px_rgba(0,0,0,0.8)] z-10">
+                  <div className="absolute inset-0 bg-[#0c1224]/10 rounded-2xl blur-lg pointer-events-none"></div>
+                  
+                  {/* Metallic shine detail line */}
+                  <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+                  <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/5 to-transparent"></div>
 
-                <div className="flex justify-between items-start">
-                  <span className="text-[7.5px] font-black font-mono text-purple-400 uppercase tracking-widest">ASTU LAB</span>
-                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_5px_#22d3ee] animate-pulse"></span>
-                </div>
-
-                <div className="text-center py-4 flex flex-col items-center justify-center">
-                  <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-purple-600 to-indigo-600 flex items-center justify-center text-white font-extrabold text-[11px] shadow-lg shadow-purple-600/30 mb-2 relative">
-                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 5h10a2 2 0 012 2v10a2 2 0 01-2 2H7a2 2 0 01-2-2V7a2 2 0 012-2z" /></svg>
+                  <div className="flex justify-between items-start">
+                    <span className="text-[7.5px] font-black font-mono text-purple-400 uppercase tracking-widest">ASTU LAB</span>
+                    <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_5px_#22d3ee] animate-pulse"></span>
                   </div>
-                  <h4 className="text-xs font-black text-slate-100 tracking-wider font-mono">ESP32-WROOM</h4>
-                  <span className="text-[8px] text-slate-500 font-bold uppercase tracking-widest font-mono mt-0.5">D0WDQ6 Core</span>
+
+                  <div className="text-center py-2 sm:py-4 flex flex-col items-center justify-center">
+                    <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-gradient-to-br from-purple-600 to-indigo-600 flex items-center justify-center text-white font-extrabold text-[11px] shadow-lg shadow-purple-600/30 mb-1.5 sm:mb-2 relative">
+                      <svg className="w-4 h-4 sm:w-5 sm:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 5h10a2 2 0 012 2v10a2 2 0 01-2 2H7a2 2 0 01-2-2V7a2 2 0 012-2z" /></svg>
+                    </div>
+                    <h4 className="text-[11px] sm:text-xs font-black text-slate-100 tracking-wider font-mono">ESP32-WROOM</h4>
+                    <span className="text-[7.5px] sm:text-[8px] text-slate-500 font-bold uppercase tracking-widest font-mono mt-0.5">D0WDQ6 Core</span>
+                  </div>
+
+                  <div className="flex justify-between items-end border-t border-slate-900/60 pt-1.5 sm:pt-2 text-[6.5px] font-mono text-slate-500">
+                    <span>RFM95W MESH</span>
+                    <span>v3.3.0</span>
+                  </div>
                 </div>
 
-                <div className="flex justify-between items-end border-t border-slate-900/60 pt-2 text-[6.5px] font-mono text-slate-500">
-                  <span>RFM95W MESH</span>
-                  <span>v3.3.0</span>
+                {/* Status flashing LED lights */}
+                <div className="absolute top-8 sm:top-10 flex gap-1.5 z-15">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_5px_#10b981] animate-pulse"></span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-purple-500 shadow-[0_0_5px_#a855f7] animate-ping" style={{ animationDuration: '2s' }}></span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 shadow-[0_0_5px_#06b6d4] animate-pulse" style={{ animationDelay: '1s' }}></span>
                 </div>
               </div>
 
-              {/* Status flashing LED lights */}
-              <div className="absolute top-10 flex gap-1.5 z-15">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_5px_#10b981] animate-pulse"></span>
-                <span className="w-1.5 h-1.5 rounded-full bg-purple-500 shadow-[0_0_5px_#a855f7] animate-ping" style={{ animationDuration: '2s' }}></span>
-                <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 shadow-[0_0_5px_#06b6d4] animate-pulse" style={{ animationDelay: '1s' }}></span>
+              {/* Right Pin column buttons flanking */}
+              <div className="flex flex-col justify-between gap-1 z-20 shrink-0 pl-2 border-l border-slate-900/60">
+                {rightPins.map(pin => (
+                  <button
+                    key={pin.pinNumber}
+                    onClick={() => setSelectedPin(pin)}
+                    className={`w-24 sm:w-28 px-1.5 sm:px-2 py-1 text-[9px] sm:text-[9.5px] font-black font-mono border rounded-lg flex items-center justify-between transition-all duration-200 active:scale-95
+                      ${selectedPin?.pinNumber === pin.pinNumber
+                        ? 'bg-gradient-to-r from-purple-500/20 to-cyan-500/20 border-purple-400 text-purple-300 shadow-[0_0_8px_rgba(168,85,247,0.2)]'
+                        : 'bg-[#040813] border-white/5 text-slate-400 hover:text-slate-200 hover:border-slate-800'}`}
+                  >
+                    <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${pin.state === 'HIGH' ? 'bg-emerald-400 shadow-[0_0_5px_rgba(16,185,129,0.8)]' : pin.state === 'LOW' ? 'bg-red-400 shadow-[0_0_5px_rgba(239,68,68,0.8)]' : pin.state === 'ANALOG' ? 'bg-amber-400 animate-pulse' : 'bg-slate-700'}`}></span>
+                    <span className="tracking-wide uppercase font-extrabold">{pin.label}</span>
+                    <span className="opacity-40">{pin.pinNumber}</span>
+                  </button>
+                ))}
               </div>
-            </div>
 
-            {/* Right Pin column buttons flanking */}
-            <div className="flex flex-col justify-between gap-1 z-20 shrink-0 pl-2 border-l border-slate-900/60">
-              {rightPins.map(pin => (
-                <button
-                  key={pin.pinNumber}
-                  onClick={() => setSelectedPin(pin)}
-                  className={`w-28 px-2 py-1 text-[9.5px] font-black font-mono border rounded-lg flex items-center justify-between transition-all duration-200 active:scale-95
-                    ${selectedPin?.pinNumber === pin.pinNumber
-                      ? 'bg-gradient-to-r from-purple-500/20 to-cyan-500/20 border-purple-400 text-purple-300 shadow-[0_0_8px_rgba(168,85,247,0.2)]'
-                      : 'bg-[#040813] border-white/5 text-slate-400 hover:text-slate-200 hover:border-slate-800'}`}
-                >
-                  <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${pin.state === 'HIGH' ? 'bg-emerald-400 shadow-[0_0_5px_rgba(16,185,129,0.8)]' : pin.state === 'LOW' ? 'bg-red-400 shadow-[0_0_5px_rgba(239,68,68,0.8)]' : pin.state === 'ANALOG' ? 'bg-amber-400 animate-pulse' : 'bg-slate-700'}`}></span>
-                  <span className="tracking-wide uppercase font-extrabold">{pin.label}</span>
-                  <span className="opacity-40">{pin.pinNumber}</span>
-                </button>
-              ))}
             </div>
-
           </div>
 
-          <div className="w-full flex justify-around text-[10px] font-mono text-slate-500 px-6">
+          <div className="w-full flex flex-wrap justify-around gap-2 text-[9px] sm:text-[10px] font-mono text-slate-500 px-2 sm:px-6">
             <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-red-500"></span> POWER</span>
             <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-amber-500"></span> ADC INPUT</span>
             <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-purple-500"></span> GPIO</span>
