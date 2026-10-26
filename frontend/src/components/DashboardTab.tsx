@@ -96,39 +96,41 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
   const isSystemOnline = health?.database_connection === 'Active';
 
   return (
-    <div className="space-y-8 animate-hologram">
+    <div className="space-y-6 sm:space-y-8 animate-hologram">
       
       {/* 1. Cinematic Dashboard Header Status Bar */}
-      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 pb-5 border-b border-white/5 relative">
+      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 sm:gap-6 pb-4 sm:pb-5 border-b border-white/5 relative">
         <div className="absolute bottom-0 left-0 w-24 h-0.5 bg-gradient-to-r from-purple-500 to-cyan-400"></div>
         <div>
-          <div className="flex flex-wrap items-center gap-3">
-            <span className="text-[10px] font-black uppercase text-purple-400 tracking-widest font-mono bg-purple-500/10 border border-purple-500/20 px-3.5 py-1 rounded-full shadow-[0_0_12px_rgba(168,85,247,0.1)]">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+            <span className="text-[9px] sm:text-[10px] font-black uppercase text-purple-400 tracking-widest font-mono bg-purple-500/10 border border-purple-500/20 px-2.5 sm:px-3.5 py-0.5 sm:py-1 rounded-full shadow-[0_0_12px_rgba(168,85,247,0.1)]">
               🛰️ AWASH BASIN RELAY CHANNEL [01]
             </span>
-            <span className="text-[10px] font-black uppercase text-cyan-400 tracking-widest font-mono bg-cyan-500/10 border border-cyan-500/20 px-3.5 py-1 rounded-full shadow-[0_0_12px_rgba(34,211,238,0.1)]">
+            <span className="text-[9px] sm:text-[10px] font-black uppercase text-cyan-400 tracking-widest font-mono bg-cyan-500/10 border border-cyan-500/20 px-2.5 sm:px-3.5 py-0.5 sm:py-1 rounded-full shadow-[0_0_12px_rgba(34,211,238,0.1)]">
               ASTU LAB PROJECT
             </span>
-            <span className="text-[10px] font-black uppercase text-slate-400 tracking-widest font-mono bg-white/5 border border-white/10 px-3 py-1 rounded-full">
+            <span className="text-[9px] sm:text-[10px] font-black uppercase text-slate-400 tracking-widest font-mono bg-white/5 border border-white/10 px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full">
               SECURE DESKTOP CONSOLE
             </span>
           </div>
-          <h1 className="text-4xl md:text-5xl font-black tracking-tight bg-gradient-to-r from-slate-50 via-slate-100 to-indigo-300 bg-clip-text text-transparent mt-3.5">
+          <h1 className="text-2xl sm:text-4xl md:text-5xl font-black tracking-tight bg-gradient-to-r from-slate-50 via-slate-100 to-indigo-300 bg-clip-text text-transparent mt-2.5 sm:mt-3.5">
             Awash Command Console
           </h1>
-          <p className="text-slate-400 mt-1.5 text-sm font-semibold tracking-wide flex items-center gap-2">
-            Hydrology Intelligence Platform — Ethiopia • <span className="font-mono text-cyan-400 text-glow-cyan font-bold">{liveTime}</span>
+          <p className="text-slate-400 mt-1 sm:mt-1.5 text-xs sm:text-sm font-semibold tracking-wide flex flex-wrap items-center gap-1.5 sm:gap-2">
+            <span>Hydrology Intelligence Platform — Ethiopia</span>
+            <span className="hidden sm:inline">•</span>
+            <span className="font-mono text-cyan-400 text-glow-cyan font-bold">{liveTime}</span>
           </p>
         </div>
         
-        <div className="flex items-center gap-6">
+        <div className="flex flex-wrap items-center gap-3 sm:gap-6 w-full lg:w-auto justify-between lg:justify-end">
           {/* LoRa Ping Indicator */}
-          <div className="hidden sm:flex flex-col text-right font-mono text-[10px] text-slate-500 leading-snug">
-            <span className="font-bold text-slate-400 uppercase tracking-widest">LoRa Mesh Node Ping</span>
+          <div className="flex flex-col text-left sm:text-right font-mono text-[9px] sm:text-[10px] text-slate-500 leading-snug">
+            <span className="font-bold text-slate-400 uppercase tracking-widest">LoRa Mesh Ping</span>
             <span className="text-cyan-400 font-extrabold text-xs text-glow-cyan mt-0.5">22 ms (STABLE)</span>
           </div>
           
-          <div className="flex items-center gap-3 bg-[#060a16] border border-purple-500/20 px-5 py-3.5 rounded-2xl shadow-[0_4px_30px_rgba(0,0,0,0.5)] backdrop-blur-md relative overflow-hidden group">
+          <div className="flex items-center gap-2.5 sm:gap-3 bg-[#060a16] border border-purple-500/20 px-3.5 sm:px-5 py-2 sm:py-3.5 rounded-2xl shadow-[0_4px_30px_rgba(0,0,0,0.5)] backdrop-blur-md relative overflow-hidden group">
             <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 to-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
             <div className="relative flex h-2.5 w-2.5 shrink-0">
               {isSystemOnline ? (
@@ -140,22 +142,22 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
                 <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500 animate-pulse"></span>
               )}
             </div>
-            <span className="text-[10px] font-mono font-black tracking-widest text-slate-300 uppercase shrink-0">
-              NODE POOL SYNC: {isSystemOnline ? 'CONNECTED' : 'STANDBY'}
+            <span className="text-[9px] sm:text-[10px] font-mono font-black tracking-widest text-slate-300 uppercase shrink-0">
+              NODE POOL: {isSystemOnline ? 'CONNECTED' : 'STANDBY'}
             </span>
           </div>
         </div>
       </div>
 
       {/* 2. Top Row: High-Fidelity KPI Cards Grid with Sparklines */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         
         {/* KPI 1: Active Stations Monitored */}
-        <div className="glass-panel-interactive rounded-3xl p-6.5 relative overflow-hidden flex flex-col justify-between min-h-[190px] group">
+        <div className="glass-panel-interactive rounded-3xl p-5 sm:p-6.5 relative overflow-hidden flex flex-col justify-between min-h-[170px] sm:min-h-[190px] group">
           <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/5 rounded-full blur-3xl pointer-events-none group-hover:bg-indigo-500/10 transition-colors"></div>
           <div className="flex items-center justify-between">
-            <h3 className="text-slate-400 text-xs font-extrabold uppercase tracking-widest flex items-center gap-2.5">
-              <svg className="w-4.5 h-4.5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <h3 className="text-slate-400 text-xs font-extrabold uppercase tracking-widest flex items-center gap-2 sm:gap-2.5">
+              <svg className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
               </svg>
               Active Stations
@@ -163,15 +165,15 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
             <span className="text-[8px] font-mono font-black text-indigo-400 bg-indigo-500/15 px-2 py-0.5 rounded-md border border-indigo-500/30 tracking-widest">LIVE SCANNER</span>
           </div>
           
-          <div className="flex items-baseline mt-4.5 gap-3 relative z-10">
-            <span className="text-6xl font-black text-slate-50 tracking-tight text-glow-purple font-mono">
+          <div className="flex items-baseline mt-3 sm:mt-4.5 gap-2 sm:gap-3 relative z-10">
+            <span className="text-4xl sm:text-5xl md:text-6xl font-black text-slate-50 tracking-tight text-glow-purple font-mono">
               {payload?.summary.totalNodes || 4}
             </span>
             <span className="text-[10px] text-slate-500 font-extrabold uppercase tracking-widest font-sans">mesh node units</span>
           </div>
           
           {/* Glowing Sparkline Visualization SVG */}
-          <div className="absolute bottom-16 right-7 w-36 h-9 opacity-80 group-hover:opacity-100 transition-opacity">
+          <div className="absolute bottom-14 sm:bottom-16 right-5 sm:right-7 w-28 sm:w-36 h-8 sm:h-9 opacity-80 group-hover:opacity-100 transition-opacity">
             <svg className="w-full h-full text-indigo-400" viewBox="0 0 100 30" fill="none">
               <path d="M 0,25 Q 15,10 30,20 T 60,5 T 90,15 L 100,8" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
               <path d="M 0,25 Q 15,10 30,20 T 60,5 T 90,15 L 100,8 L 100,30 L 0,30 Z" fill="url(#sparklineGradHome)" opacity="0.1" />
@@ -184,7 +186,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
             </svg>
           </div>
 
-          <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-4.5 flex gap-3.5 border-t border-white/5 pt-3.5 z-10 font-mono">
+          <div className="text-[9px] sm:text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-3.5 sm:mt-4.5 flex flex-wrap gap-2.5 sm:gap-3.5 border-t border-white/5 pt-3 sm:pt-3.5 z-10 font-mono">
             <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Safe: {safeCount}</span>
             <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span> Warn: {warningCount}</span>
             <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-ping"></span> Crit: {criticalCount}</span>
@@ -192,11 +194,11 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
         </div>
 
         {/* KPI 2: Critical Alerts */}
-        <div className="glass-panel-interactive rounded-3xl p-6.5 relative overflow-hidden flex flex-col justify-between min-h-[190px] group">
+        <div className="glass-panel-interactive rounded-3xl p-5 sm:p-6.5 relative overflow-hidden flex flex-col justify-between min-h-[170px] sm:min-h-[190px] group">
           <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/5 rounded-full blur-3xl pointer-events-none group-hover:bg-amber-500/10 transition-colors"></div>
           <div className="flex items-center justify-between">
-            <h3 className="text-slate-400 text-xs font-extrabold uppercase tracking-widest flex items-center gap-2.5">
-              <svg className="w-4.5 h-4.5 text-amber-400 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <h3 className="text-slate-400 text-xs font-extrabold uppercase tracking-widest flex items-center gap-2 sm:gap-2.5">
+              <svg className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-amber-400 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
               </svg>
               Critical Alert Indexes
@@ -204,34 +206,34 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
             <span className="text-[8px] font-mono font-black text-amber-400 bg-amber-500/15 px-2 py-0.5 rounded-md border border-amber-500/30 tracking-widest">WARNING DISPATCH</span>
           </div>
           
-          <div className="flex items-baseline mt-4.5 gap-3 relative z-10">
-            <span className="text-6xl font-black text-slate-100 tracking-tight text-glow-purple font-mono">
+          <div className="flex items-baseline mt-3 sm:mt-4.5 gap-2 sm:gap-3 relative z-10">
+            <span className="text-4xl sm:text-5xl md:text-6xl font-black text-slate-100 tracking-tight text-glow-purple font-mono">
               {payload?.summary.activeAlerts || 3}
             </span>
             <span className="text-[10px] text-slate-500 font-extrabold uppercase tracking-widest font-sans">active registers</span>
           </div>
           
           {/* Danger Wave Micro-Sparkline */}
-          <div className="absolute bottom-16 right-7 w-36 h-9 opacity-80 group-hover:opacity-100 transition-opacity">
+          <div className="absolute bottom-14 sm:bottom-16 right-5 sm:right-7 w-28 sm:w-36 h-8 sm:h-9 opacity-80 group-hover:opacity-100 transition-opacity">
             <svg className="w-full h-full text-amber-500" viewBox="0 0 100 30" fill="none">
               <path d="M 0,15 L 20,15 L 30,5 L 40,25 L 50,12 L 60,18 L 70,2 L 80,28 L 100,15" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
 
-          <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-4.5 border-t border-white/5 pt-3.5 z-10 font-mono">
-            <span className="text-red-400 flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-ping"></span>
-              LoRa Emergency SMS Network Broadcasting Active
+          <div className="text-[9px] sm:text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-3.5 sm:mt-4.5 border-t border-white/5 pt-3 sm:pt-3.5 z-10 font-mono">
+            <span className="text-red-400 flex items-center gap-1.5 sm:gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-ping shrink-0"></span>
+              <span className="truncate">LoRa Emergency SMS Broadcasting Active</span>
             </span>
           </div>
         </div>
 
         {/* KPI 3: Hydrological & ESP32 Node Vitals */}
-        <div className="glass-panel-interactive rounded-3xl p-6.5 relative overflow-hidden flex flex-col justify-between min-h-[190px] group">
+        <div className="glass-panel-interactive rounded-3xl p-5 sm:p-6.5 relative overflow-hidden flex flex-col justify-between min-h-[170px] sm:min-h-[190px] group sm:col-span-2 lg:col-span-1">
           <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none group-hover:bg-emerald-500/10 transition-colors"></div>
           <div className="flex items-center justify-between">
-            <h3 className="text-slate-400 text-xs font-extrabold uppercase tracking-widest flex items-center gap-2.5">
-              <svg className="w-4.5 h-4.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <h3 className="text-slate-400 text-xs font-extrabold uppercase tracking-widest flex items-center gap-2 sm:gap-2.5">
+              <svg className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
               </svg>
               System Vitals Matrix
@@ -239,13 +241,13 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
             <span className="text-[8px] font-mono font-black text-emerald-400 bg-emerald-500/15 px-2 py-0.5 rounded-md border border-emerald-500/30 tracking-widest">HEALTH: OK</span>
           </div>
           
-          <div className="flex items-baseline mt-4">
-            <span className={`text-3xl md:text-3.5xl font-black tracking-tight uppercase text-glow-emerald ${isSystemOnline ? 'text-emerald-400' : 'text-amber-400 animate-pulse'}`}>
+          <div className="flex items-baseline mt-3 sm:mt-4">
+            <span className={`text-2xl sm:text-3xl md:text-3.5xl font-black tracking-tight uppercase text-glow-emerald ${isSystemOnline ? 'text-emerald-400' : 'text-amber-400 animate-pulse'}`}>
               {isSystemOnline ? 'Operational' : 'Degraded State'}
             </span>
           </div>
 
-          <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-4.5 flex flex-wrap gap-x-4 gap-y-1.5 border-t border-white/5 pt-3.5 z-10 font-mono">
+          <div className="text-[9px] sm:text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-3.5 sm:mt-4.5 flex flex-wrap gap-x-3 sm:gap-x-4 gap-y-1 sm:gap-y-1.5 border-t border-white/5 pt-3 sm:pt-3.5 z-10 font-mono">
             <span>Avg WL: <strong className="text-indigo-400 font-black">{avgWaterLevel.toFixed(1)} cm</strong></span>
             <span>Max Rain: <strong className="text-cyan-400 font-black">{maxRainfall.toFixed(1)} mm/h</strong></span>
             <span>Risk: <strong className="text-purple-400 font-black">{latestFloodProb}%</strong></span>

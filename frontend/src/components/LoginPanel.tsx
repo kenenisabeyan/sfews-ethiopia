@@ -299,7 +299,7 @@ export const LoginPanel: React.FC<LoginPanelProps> = ({ onLoginSuccess }) => {
   };
 
   return (
-    <div className="relative w-full min-h-screen bg-[#020308] text-slate-100 flex items-center justify-center p-4 md:p-8 overflow-hidden font-sans select-none">
+    <div className="relative w-full min-h-screen bg-[#020308] text-slate-100 flex items-center justify-center p-3 sm:p-6 md:p-8 overflow-hidden font-sans select-none">
       
       {/* High-Performance Particle Engine */}
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none z-0" />
@@ -315,13 +315,13 @@ export const LoginPanel: React.FC<LoginPanelProps> = ({ onLoginSuccess }) => {
       <div className="absolute top-[45%] right-[30%] w-[30vw] h-[30vw] bg-cyan-950/10 rounded-full blur-[130px] pointer-events-none z-0"></div>
 
       {/* Core Auth Panel Wrapper */}
-      <div className="relative z-10 w-full max-w-5xl bg-[#060814]/45 border border-purple-500/15 rounded-[36px] shadow-[0_30px_70px_-15px_rgba(0,0,0,0.85)] backdrop-blur-[24px] grid grid-cols-1 lg:grid-cols-12 overflow-hidden min-h-[660px]">
+      <div className="relative z-10 w-full max-w-5xl bg-[#060814]/45 border border-purple-500/15 rounded-3xl sm:rounded-[36px] shadow-[0_30px_70px_-15px_rgba(0,0,0,0.85)] backdrop-blur-[24px] grid grid-cols-1 lg:grid-cols-12 overflow-hidden min-h-0 lg:min-h-[660px]">
         
         {/* Double-Panel Glowing Neon Inner Frame */}
-        <div className="absolute inset-0 rounded-[36px] border border-purple-500/10 pointer-events-none z-10 shadow-[inset_0_1.5px_0_rgba(255,255,255,0.06),0_0_50px_rgba(168,85,247,0.04)]"></div>
+        <div className="absolute inset-0 rounded-3xl sm:rounded-[36px] border border-purple-500/10 pointer-events-none z-10 shadow-[inset_0_1.5px_0_rgba(255,255,255,0.06),0_0_50px_rgba(168,85,247,0.04)]"></div>
 
         {/* LEFT COLUMN: SYSTEM VITALS, ASTU BRANDING & ESP32 CONFIGS */}
-        <div className="lg:col-span-5 bg-gradient-to-b from-[#080b1b]/85 to-[#040610]/90 p-8 border-b lg:border-b-0 lg:border-r border-purple-500/15 flex flex-col justify-between relative overflow-hidden">
+        <div className="lg:col-span-5 bg-gradient-to-b from-[#080b1b]/85 to-[#040610]/90 p-5 sm:p-8 border-b lg:border-b-0 lg:border-r border-purple-500/15 flex flex-col justify-between relative overflow-hidden">
           
           {/* Subtle ESP32 Circuit Background Watermark */}
           <div className="absolute -bottom-16 -left-16 w-64 h-64 border border-purple-500/5 rounded-full opacity-30 pointer-events-none flex items-center justify-center">
@@ -429,17 +429,17 @@ export const LoginPanel: React.FC<LoginPanelProps> = ({ onLoginSuccess }) => {
         </div>
 
         {/* RIGHT COLUMN: AUTHENTICATION PANEL */}
-        <div className="lg:col-span-7 p-8 md:p-12 flex flex-col justify-between relative">
+        <div className="lg:col-span-7 p-5 sm:p-8 md:p-12 flex flex-col justify-between relative">
           
           {/* SECURE DECRYPTION LOOPS OVERLAY */}
           {isDecrypting && (
-            <div className="absolute inset-0 bg-[#04060f]/95 backdrop-blur-md z-40 flex flex-col justify-between p-8 md:p-12 animate-in fade-in duration-300 rounded-r-[36px]">
-              <div className="space-y-6">
+            <div className="absolute inset-0 bg-[#04060f]/95 backdrop-blur-md z-40 flex flex-col justify-between p-5 sm:p-8 md:p-12 animate-in fade-in duration-300 rounded-b-3xl sm:rounded-b-[36px] lg:rounded-r-[36px] lg:rounded-bl-none">
+              <div className="space-y-4 sm:space-y-6">
                 <div className="flex items-center gap-3">
-                  <span className="animate-spin w-5 h-5 rounded-full border-2 border-purple-500/20 border-t-purple-500"></span>
-                  <h3 className="text-sm font-extrabold tracking-widest text-purple-400 uppercase font-mono">ESTABLISHING ENCRYPTED SESSION HANDSHAKE...</h3>
+                  <span className="animate-spin w-5 h-5 rounded-full border-2 border-purple-500/20 border-t-purple-500 shrink-0"></span>
+                  <h3 className="text-xs sm:text-sm font-extrabold tracking-widest text-purple-400 uppercase font-mono truncate">ESTABLISHING ENCRYPTED SESSION HANDSHAKE...</h3>
                 </div>
-                <div className="bg-[#020308]/90 border border-purple-500/15 rounded-2xl p-5 h-96 overflow-y-auto space-y-2.5 font-mono text-[10.5px] text-emerald-400 scrollbar-thin">
+                <div className="bg-[#020308]/90 border border-purple-500/15 rounded-2xl p-4 sm:p-5 max-h-[55vh] sm:h-96 overflow-y-auto space-y-2 font-mono text-[10px] sm:text-[10.5px] text-emerald-400 custom-scrollbar">
                   {decryptionLogs.map((log, index) => (
                     <p key={index} className="leading-relaxed animate-in fade-in slide-in-from-left-4 duration-200">
                       {log}
@@ -447,7 +447,7 @@ export const LoginPanel: React.FC<LoginPanelProps> = ({ onLoginSuccess }) => {
                   ))}
                 </div>
               </div>
-              <div className="flex justify-between items-center text-[9px] text-slate-500 font-bold tracking-widest uppercase font-mono pt-4 border-t border-purple-500/10">
+              <div className="flex justify-between items-center text-[8px] sm:text-[9px] text-slate-500 font-bold tracking-widest uppercase font-mono pt-3 sm:pt-4 border-t border-purple-500/10">
                 <span>TUNNEL SECURED: AES-GCM-256</span>
                 <span>TUNNEL_SYS_OK // ASTU</span>
               </div>
@@ -455,13 +455,13 @@ export const LoginPanel: React.FC<LoginPanelProps> = ({ onLoginSuccess }) => {
           )}
 
           {/* Form Header Section */}
-          <div className="space-y-3">
+          <div className="space-y-2.5 sm:space-y-3">
             <div className="flex items-center gap-2 text-[9px] font-black tracking-widest text-purple-400 uppercase font-mono bg-purple-500/10 border border-purple-500/20 px-3 py-1 rounded-full w-max">
               <span className="w-1.5 h-1.5 rounded-full bg-purple-500 animate-ping"></span>
               🛡️ Secure Encryption Node
             </div>
-            <h2 className="text-3xl font-extrabold tracking-tight text-slate-100">Awash Basin Access</h2>
-            <p className="text-slate-400 text-xs font-semibold">Provide credentials or key overrides to authorize synchronization of flood indicators.</p>
+            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-100">Awash Basin Access</h2>
+            <p className="text-slate-400 text-xs font-semibold leading-relaxed">Provide credentials or key overrides to authorize synchronization of flood indicators.</p>
           </div>
 
           {/* Tab Selector */}
