@@ -77,7 +77,7 @@ async def ask_agent(request: schemas.ChatRequest, db: Session = Depends(get_db))
     Orchestrates LLM tool-calling with live tools, and falls back gracefully
     to high-precision local database situational diagnostics if external LLMs are offline.
     """
-    if not request.query or not request.query.trim():
+    if not request.query or not request.query.strip():
         raise HTTPException(status_code=400, detail="Query cannot be empty.")
         
     try:
