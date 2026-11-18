@@ -4,6 +4,8 @@ Tests functionality and non-functionality across all 9 decoupled domains using i
 """
 import sys
 import os
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+os.environ["USE_SQLITE"] = "1"
 import asyncio
 import httpx
 
