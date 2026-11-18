@@ -14,23 +14,22 @@ from app.main import app, lifespan
 async def run_tests():
     print("=== STARTING FULL BACKEND INTEGRATION SUITE ===", flush=True)
 
-    # Trigger lifespan startup
     async with lifespan(app):
         transport = httpx.ASGITransport(app=app)
         async with httpx.AsyncClient(transport=transport, base_url="http://testserver") as client:
             
             # 1. Health check
-            print("Testing System Health Check...", flush=True)
+            print("1. Testing System Health Check...", flush=True)
             res = await client.get("/")
             assert res.status_code == 200, f"Health check failed: {res.text}"
             data = res.json()
             assert data["status"] == "Operational"
             assert data["api_version"] == "2.1.0"
             assert len(data["registered_domains"]) == 9
-            print(f"  [PASS] Health check verified. Driver: {data.get('database_driver')}", flush=True)
+            print(f"   [PASS] Health check verified. Driver: {data.get('database_driver')}", flush=True)
 
             # 2. Auth Domain
-            print("Testing Auth Domain...", flush=True)
+            print("2. Testing Auth Domain...", flush=True)
             seed_res = await client.post("/api/v1/auth/seed-admin")
             assert seed_res.status_code == 200
 
@@ -47,10 +46,10 @@ async def run_tests():
 
             users_res = await client.get("/api/v1/auth/users", headers={"Authorization": f"Bearer {token}"})
             assert users_res.status_code == 200
-            print("  [PASS] Auth workflow verified.", flush=True)
+            print("   [PASS] Auth workflow verified.", flush=True)
 
             # 3. Nodes Domain
-            print("Testing Nodes Fleet Management Domain...", flush=True)
+            print("3. Testing Nodes Fleet Management Domain...", flush=True)
             nodes_res = await client.get("/api/v1/nodes/")
             assert nodes_res.status_code == 200
             nodes = nodes_res.json()
@@ -74,10 +73,10 @@ async def run_tests():
 
             del_res = await client.delete("/api/v1/nodes/NODE-TEST-99")
             assert del_res.status_code == 200
-            print("  [PASS] Nodes workflow verified.", flush=True)
+            print("   [PASS] Nodes workflow verified.", flush=True)
 
             # 4. Telemetry & Alert Event Dispatch
-            print("Testing Telemetry Ingestion & Event Dispatch...", flush=True)
+            print("4. Testing Telemetry Ingestion & Event Dispatch...", flush=True)
             payload = {
                 "node_id": "NODE-ALPHA-1",
                 "water_level_cm": 465.0, # Breaches critical threshold
@@ -103,10 +102,10 @@ async def run_tests():
             stats_res = await client.get("/api/v1/telemetry/stats")
             assert stats_res.status_code == 200
             assert stats_res.json()["total_records"] > 0
-            print("  [PASS] Telemetry & event dispatch verified.", flush=True)
+            print("   [PASS] Telemetry & event dispatch verified.", flush=True)
 
             # 5. Alerts & Civil Defense
-            print("Testing Alerts & Emergency Broadcast Domain...", flush=True)
+            print("5. Testing Alerts & Emergency Broadcast Domain...", flush=True)
             alerts_res = await client.get("/api/v1/alerts/")
             assert alerts_res.status_code == 200
             alerts = alerts_res.json()
@@ -130,10 +129,10 @@ async def run_tests():
             bcast_res = await client.post("/api/v1/alerts/broadcast", json=bcast_payload)
             assert bcast_res.status_code == 200
             assert bcast_res.json()["status"] == "Broadcast Dispatched Successfully"
-            print("  [PASS] Alerts & broadcast verified.", flush=True)
+            print("   [PASS] Alerts & broadcast verified.", flush=True)
 
             # 6. Dashboard & Caching
-            print("Testing Dashboard & Analytics...", flush=True)
+            print("6. Testing Dashboard & Analytics...", flush=True)
             dash_res = await client.get("/api/v1/dashboard/")
             assert dash_res.status_code == 200
             dash_data = dash_res.json()
@@ -150,10 +149,10 @@ async def run_tests():
 
             basins_res = await client.get("/api/v1/dashboard/basins")
             assert basins_res.status_code == 200
-            print("  [PASS] Dashboard & analytics verified.", flush=True)
+            print("   [PASS] Dashboard & analytics verified.", flush=True)
 
             # 7. System Settings & Diagnostics
-            print("Testing System Settings & Non-Functional Diagnostics...", flush=True)
+            print("7. Testing System Settings & Non-Functional Diagnostics...", flush=True)
             settings_res = await client.get("/api/v1/system/settings")
             assert settings_res.status_code == 200
             settings = settings_res.json()
@@ -165,10 +164,10 @@ async def run_tests():
             assert diag["status"] in ["Operational", "Active"]
             assert "event_bus_stats" in diag
             assert "cache_stats" in diag
-            print("  [PASS] System settings & diagnostics verified.", flush=True)
+            print("   [PASS] System settings & diagnostics verified.", flush=True)
 
             # 8. Simulation Interoperability
-            print("Testing Simulation /flood Interoperability...", flush=True)
+            print("8. Testing Simulation /flood Interoperability...", flush=True)
             flood_res = await client.post("/flood", json={"level": 520})
             assert flood_res.status_code == 200
             assert flood_res.json()["level"] == 520
@@ -176,15 +175,15 @@ async def run_tests():
             get_flood_res = await client.get("/flood")
             assert get_flood_res.status_code == 200
             assert get_flood_res.json()["level"] == 520
-            print("  [PASS] Simulation interoperability verified.", flush=True)
+            print("   [PASS] Simulation interoperability verified.", flush=True)
 
             # 9. AI Chat Situational Analyst
-            print("Testing AI Chat Situational Analyst...", flush=True)
+            print("9. Testing AI Chat Situational Analyst...", flush=True)
             chat_res = await client.post("/api/v1/chat/ask", json={"query": "What is the current flood risk in Awash basin?"})
             assert chat_res.status_code == 200
             ans = chat_res.json()["response"]
             assert len(ans) > 20
-            print("  [PASS] AI Chat Situational Analyst verified.", flush=True)
+            print("   [PASS] AI Chat Situational Analyst verified.", flush=True)
 
             print("\n==============================================", flush=True)
             print("ALL 9 DOMAIN SUITES PASSED FLAWLESSLY! 🚀", flush=True)
