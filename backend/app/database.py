@@ -23,24 +23,29 @@ if not DATABASE_URL:
 is_sqlite_active = False
 
 def is_host_reachable(url: str) -> bool:
-    """Non-blocking DNS and port reachability check with strict 0.5s timeout."""
+    """Non-blocking reachability check with wait=False shutdown to avoid thread blocking."""
     try:
         parsed = urlparse(url)
         host = parsed.hostname
         if not host or host in ("localhost", "127.0.0.1"):
             return True
         
+        executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
         def probe():
             port = parsed.port or 5432
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            sock.settimeout(0.5)
+            sock.settimeout(0.4)
             sock.connect((host, port))
             sock.close()
             return True
 
-        with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
-            future = executor.submit(probe)
-            return future.result(timeout=0.6)
+        future = executor.submit(probe)
+        try:
+            return future.result(timeout=0.5)
+        except Exception:
+            return False
+        finally:
+            executor.shutdown(wait=False, cancel_futures=True)
     except Exception:
         return False
 
@@ -48,14 +53,16 @@ def create_resilient_engine():
     global DATABASE_URL, is_sqlite_active
     fallback_url = os.getenv("SQLITE_FALLBACK_URL", "sqlite:///./sfews_local.db")
     
+    # If SQLite explicitly requested or configured
     if DATABASE_URL.startswith("sqlite") or os.getenv("USE_SQLITE", "").lower() in ("true", "1"):
         is_sqlite_active = True
+        logger.info(f"Using high-performance local SQLite database ({fallback_url}).")
         return create_engine(fallback_url, connect_args={"check_same_thread": False})
 
-    # Fast 0.6s reachability probe
+    # Fast reachability probe
     if not is_host_reachable(DATABASE_URL):
         is_sqlite_active = True
-        logger.info(f"Primary PostgreSQL host unreachable. Activating local SQLite database ({fallback_url}).")
+        logger.info(f"Target remote database host unreachable. Engaging local resilient engine ({fallback_url}).")
         return create_engine(fallback_url, connect_args={"check_same_thread": False})
 
     try:
