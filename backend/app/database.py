@@ -1,5 +1,7 @@
 import os
+import socket
 import logging
+from urllib.parse import urlparse
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker, declarative_base
 from dotenv import load_dotenv
@@ -19,25 +21,44 @@ if not DATABASE_URL:
 
 is_sqlite_active = False
 
+def is_host_reachable(url: str) -> bool:
+    """Fast socket-level probe without mutating global socket defaults."""
+    try:
+        parsed = urlparse(url)
+        host = parsed.hostname
+        if not host or host in ("localhost", "127.0.0.1"):
+            return True
+        port = parsed.port or 5432
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.settimeout(1.0)
+        sock.connect((host, port))
+        sock.close()
+        return True
+    except Exception:
+        return False
+
 def create_resilient_engine():
     global DATABASE_URL, is_sqlite_active
+    fallback_url = os.getenv("SQLITE_FALLBACK_URL", "sqlite:///./sfews_local.db")
     
     if DATABASE_URL.startswith("sqlite"):
         is_sqlite_active = True
-        return create_engine(
-            DATABASE_URL,
-            connect_args={"check_same_thread": False}
-        )
+        return create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
+
+    # Fast reachability probe
+    if not is_host_reachable(DATABASE_URL):
+        is_sqlite_active = True
+        logger.info(f"Target database host unreachable. Engaging local resilient engine ({fallback_url}).")
+        return create_engine(fallback_url, connect_args={"check_same_thread": False})
 
     try:
-        # Try configured database (e.g. Neon PostgreSQL) with a fast connection check
         eng = create_engine(
             DATABASE_URL,
             pool_size=10,
             max_overflow=20,
             pool_recycle=300,
             pool_pre_ping=True,
-            connect_args={"connect_timeout": 3} if "postgresql" in DATABASE_URL else {}
+            connect_args={"connect_timeout": 2}
         )
         with eng.connect() as conn:
             conn.execute(text("SELECT 1"))
@@ -46,15 +67,8 @@ def create_resilient_engine():
         return eng
     except Exception as e:
         is_sqlite_active = True
-        fallback_url = os.getenv("SQLITE_FALLBACK_URL", "sqlite:///./sfews_local.db")
-        logger.warning(
-            f"Primary database connection unavailable ({e}). "
-            f"Activating high-resilience local SQLite fallback ({fallback_url})."
-        )
-        return create_engine(
-            fallback_url,
-            connect_args={"check_same_thread": False}
-        )
+        logger.warning(f"Connection verification failed ({e}). Falling back to SQLite ({fallback_url}).")
+        return create_engine(fallback_url, connect_args={"check_same_thread": False})
 
 engine = create_resilient_engine()
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
@@ -73,7 +87,7 @@ def check_db_health() -> dict:
             conn.execute(text("SELECT 1"))
         return {
             "status": "Active",
-            "driver": "SQLite (Fallback Engine)" if is_sqlite_active else "PostgreSQL (Primary Engine)",
+            "driver": "SQLite (High-Resilience Fallback)" if is_sqlite_active else "PostgreSQL (Neon Cloud Cluster)",
             "connected": True
         }
     except Exception as e:
