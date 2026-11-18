@@ -1,7 +1,6 @@
 import os
 import socket
 import logging
-import concurrent.futures
 from urllib.parse import urlparse
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker, declarative_base
@@ -22,30 +21,16 @@ if not DATABASE_URL:
 
 is_sqlite_active = False
 
-def is_host_reachable(url: str) -> bool:
-    """Non-blocking reachability check with wait=False shutdown to avoid thread blocking."""
+def has_external_network_access() -> bool:
+    """Instant socket probe (0.01s) to determine if external TCP connections are permitted."""
     try:
-        parsed = urlparse(url)
-        host = parsed.hostname
-        if not host or host in ("localhost", "127.0.0.1"):
-            return True
-        
-        executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
-        def probe():
-            port = parsed.port or 5432
-            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            sock.settimeout(0.4)
-            sock.connect((host, port))
-            sock.close()
-            return True
-
-        future = executor.submit(probe)
-        try:
-            return future.result(timeout=0.5)
-        except Exception:
-            return False
-        finally:
-            executor.shutdown(wait=False, cancel_futures=True)
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.settimeout(0.2)
+        sock.connect(('8.8.8.8', 53))
+        sock.close()
+        return True
+    except (PermissionError, OSError):
+        return False
     except Exception:
         return False
 
@@ -53,18 +38,26 @@ def create_resilient_engine():
     global DATABASE_URL, is_sqlite_active
     fallback_url = os.getenv("SQLITE_FALLBACK_URL", "sqlite:///./sfews_local.db")
     
-    # If SQLite explicitly requested or configured
+    # 1. If SQLite explicitly configured
     if DATABASE_URL.startswith("sqlite") or os.getenv("USE_SQLITE", "").lower() in ("true", "1"):
         is_sqlite_active = True
         logger.info(f"Using high-performance local SQLite database ({fallback_url}).")
         return create_engine(fallback_url, connect_args={"check_same_thread": False})
 
-    # Fast reachability probe
-    if not is_host_reachable(DATABASE_URL):
+    # 2. Check if DATABASE_URL is external and network is sandboxed/offline
+    parsed = urlparse(DATABASE_URL)
+    host = parsed.hostname or ""
+    is_external_host = host not in ("localhost", "127.0.0.1", "::1", "")
+
+    if is_external_host and not has_external_network_access():
         is_sqlite_active = True
-        logger.info(f"Target remote database host unreachable. Engaging local resilient engine ({fallback_url}).")
+        logger.info(
+            f"External cloud host detected ({host}) in isolated/offline environment. "
+            f"Activating high-resilience local SQLite database ({fallback_url})."
+        )
         return create_engine(fallback_url, connect_args={"check_same_thread": False})
 
+    # 3. Connect to primary PostgreSQL
     try:
         eng = create_engine(
             DATABASE_URL,
@@ -72,7 +65,7 @@ def create_resilient_engine():
             max_overflow=20,
             pool_recycle=300,
             pool_pre_ping=True,
-            connect_args={"connect_timeout": 2}
+            connect_args={"connect_timeout": 3} if "postgresql" in DATABASE_URL else {}
         )
         with eng.connect() as conn:
             conn.execute(text("SELECT 1"))
@@ -81,7 +74,7 @@ def create_resilient_engine():
         return eng
     except Exception as e:
         is_sqlite_active = True
-        logger.warning(f"Database connection verification failed ({e}). Activating SQLite ({fallback_url}).")
+        logger.warning(f"PostgreSQL connection verification failed ({e}). Activating SQLite ({fallback_url}).")
         return create_engine(fallback_url, connect_args={"check_same_thread": False})
 
 engine = create_resilient_engine()
