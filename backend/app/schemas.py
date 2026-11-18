@@ -80,16 +80,16 @@ class DashboardResponse(BaseModel):
 # ==========================================
 class AlertLogResponse(BaseModel):
     id: int
-    nodeId: Optional[str] = Field(None, alias="node_id")
+    node_id: Optional[str] = None
     title: str
     message: str
     severity: str
-    waterLevelCm: Optional[float] = Field(None, alias="water_level_cm")
-    isAcknowledged: bool = Field(False, alias="is_acknowledged")
-    acknowledgedBy: Optional[str] = Field(None, alias="acknowledged_by")
+    water_level_cm: Optional[float] = None
+    is_acknowledged: bool = False
+    acknowledged_by: Optional[str] = None
     timestamp: str
 
-    model_config = ConfigDict(populate_by_name=True, from_attributes=True)
+    model_config = ConfigDict(from_attributes=True)
 
 class AlertAcknowledgeRequest(BaseModel):
     acknowledged_by: Optional[str] = "Command Center Operator"

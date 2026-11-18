@@ -114,7 +114,7 @@ async def run_tests():
             first_alert = alerts[0]
             ack_res = await client.post(f"/api/v1/alerts/{first_alert['id']}/acknowledge", json={"acknowledged_by": "Senior Commander"})
             assert ack_res.status_code == 200
-            assert ack_res.json()["isAcknowledged"] is True
+            assert ack_res.json()["is_acknowledged"] is True
 
             subs_res = await client.get("/api/v1/alerts/subscribers")
             assert subs_res.status_code == 200
