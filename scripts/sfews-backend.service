@@ -1,0 +1,43 @@
+# ========================================================
+# SFEWS Production Systemd Service Unit File
+# Place in: /etc/systemd/system/sfews-backend.service
+# ========================================================
+
+[Unit]
+Description=SFEWS Command Center High-Concurrency FastAPI Engine
+After=network.target postgresql.service
+Wants=postgresql.service
+
+[Service]
+Type=simple
+User=sfews
+Group=sfews
+WorkingDirectory=/var/www/sfews/backend
+EnvironmentFile=/var/www/sfews/backend/.env
+
+# Gunicorn Multi-Worker ASGI Runner
+ExecStart=/var/www/sfews/backend/venv/bin/gunicorn app.main:app \
+          --workers 4 \
+          --worker-class uvicorn.workers.UvicornWorker \
+          --bind 127.0.0.1:8000 \
+          --max-requests 2000 \
+          --max-requests-jitter 100 \
+          --timeout 120 \
+          --keepalive 65 \
+          --access-logfile /var/log/sfews/access.log \
+          --error-logfile /var/log/sfews/error.log
+
+# Self-healing restart configuration
+Restart=always
+RestartSec=5s
+KillMode=mixed
+TimeoutStopSec=30s
+
+# Security Hardening
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target

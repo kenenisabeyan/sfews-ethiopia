@@ -223,6 +223,49 @@ flowchart TB
 
 ---
 
+## 🚀 Production Deployment (Docker, Compose & Cloud)
+
+SFEWS is fully containerized and production-ready for deployment on cloud servers (AWS EC2, DigitalOcean, Hetzner) or on-premise government datacenters.
+
+### Option 1: One-Click Production Deployment (Docker Compose)
+
+1. **Configure Production Secrets:**
+   ```bash
+   cp .env.production.example .env.production
+   # Edit .env.production with your Neon DB connection and secret key
+   ```
+
+2. **Launch with Automation Script:**
+   * On Linux/macOS:
+     ```bash
+     chmod +x scripts/deploy.sh
+     ./scripts/deploy.sh
+     ```
+   * On Windows:
+     ```powershell
+     .\scripts\deploy.ps1
+     ```
+
+   * Or run Docker Compose directly:
+     ```bash
+     docker compose --env-file .env.production up -d --build
+     ```
+
+3. **Verify Production Status:**
+   * Frontend Mission Command: `http://localhost`
+   * Backend API Live Diagnostics: `http://localhost:8000/api/v1/system/diagnostics`
+   * Interactive API Swagger Docs: `http://localhost:8000/docs`
+
+### Option 2: Air-Gapped / Fully Local Deployment (Offline Mode)
+
+If deploying in a secure facility without access to the cloud Neon database:
+```bash
+docker compose --profile local-db up -d --build
+```
+This boots an isolated local PostgreSQL container alongside the FastAPI backend cluster and Nginx frontend.
+
+---
+
 ## 🔄 Data Flow & Telemetry Pipeline
 
 ```mermaid
@@ -266,6 +309,49 @@ sequenceDiagram
     Gateway-->>Client: Streaming Response with Evacuation Recommendations
     deactivate Gateway
 ```
+
+---
+
+## 🚀 Production Deployment (Docker, Compose & Cloud)
+
+SFEWS is fully containerized and production-ready for deployment on cloud servers (AWS EC2, DigitalOcean, Hetzner) or on-premise government datacenters.
+
+### Option 1: One-Click Production Deployment (Docker Compose)
+
+1. **Configure Production Secrets:**
+   ```bash
+   cp .env.production.example .env.production
+   # Edit .env.production with your Neon DB connection and secret key
+   ```
+
+2. **Launch with Automation Script:**
+   * On Linux/macOS:
+     ```bash
+     chmod +x scripts/deploy.sh
+     ./scripts/deploy.sh
+     ```
+   * On Windows:
+     ```powershell
+     .\scripts\deploy.ps1
+     ```
+
+   * Or run Docker Compose directly:
+     ```bash
+     docker compose --env-file .env.production up -d --build
+     ```
+
+3. **Verify Production Status:**
+   * Frontend Mission Command: `http://localhost`
+   * Backend API Live Diagnostics: `http://localhost:8000/api/v1/system/diagnostics`
+   * Interactive API Swagger Docs: `http://localhost:8000/docs`
+
+### Option 2: Air-Gapped / Fully Local Deployment (Offline Mode)
+
+If deploying in a secure facility without access to the cloud Neon database:
+```bash
+docker compose --profile local-db up -d --build
+```
+This boots an isolated local PostgreSQL container alongside the FastAPI backend cluster and Nginx frontend.
 
 ---
 
@@ -317,6 +403,49 @@ To guarantee zero latency on critical sensor thresholds, the firmware utilizes F
 
 ---
 
+## 🚀 Production Deployment (Docker, Compose & Cloud)
+
+SFEWS is fully containerized and production-ready for deployment on cloud servers (AWS EC2, DigitalOcean, Hetzner) or on-premise government datacenters.
+
+### Option 1: One-Click Production Deployment (Docker Compose)
+
+1. **Configure Production Secrets:**
+   ```bash
+   cp .env.production.example .env.production
+   # Edit .env.production with your Neon DB connection and secret key
+   ```
+
+2. **Launch with Automation Script:**
+   * On Linux/macOS:
+     ```bash
+     chmod +x scripts/deploy.sh
+     ./scripts/deploy.sh
+     ```
+   * On Windows:
+     ```powershell
+     .\scripts\deploy.ps1
+     ```
+
+   * Or run Docker Compose directly:
+     ```bash
+     docker compose --env-file .env.production up -d --build
+     ```
+
+3. **Verify Production Status:**
+   * Frontend Mission Command: `http://localhost`
+   * Backend API Live Diagnostics: `http://localhost:8000/api/v1/system/diagnostics`
+   * Interactive API Swagger Docs: `http://localhost:8000/docs`
+
+### Option 2: Air-Gapped / Fully Local Deployment (Offline Mode)
+
+If deploying in a secure facility without access to the cloud Neon database:
+```bash
+docker compose --profile local-db up -d --build
+```
+This boots an isolated local PostgreSQL container alongside the FastAPI backend cluster and Nginx frontend.
+
+---
+
 ## 🔬 Machine Learning Hydrology Engine
 
 Located in [`ml-research/train_flood_model.py`](file:///c:/Users/kenenisa/Documents/sfews-ethiopia/ml-research/train_flood_model.py) and loaded in [`backend/app/services/ml.py`](file:///c:/Users/kenenisa/Documents/sfews-ethiopia/backend/app/services/ml.py).
@@ -352,6 +481,49 @@ When the non-linear risk score exceeds $0.80$, the basin experiences hydrodynami
          🟢                    🟡                   🔴
     Normal Patrol        Alert Standby       Evacuation Order
 ```
+
+---
+
+## 🚀 Production Deployment (Docker, Compose & Cloud)
+
+SFEWS is fully containerized and production-ready for deployment on cloud servers (AWS EC2, DigitalOcean, Hetzner) or on-premise government datacenters.
+
+### Option 1: One-Click Production Deployment (Docker Compose)
+
+1. **Configure Production Secrets:**
+   ```bash
+   cp .env.production.example .env.production
+   # Edit .env.production with your Neon DB connection and secret key
+   ```
+
+2. **Launch with Automation Script:**
+   * On Linux/macOS:
+     ```bash
+     chmod +x scripts/deploy.sh
+     ./scripts/deploy.sh
+     ```
+   * On Windows:
+     ```powershell
+     .\scripts\deploy.ps1
+     ```
+
+   * Or run Docker Compose directly:
+     ```bash
+     docker compose --env-file .env.production up -d --build
+     ```
+
+3. **Verify Production Status:**
+   * Frontend Mission Command: `http://localhost`
+   * Backend API Live Diagnostics: `http://localhost:8000/api/v1/system/diagnostics`
+   * Interactive API Swagger Docs: `http://localhost:8000/docs`
+
+### Option 2: Air-Gapped / Fully Local Deployment (Offline Mode)
+
+If deploying in a secure facility without access to the cloud Neon database:
+```bash
+docker compose --profile local-db up -d --build
+```
+This boots an isolated local PostgreSQL container alongside the FastAPI backend cluster and Nginx frontend.
 
 ---
 
@@ -438,6 +610,49 @@ Synthesized Dispatch Report:
  • Recommended Action: Immediate evacuation recommended for all settlements within a 15.0 km downstream perimeter.
  • Proximity SMS Broadcast dispatched to registered community elders and responders."
 ```
+
+---
+
+## 🚀 Production Deployment (Docker, Compose & Cloud)
+
+SFEWS is fully containerized and production-ready for deployment on cloud servers (AWS EC2, DigitalOcean, Hetzner) or on-premise government datacenters.
+
+### Option 1: One-Click Production Deployment (Docker Compose)
+
+1. **Configure Production Secrets:**
+   ```bash
+   cp .env.production.example .env.production
+   # Edit .env.production with your Neon DB connection and secret key
+   ```
+
+2. **Launch with Automation Script:**
+   * On Linux/macOS:
+     ```bash
+     chmod +x scripts/deploy.sh
+     ./scripts/deploy.sh
+     ```
+   * On Windows:
+     ```powershell
+     .\scripts\deploy.ps1
+     ```
+
+   * Or run Docker Compose directly:
+     ```bash
+     docker compose --env-file .env.production up -d --build
+     ```
+
+3. **Verify Production Status:**
+   * Frontend Mission Command: `http://localhost`
+   * Backend API Live Diagnostics: `http://localhost:8000/api/v1/system/diagnostics`
+   * Interactive API Swagger Docs: `http://localhost:8000/docs`
+
+### Option 2: Air-Gapped / Fully Local Deployment (Offline Mode)
+
+If deploying in a secure facility without access to the cloud Neon database:
+```bash
+docker compose --profile local-db up -d --build
+```
+This boots an isolated local PostgreSQL container alongside the FastAPI backend cluster and Nginx frontend.
 
 ---
 
@@ -550,6 +765,49 @@ sfews-ethiopia/
 
 ---
 
+## 🚀 Production Deployment (Docker, Compose & Cloud)
+
+SFEWS is fully containerized and production-ready for deployment on cloud servers (AWS EC2, DigitalOcean, Hetzner) or on-premise government datacenters.
+
+### Option 1: One-Click Production Deployment (Docker Compose)
+
+1. **Configure Production Secrets:**
+   ```bash
+   cp .env.production.example .env.production
+   # Edit .env.production with your Neon DB connection and secret key
+   ```
+
+2. **Launch with Automation Script:**
+   * On Linux/macOS:
+     ```bash
+     chmod +x scripts/deploy.sh
+     ./scripts/deploy.sh
+     ```
+   * On Windows:
+     ```powershell
+     .\scripts\deploy.ps1
+     ```
+
+   * Or run Docker Compose directly:
+     ```bash
+     docker compose --env-file .env.production up -d --build
+     ```
+
+3. **Verify Production Status:**
+   * Frontend Mission Command: `http://localhost`
+   * Backend API Live Diagnostics: `http://localhost:8000/api/v1/system/diagnostics`
+   * Interactive API Swagger Docs: `http://localhost:8000/docs`
+
+### Option 2: Air-Gapped / Fully Local Deployment (Offline Mode)
+
+If deploying in a secure facility without access to the cloud Neon database:
+```bash
+docker compose --profile local-db up -d --build
+```
+This boots an isolated local PostgreSQL container alongside the FastAPI backend cluster and Nginx frontend.
+
+---
+
 ## 🚀 Getting Started
 
 ### 10.1 Prerequisites
@@ -642,6 +900,49 @@ uv run python -m simulator.simple_sensor
 
 ---
 
+## 🚀 Production Deployment (Docker, Compose & Cloud)
+
+SFEWS is fully containerized and production-ready for deployment on cloud servers (AWS EC2, DigitalOcean, Hetzner) or on-premise government datacenters.
+
+### Option 1: One-Click Production Deployment (Docker Compose)
+
+1. **Configure Production Secrets:**
+   ```bash
+   cp .env.production.example .env.production
+   # Edit .env.production with your Neon DB connection and secret key
+   ```
+
+2. **Launch with Automation Script:**
+   * On Linux/macOS:
+     ```bash
+     chmod +x scripts/deploy.sh
+     ./scripts/deploy.sh
+     ```
+   * On Windows:
+     ```powershell
+     .\scripts\deploy.ps1
+     ```
+
+   * Or run Docker Compose directly:
+     ```bash
+     docker compose --env-file .env.production up -d --build
+     ```
+
+3. **Verify Production Status:**
+   * Frontend Mission Command: `http://localhost`
+   * Backend API Live Diagnostics: `http://localhost:8000/api/v1/system/diagnostics`
+   * Interactive API Swagger Docs: `http://localhost:8000/docs`
+
+### Option 2: Air-Gapped / Fully Local Deployment (Offline Mode)
+
+If deploying in a secure facility without access to the cloud Neon database:
+```bash
+docker compose --profile local-db up -d --build
+```
+This boots an isolated local PostgreSQL container alongside the FastAPI backend cluster and Nginx frontend.
+
+---
+
 ## ⚙️ Environment Configuration
 
 Create a `.env` file in the `backend/` directory with the following configuration keys:
@@ -721,6 +1022,49 @@ Create a `.env` file in the `backend/` directory with the following configuratio
 
 ---
 
+## 🚀 Production Deployment (Docker, Compose & Cloud)
+
+SFEWS is fully containerized and production-ready for deployment on cloud servers (AWS EC2, DigitalOcean, Hetzner) or on-premise government datacenters.
+
+### Option 1: One-Click Production Deployment (Docker Compose)
+
+1. **Configure Production Secrets:**
+   ```bash
+   cp .env.production.example .env.production
+   # Edit .env.production with your Neon DB connection and secret key
+   ```
+
+2. **Launch with Automation Script:**
+   * On Linux/macOS:
+     ```bash
+     chmod +x scripts/deploy.sh
+     ./scripts/deploy.sh
+     ```
+   * On Windows:
+     ```powershell
+     .\scripts\deploy.ps1
+     ```
+
+   * Or run Docker Compose directly:
+     ```bash
+     docker compose --env-file .env.production up -d --build
+     ```
+
+3. **Verify Production Status:**
+   * Frontend Mission Command: `http://localhost`
+   * Backend API Live Diagnostics: `http://localhost:8000/api/v1/system/diagnostics`
+   * Interactive API Swagger Docs: `http://localhost:8000/docs`
+
+### Option 2: Air-Gapped / Fully Local Deployment (Offline Mode)
+
+If deploying in a secure facility without access to the cloud Neon database:
+```bash
+docker compose --profile local-db up -d --build
+```
+This boots an isolated local PostgreSQL container alongside the FastAPI backend cluster and Nginx frontend.
+
+---
+
 ## 🐳 Production Deployment & Docker
 
 SFEWS includes containerization for production deployments on Kubernetes, AWS ECS, or Render:
@@ -736,6 +1080,49 @@ docker run -d \
   --env-file backend/.env \
   sfews-backend:latest
 ```
+
+---
+
+## 🚀 Production Deployment (Docker, Compose & Cloud)
+
+SFEWS is fully containerized and production-ready for deployment on cloud servers (AWS EC2, DigitalOcean, Hetzner) or on-premise government datacenters.
+
+### Option 1: One-Click Production Deployment (Docker Compose)
+
+1. **Configure Production Secrets:**
+   ```bash
+   cp .env.production.example .env.production
+   # Edit .env.production with your Neon DB connection and secret key
+   ```
+
+2. **Launch with Automation Script:**
+   * On Linux/macOS:
+     ```bash
+     chmod +x scripts/deploy.sh
+     ./scripts/deploy.sh
+     ```
+   * On Windows:
+     ```powershell
+     .\scripts\deploy.ps1
+     ```
+
+   * Or run Docker Compose directly:
+     ```bash
+     docker compose --env-file .env.production up -d --build
+     ```
+
+3. **Verify Production Status:**
+   * Frontend Mission Command: `http://localhost`
+   * Backend API Live Diagnostics: `http://localhost:8000/api/v1/system/diagnostics`
+   * Interactive API Swagger Docs: `http://localhost:8000/docs`
+
+### Option 2: Air-Gapped / Fully Local Deployment (Offline Mode)
+
+If deploying in a secure facility without access to the cloud Neon database:
+```bash
+docker compose --profile local-db up -d --build
+```
+This boots an isolated local PostgreSQL container alongside the FastAPI backend cluster and Nginx frontend.
 
 ---
 
