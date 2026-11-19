@@ -270,12 +270,12 @@ export const IoTPanel: React.FC<IoTPanelProps> = ({
             <span className="text-cyan-400 font-extrabold text-xs text-glow-cyan mt-0.5">{pingRate} ms (CONNECTED)</span>
           </div>
 
-          <div className="flex items-center gap-2.5 sm:gap-3 bg-[#060a16] border border-purple-500/20 px-3.5 sm:px-5 py-2.5 sm:py-3.5 rounded-xl sm:rounded-2xl shadow-[0_4px_30px_rgba(0,0,0,0.5)] backdrop-blur-md">
+          <div className="flex items-center gap-2.5 sm:gap-3 bg-white/80 dark:bg-[#060a16] border border-slate-200 dark:border-purple-500/20 px-3.5 sm:px-5 py-2.5 sm:py-3.5 rounded-xl sm:rounded-2xl shadow-sm dark:shadow-[0_4px_30px_rgba(0,0,0,0.5)] backdrop-blur-md">
             <div className="relative flex h-2 sm:h-2.5 w-2 sm:w-2.5 shrink-0">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 sm:h-2.5 w-2 sm:w-2.5 bg-cyan-500 shadow-[0_0_8px_rgba(34,211,238,0.8)]"></span>
             </div>
-            <span className="text-[9px] sm:text-[10px] font-mono font-black tracking-widest text-slate-350 uppercase shrink-0">
+            <span className="text-[9px] sm:text-[10px] font-mono font-black tracking-widest text-slate-700 dark:text-slate-350 uppercase shrink-0">
               TELEMETRY DENSE MODE
             </span>
           </div>
@@ -288,7 +288,7 @@ export const IoTPanel: React.FC<IoTPanelProps> = ({
         {/* Node selector & active hardware specifications */}
         <div className="lg:col-span-1 glass-panel rounded-2xl sm:rounded-3xl p-4 sm:p-7 flex flex-col justify-between min-h-0 sm:min-h-[300px]">
           <div>
-            <h2 className="text-base sm:text-lg font-extrabold text-slate-100 tracking-wide uppercase">Node Selector</h2>
+            <h2 className="text-base sm:text-lg font-extrabold text-slate-900 dark:text-slate-100 tracking-wide uppercase">Node Selector</h2>
             <p className="text-[11px] sm:text-xs text-slate-500 mt-1 font-bold uppercase tracking-widest font-mono mb-3 sm:mb-4">Choose an active edge board to inspect</p>
             
             <div className="flex flex-wrap gap-2 sm:gap-2.5 mb-4 sm:mb-6">
@@ -298,8 +298,8 @@ export const IoTPanel: React.FC<IoTPanelProps> = ({
                   onClick={() => setActiveStationId(s.id)}
                   className={`px-3.5 sm:px-4.5 py-2 sm:py-3 rounded-xl text-[11px] sm:text-xs font-black border transition-all duration-300 uppercase tracking-widest active:scale-95 flex items-center gap-2
                     ${activeStationId === s.id
-                      ? 'bg-gradient-to-r from-purple-600/20 to-cyan-500/10 border-cyan-500/40 text-cyan-400 shadow-[0_0_12px_rgba(34,211,238,0.15)]'
-                      : 'bg-[#030610] border-white/5 text-slate-400 hover:text-slate-200 hover:border-purple-500/20'}`}
+                      ? 'bg-gradient-to-r from-purple-600/20 to-cyan-500/10 border-cyan-500/40 text-cyan-600 dark:text-cyan-400 shadow-[0_0_12px_rgba(34,211,238,0.15)]'
+                      : 'bg-white dark:bg-[#030610] border-slate-200 dark:border-white/5 text-slate-700 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:border-purple-500/20'}`}
                 >
                   <span className={`w-1.5 h-1.5 rounded-full ${s.status === 'Active' ? 'bg-emerald-500' : 'bg-slate-500'}`}></span>
                   {s.name}
@@ -308,7 +308,7 @@ export const IoTPanel: React.FC<IoTPanelProps> = ({
             </div>
           </div>
 
-          <div className="bg-[#030610]/80 border border-purple-500/10 rounded-2xl p-3.5 sm:p-5 space-y-3 sm:space-y-4">
+          <div className="bg-slate-100/90 dark:bg-[#030610]/80 border border-slate-200 dark:border-purple-500/10 rounded-2xl p-3.5 sm:p-5 space-y-3 sm:space-y-4">
             <h3 className="text-xs font-black text-purple-400 tracking-widest uppercase font-mono">Microcontroller Specs</h3>
             
             <div className="space-y-1.5 sm:space-y-2 text-xs font-mono">
@@ -339,62 +339,62 @@ export const IoTPanel: React.FC<IoTPanelProps> = ({
         {/* High-Fidelity Diagnostic gauges (Solar battery, solar watts, temperatures) */}
         <div className="lg:col-span-2 glass-panel rounded-2xl sm:rounded-3xl p-4 sm:p-7 flex flex-col justify-between">
           <div>
-            <h2 className="text-base sm:text-lg font-extrabold text-slate-100 tracking-wide uppercase">Core Power & Environment</h2>
+            <h2 className="text-base sm:text-lg font-extrabold text-slate-900 dark:text-slate-100 tracking-wide uppercase">Core Power & Environment</h2>
             <p className="text-[11px] sm:text-xs text-slate-500 mt-1 font-bold uppercase tracking-widest font-mono">Real-time solar panel and battery stack telemetry</p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-5 my-4 sm:my-6">
             
             {/* Battery state of charge */}
-            <div className="bg-[#030610] border border-purple-500/10 p-5 rounded-2.5xl flex flex-col justify-between hover:border-purple-500/20 transition-all">
+            <div className="bg-slate-100/90 dark:bg-[#030610] border border-slate-200 dark:border-purple-500/10 p-5 rounded-2.5xl flex flex-col justify-between hover:border-purple-500/30 transition-all">
               <div className="flex justify-between items-start">
                 <span className="text-[10px] text-slate-550 font-extrabold uppercase tracking-widest font-mono">SOLAR BATTERY</span>
-                <span className="px-2 py-0.5 bg-cyan-500/10 border border-cyan-500/25 text-[8px] font-mono text-cyan-400 rounded-md">LI-PO CELL</span>
+                <span className="px-2 py-0.5 bg-cyan-500/10 border border-cyan-500/25 text-[8px] font-mono text-cyan-600 dark:text-cyan-400 rounded-md">LI-PO CELL</span>
               </div>
               <div className="my-4">
                 <div className="flex items-baseline gap-1.5">
-                  <span className="text-4xl font-mono font-black text-cyan-400 text-glow-cyan">{batV.toFixed(2)}</span>
+                  <span className="text-4xl font-mono font-black text-cyan-600 dark:text-cyan-400 text-glow-cyan">{batV.toFixed(2)}</span>
                   <span className="text-xs text-slate-500 font-bold uppercase font-sans">Volts</span>
                 </div>
-                <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wide mt-1.5">Charge State: {activeStation?.batteryLevel || 84}%</p>
+                <p className="text-[10px] text-slate-600 dark:text-slate-400 font-bold uppercase tracking-wide mt-1.5">Charge State: {activeStation?.batteryLevel || 84}%</p>
               </div>
-              <div className="w-full bg-slate-950 h-2 rounded-full overflow-hidden">
+              <div className="w-full bg-slate-200 dark:bg-slate-950 h-2 rounded-full overflow-hidden">
                 <div className="h-full bg-gradient-to-r from-purple-500 to-cyan-400" style={{ width: `${activeStation?.batteryLevel || 84}%` }}></div>
               </div>
             </div>
 
             {/* Solar load energy */}
-            <div className="bg-[#030610] border border-purple-500/10 p-5 rounded-2.5xl flex flex-col justify-between hover:border-purple-500/20 transition-all">
+            <div className="bg-slate-100/90 dark:bg-[#030610] border border-slate-200 dark:border-purple-500/10 p-5 rounded-2.5xl flex flex-col justify-between hover:border-purple-500/30 transition-all">
               <div className="flex justify-between items-start">
                 <span className="text-[10px] text-slate-550 font-extrabold uppercase tracking-widest font-mono">SOLAR LOAD</span>
-                <span className="px-2 py-0.5 bg-purple-500/10 border border-purple-500/25 text-[8px] font-mono text-purple-400 rounded-md">PV PANEL</span>
+                <span className="px-2 py-0.5 bg-purple-500/10 border border-purple-500/25 text-[8px] font-mono text-purple-600 dark:text-purple-400 rounded-md">PV PANEL</span>
               </div>
               <div className="my-4">
                 <div className="flex items-baseline gap-1.5">
-                  <span className="text-4xl font-mono font-black text-slate-100">1.45</span>
+                  <span className="text-4xl font-mono font-black text-slate-800 dark:text-slate-100">1.45</span>
                   <span className="text-xs text-slate-500 font-bold uppercase font-sans">Watts</span>
                 </div>
-                <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wide mt-1.5">Efficiency Rating: 94.2%</p>
+                <p className="text-[10px] text-slate-600 dark:text-slate-400 font-bold uppercase tracking-wide mt-1.5">Efficiency Rating: 94.2%</p>
               </div>
-              <div className="w-full bg-slate-950 h-2 rounded-full overflow-hidden">
+              <div className="w-full bg-slate-200 dark:bg-slate-950 h-2 rounded-full overflow-hidden">
                 <div className="h-full bg-gradient-to-r from-indigo-500 to-purple-500 w-[65%]"></div>
               </div>
             </div>
 
             {/* MCU Core Temperature */}
-            <div className="bg-[#030610] border border-purple-500/10 p-5 rounded-2.5xl flex flex-col justify-between hover:border-purple-500/20 transition-all">
+            <div className="bg-slate-100/90 dark:bg-[#030610] border border-slate-200 dark:border-purple-500/10 p-5 rounded-2.5xl flex flex-col justify-between hover:border-purple-500/30 transition-all">
               <div className="flex justify-between items-start">
                 <span className="text-[10px] text-slate-550 font-extrabold uppercase tracking-widest font-mono">MCU TEMP</span>
-                <span className="px-2 py-0.5 bg-emerald-500/10 border border-emerald-500/25 text-[8px] font-mono text-emerald-400 rounded-md">INTERNAL SENS</span>
+                <span className="px-2 py-0.5 bg-emerald-500/10 border border-emerald-500/25 text-[8px] font-mono text-emerald-600 dark:text-emerald-400 rounded-md">INTERNAL SENS</span>
               </div>
               <div className="my-4">
                 <div className="flex items-baseline gap-1.5">
-                  <span className="text-4xl font-mono font-black text-emerald-400 text-glow-emerald">38.6</span>
+                  <span className="text-4xl font-mono font-black text-emerald-600 dark:text-emerald-400 text-glow-emerald">38.6</span>
                   <span className="text-xs text-slate-500 font-bold uppercase font-sans">°C</span>
                 </div>
-                <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wide mt-1.5">Silicon Core: STABLE</p>
+                <p className="text-[10px] text-slate-600 dark:text-slate-400 font-bold uppercase tracking-wide mt-1.5">Silicon Core: STABLE</p>
               </div>
-              <div className="w-full bg-slate-950 h-2 rounded-full overflow-hidden">
+              <div className="w-full bg-slate-200 dark:bg-slate-950 h-2 rounded-full overflow-hidden">
                 <div className="h-full bg-emerald-500/30" style={{ width: '38.6%' }}></div>
               </div>
             </div>

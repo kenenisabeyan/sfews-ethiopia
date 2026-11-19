@@ -231,9 +231,9 @@ export const AlertsPanel: React.FC<AlertsPanelProps> = ({
                   Polling incident logs...
                 </div>
               ) : filteredAlerts.length === 0 ? (
-                <div className="text-center py-12 border border-dashed border-white/5 rounded-2xl bg-[#040814]/40">
+                <div className="text-center py-12 border border-dashed border-slate-300 dark:border-white/5 rounded-2xl bg-slate-100/70 dark:bg-[#040814]/40">
                   <span className="text-3xl block mb-2">🛡️</span>
-                  <p className="text-slate-300 font-bold text-sm">No Active Flood Alerts Matching Filter</p>
+                  <p className="text-slate-800 dark:text-slate-300 font-bold text-sm">No Active Flood Alerts Matching Filter</p>
                   <p className="text-slate-500 text-xs font-mono mt-1">All monitoring corridors operating within retention buffer margins.</p>
                 </div>
               ) : (
@@ -327,13 +327,13 @@ export const AlertsPanel: React.FC<AlertsPanelProps> = ({
 
             <form onSubmit={handleDispatchBroadcast} className="space-y-4 text-xs font-semibold">
               <div>
-                <label className="text-[10px] font-mono text-slate-400 uppercase tracking-widest block mb-1.5">
+                <label className="text-[10px] font-mono text-slate-500 dark:text-slate-400 uppercase tracking-widest block mb-1.5">
                   Center Sensor Anchor
                 </label>
                 <select
                   value={broadcastStation}
                   onChange={(e) => setBroadcastStation(e.target.value)}
-                  className="w-full bg-[#050914] border border-white/10 rounded-xl p-2.5 text-xs text-slate-200 focus:outline-none focus:border-purple-500 font-mono"
+                  className="w-full bg-white dark:bg-[#050914] border border-slate-300 dark:border-white/10 rounded-xl p-2.5 text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:border-purple-500 font-mono"
                 >
                   <option value="all">Entire Awash River Basin (Fleet-Wide)</option>
                   {nodes.map(n => (
@@ -343,9 +343,9 @@ export const AlertsPanel: React.FC<AlertsPanelProps> = ({
               </div>
 
               <div>
-                <div className="flex items-center justify-between mb-1.5 text-[10px] font-mono text-slate-400 uppercase tracking-widest">
+                <div className="flex items-center justify-between mb-1.5 text-[10px] font-mono text-slate-500 dark:text-slate-400 uppercase tracking-widest">
                   <span>Geofence Radius:</span>
-                  <span className="text-purple-400 font-bold">{broadcastRadius} km</span>
+                  <span className="text-purple-600 dark:text-purple-400 font-bold">{broadcastRadius} km</span>
                 </div>
                 <input
                   type="range"
@@ -354,12 +354,12 @@ export const AlertsPanel: React.FC<AlertsPanelProps> = ({
                   step="5"
                   value={broadcastRadius}
                   onChange={(e) => setBroadcastRadius(Number(e.target.value))}
-                  className="w-full h-1.5 bg-slate-900 rounded-lg appearance-none cursor-pointer accent-purple-500"
+                  className="w-full h-1.5 bg-slate-200 dark:bg-slate-900 rounded-lg appearance-none cursor-pointer accent-purple-500"
                 />
               </div>
 
               <div>
-                <label className="text-[10px] font-mono text-slate-400 uppercase tracking-widest block mb-1.5">
+                <label className="text-[10px] font-mono text-slate-500 dark:text-slate-400 uppercase tracking-widest block mb-1.5">
                   Severity Override
                 </label>
                 <div className="grid grid-cols-3 gap-2">
@@ -371,7 +371,7 @@ export const AlertsPanel: React.FC<AlertsPanelProps> = ({
                       className={`py-1.5 rounded-xl text-[10px] font-mono font-bold uppercase transition-all ${
                         broadcastSeverity === sev
                           ? 'bg-purple-600 text-white shadow-[0_0_12px_rgba(168,85,247,0.4)]'
-                          : 'bg-[#050914] text-slate-400 border border-white/5 hover:text-slate-200'
+                          : 'bg-slate-100 dark:bg-[#050914] text-slate-700 dark:text-slate-400 border border-slate-200 dark:border-white/5 hover:text-slate-900 dark:hover:text-slate-200'
                       }`}
                     >
                       {sev}
@@ -381,14 +381,14 @@ export const AlertsPanel: React.FC<AlertsPanelProps> = ({
               </div>
 
               <div>
-                <label className="text-[10px] font-mono text-slate-400 uppercase tracking-widest block mb-1.5">
+                <label className="text-[10px] font-mono text-slate-500 dark:text-slate-400 uppercase tracking-widest block mb-1.5">
                   Broadcast Directive Message
                 </label>
                 <textarea
                   rows={3}
                   value={broadcastMessage}
                   onChange={(e) => setBroadcastMessage(e.target.value)}
-                  className="w-full bg-[#050914] border border-white/10 rounded-xl p-2.5 text-xs text-slate-200 focus:outline-none focus:border-purple-500 resize-none leading-relaxed"
+                  className="w-full bg-white dark:bg-[#050914] border border-slate-300 dark:border-white/10 rounded-xl p-2.5 text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:border-purple-500 resize-none leading-relaxed"
                   placeholder="Type emergency alert dispatch..."
                 />
               </div>
@@ -438,7 +438,7 @@ export const AlertsPanel: React.FC<AlertsPanelProps> = ({
               placeholder="Search by name, phone or station..."
               value={subSearch}
               onChange={(e) => setSubSearch(e.target.value)}
-              className="w-full bg-[#050914] border border-white/10 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-cyan-500 font-mono placeholder:text-slate-600"
+              className="w-full bg-white dark:bg-[#050914] border border-slate-300 dark:border-white/10 rounded-xl px-3 py-2 text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:border-cyan-500 font-mono placeholder:text-slate-400 dark:placeholder:text-slate-600"
             />
 
             {/* Subscriber Item Cards */}
@@ -446,11 +446,11 @@ export const AlertsPanel: React.FC<AlertsPanelProps> = ({
               {filteredSubscribers.map(sub => (
                 <div
                   key={sub.id}
-                  className="p-3 bg-[#040814]/70 border border-white/5 rounded-2xl flex items-center justify-between gap-3 text-xs"
+                  className="p-3 bg-slate-100/90 dark:bg-[#040814]/70 border border-slate-200 dark:border-white/5 rounded-2xl flex items-center justify-between gap-3 text-xs"
                 >
                   <div className="min-w-0">
-                    <p className="font-bold text-slate-100 truncate">{sub.name}</p>
-                    <p className="font-mono text-[10px] text-slate-400 mt-0.5">{sub.phone} • <span className="text-indigo-400 font-bold">{sub.stationId}</span></p>
+                    <p className="font-bold text-slate-800 dark:text-slate-100 truncate">{sub.name}</p>
+                    <p className="font-mono text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">{sub.phone} • <span className="text-indigo-600 dark:text-indigo-400 font-bold">{sub.stationId}</span></p>
                   </div>
 
                   <div className="flex items-center gap-2 shrink-0">
@@ -458,15 +458,15 @@ export const AlertsPanel: React.FC<AlertsPanelProps> = ({
                       onClick={() => onToggleSubscriber(sub.id)}
                       className={`px-2 py-0.5 rounded-full text-[9px] font-mono font-black uppercase tracking-wider border ${
                         sub.status === 'Active'
-                          ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
-                          : 'bg-slate-800 text-slate-500 border-slate-700'
+                          ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20'
+                          : 'bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-500 border-slate-300 dark:border-slate-700'
                       }`}
                     >
                       {sub.status}
                     </button>
                     <button
                       onClick={() => onDeleteSubscriber(sub.id)}
-                      className="text-slate-500 hover:text-red-400 text-xs px-1"
+                      className="text-slate-400 hover:text-red-500 text-xs px-1"
                       title="Remove subscriber"
                     >
                       ✕
@@ -477,8 +477,8 @@ export const AlertsPanel: React.FC<AlertsPanelProps> = ({
             </div>
 
             {/* Add New Subscriber Inline Form */}
-            <form onSubmit={handleSubscriberSubmit} className="pt-3 border-t border-white/5 space-y-2.5 text-xs">
-              <span className="text-[10px] font-mono text-slate-400 font-bold uppercase tracking-wider block">
+            <form onSubmit={handleSubscriberSubmit} className="pt-3 border-t border-slate-200 dark:border-white/5 space-y-2.5 text-xs">
+              <span className="text-[10px] font-mono text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider block">
                 Register Local Contact
               </span>
               <div className="grid grid-cols-2 gap-2">
@@ -487,21 +487,21 @@ export const AlertsPanel: React.FC<AlertsPanelProps> = ({
                   placeholder="Full Name"
                   value={newSubName}
                   onChange={(e) => setNewSubName(e.target.value)}
-                  className="bg-[#050914] border border-white/10 rounded-xl px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-cyan-500"
+                  className="bg-white dark:bg-[#050914] border border-slate-300 dark:border-white/10 rounded-xl px-2.5 py-1.5 text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:border-cyan-500 placeholder:text-slate-400"
                 />
                 <input
                   type="text"
                   placeholder="Phone (+251...)"
                   value={newSubPhone}
                   onChange={(e) => setNewSubPhone(e.target.value)}
-                  className="bg-[#050914] border border-white/10 rounded-xl px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-cyan-500 font-mono"
+                  className="bg-white dark:bg-[#050914] border border-slate-300 dark:border-white/10 rounded-xl px-2.5 py-1.5 text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:border-cyan-500 font-mono placeholder:text-slate-400"
                 />
               </div>
               <div className="flex gap-2">
                 <select
                   value={newSubStation}
                   onChange={(e) => setNewSubStation(e.target.value)}
-                  className="flex-1 bg-[#050914] border border-white/10 rounded-xl px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-cyan-500 font-mono"
+                  className="flex-1 bg-white dark:bg-[#050914] border border-slate-300 dark:border-white/10 rounded-xl px-2.5 py-1.5 text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:border-cyan-500 font-mono"
                 >
                   {nodes.map(n => (
                     <option key={n.id} value={n.id}>{n.id} ({n.name.split(' ')[0]})</option>
