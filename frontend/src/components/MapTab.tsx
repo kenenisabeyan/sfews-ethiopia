@@ -115,8 +115,8 @@ export const MapTab: React.FC<MapTabProps> = ({
                                 onClick={() => setShowSatellite(!showSatellite)}
                                 className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl border text-[9px] sm:text-[10px] font-black uppercase tracking-wider transition-all duration-300 ${
                                     showSatellite 
-                                        ? 'bg-purple-600/20 text-purple-300 border-purple-500/40 shadow-[0_0_12px_rgba(168,85,247,0.15)]' 
-                                        : 'bg-slate-950/40 text-slate-500 border-slate-800 hover:text-slate-300 hover:border-slate-700'
+                                        ? 'bg-purple-600/20 text-purple-700 dark:text-purple-300 border-purple-500/40 shadow-sm' 
+                                        : 'bg-slate-100 dark:bg-slate-950/40 text-slate-600 dark:text-slate-400 border-slate-300 dark:border-slate-800 hover:text-slate-900 dark:hover:text-slate-200'
                                 }`}
                             >
                                 Satellite View
@@ -125,8 +125,8 @@ export const MapTab: React.FC<MapTabProps> = ({
                                 onClick={() => setShowContours(!showContours)}
                                 className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl border text-[9px] sm:text-[10px] font-black uppercase tracking-wider transition-all duration-300 ${
                                     showContours 
-                                        ? 'bg-purple-600/20 text-purple-300 border-purple-500/40 shadow-[0_0_12px_rgba(168,85,247,0.15)]' 
-                                        : 'bg-slate-950/40 text-slate-500 border-slate-800 hover:text-slate-300 hover:border-slate-700'
+                                        ? 'bg-purple-600/20 text-purple-700 dark:text-purple-300 border-purple-500/40 shadow-sm' 
+                                        : 'bg-slate-100 dark:bg-slate-950/40 text-slate-600 dark:text-slate-400 border-slate-300 dark:border-slate-800 hover:text-slate-900 dark:hover:text-slate-200'
                                 }`}
                             >
                                 Topo Contours
@@ -135,8 +135,8 @@ export const MapTab: React.FC<MapTabProps> = ({
                                 onClick={() => setShowRadar(!showRadar)}
                                 className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl border text-[9px] sm:text-[10px] font-black uppercase tracking-wider transition-all duration-300 ${
                                     showRadar 
-                                        ? 'bg-cyan-600/20 text-cyan-300 border-cyan-500/40 shadow-[0_0_12px_rgba(34,211,238,0.15)]' 
-                                        : 'bg-slate-950/40 text-slate-500 border-slate-800 hover:text-slate-300 hover:border-slate-700'
+                                        ? 'bg-cyan-600/20 text-cyan-700 dark:text-cyan-300 border-cyan-500/40 shadow-sm' 
+                                        : 'bg-slate-100 dark:bg-slate-950/40 text-slate-600 dark:text-slate-400 border-slate-300 dark:border-slate-800 hover:text-slate-900 dark:hover:text-slate-200'
                                 }`}
                             >
                                 Radar Sweep
@@ -145,8 +145,8 @@ export const MapTab: React.FC<MapTabProps> = ({
                                 onClick={() => setShowHeatzones(!showHeatzones)}
                                 className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl border text-[9px] sm:text-[10px] font-black uppercase tracking-wider transition-all duration-300 ${
                                     showHeatzones 
-                                        ? 'bg-red-600/20 text-red-300 border-red-500/40 shadow-[0_0_12px_rgba(239,68,68,0.15)]' 
-                                        : 'bg-slate-950/40 text-slate-500 border-slate-800 hover:text-slate-300 hover:border-slate-700'
+                                        ? 'bg-red-600/20 text-red-700 dark:text-red-300 border-red-500/40 shadow-sm' 
+                                        : 'bg-slate-100 dark:bg-slate-950/40 text-slate-600 dark:text-slate-400 border-slate-300 dark:border-slate-800 hover:text-slate-900 dark:hover:text-slate-200'
                                 }`}
                             >
                                 Heat zones
@@ -155,8 +155,8 @@ export const MapTab: React.FC<MapTabProps> = ({
                                 onClick={() => setShowEvac(!showEvac)}
                                 className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl border text-[9px] sm:text-[10px] font-black uppercase tracking-wider transition-all duration-300 ${
                                     showEvac 
-                                        ? 'bg-emerald-600/20 text-emerald-300 border-emerald-500/40 shadow-[0_0_12px_rgba(168,85,247,0.15)]' 
-                                        : 'bg-slate-950/40 text-slate-500 border-slate-800 hover:text-slate-300 hover:border-slate-700'
+                                        ? 'bg-emerald-600/20 text-emerald-700 dark:text-emerald-300 border-emerald-500/40 shadow-sm' 
+                                        : 'bg-slate-100 dark:bg-slate-950/40 text-slate-600 dark:text-slate-400 border-slate-300 dark:border-slate-800 hover:text-slate-900 dark:hover:text-slate-200'
                                 }`}
                             >
                                 Corridors
@@ -566,15 +566,15 @@ export const MapTab: React.FC<MapTabProps> = ({
 
             {/* Night-Vision Station Telemetry diagnostics sidebar (Takes 1 column) */}
             <div className="lg:col-span-1 flex flex-col justify-between glass-panel rounded-2xl sm:rounded-3xl p-4 sm:p-6 min-h-0 sm:min-h-[580px] relative overflow-hidden">
-                <div className="absolute inset-0 bg-[#03070f]/90 pointer-events-none" />
+                <div className="absolute inset-0 bg-slate-50/80 dark:bg-[#03070f]/90 pointer-events-none" />
                 <div className="absolute inset-0 cyber-scanner pointer-events-none opacity-10" />
 
                 <div className="relative z-10 space-y-4 sm:space-y-6">
                     {/* Panel Header */}
-                    <div className="border-b border-slate-900/60 pb-3 sm:pb-5 text-center">
-                        <h3 className="text-xs font-black text-purple-400 tracking-widest uppercase">Telemetry Receiver</h3>
-                        <h2 className="text-sm sm:text-base font-black text-slate-100 mt-1 uppercase tracking-wide">
-                            Night-Vision HUD
+                    <div className="border-b border-slate-200 dark:border-slate-800/60 pb-3 sm:pb-5 text-center">
+                        <h3 className="text-xs font-black text-purple-600 dark:text-purple-400 tracking-widest uppercase">Telemetry Receiver</h3>
+                        <h2 className="text-sm sm:text-base font-black text-slate-800 dark:text-slate-100 mt-1 uppercase tracking-wide">
+                            Station Telemetry HUD
                         </h2>
                     </div>
 
@@ -583,23 +583,23 @@ export const MapTab: React.FC<MapTabProps> = ({
                             {/* Station Header details */}
                             <div className="space-y-2">
                                 <div className="flex items-center justify-between">
-                                    <span className="px-2.5 py-0.5 rounded-full text-[9px] font-black tracking-widest border bg-slate-950 border-slate-800 text-slate-400 uppercase font-mono">
+                                    <span className="px-2.5 py-0.5 rounded-full text-[9px] font-black tracking-widest border bg-slate-100 dark:bg-slate-950 border-slate-300 dark:border-slate-800 text-slate-600 dark:text-slate-400 uppercase font-mono">
                                         {selectedMapNode.id}
                                     </span>
                                     <span className={`px-3 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider border ${getAlertColors(getSimulatedRisk(selectedMapNode))}`}>
                                         {getSimulatedRisk(selectedMapNode)}
                                     </span>
                                 </div>
-                                <h4 className="text-lg font-black text-slate-50 tracking-wide uppercase">
+                                <h4 className="text-lg font-black text-slate-900 dark:text-slate-50 tracking-wide uppercase">
                                     {selectedMapNode.name}
                                 </h4>
                             </div>
 
                             {/* Interactive Liquid Column Level simulator */}
-                            <div className="bg-[#02050b] border border-slate-900/80 rounded-2xl p-4 flex flex-col items-center">
-                                <span className="text-[9px] font-bold text-slate-500 uppercase tracking-widest mb-3 block">Cylinder Depth sensor</span>
+                            <div className="bg-white dark:bg-[#02050b] border border-slate-200 dark:border-slate-800/80 rounded-2xl p-4 flex flex-col items-center shadow-sm">
+                                <span className="text-[9px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-3 block">Cylinder Depth Sensor</span>
                                 
-                                <div className="w-10 h-36 border border-slate-800 rounded-xl relative overflow-hidden bg-slate-950/80 flex flex-col justify-end">
+                                <div className="w-10 h-36 border border-slate-300 dark:border-slate-800 rounded-xl relative overflow-hidden bg-slate-100 dark:bg-slate-950/80 flex flex-col justify-end shadow-inner">
                                     {/* Dynamic Visual Water height */}
                                     <div 
                                         className={`w-full transition-all duration-500 shadow-[0_0_12px_inset_rgba(255,255,255,0.2)] ${
@@ -613,41 +613,41 @@ export const MapTab: React.FC<MapTabProps> = ({
                                     />
                                     
                                     {/* Calibration ticks */}
-                                    <div className="absolute inset-0 flex flex-col justify-between p-1.5 pointer-events-none text-[7px] font-mono font-bold text-slate-700">
-                                        <div className="border-t border-slate-800 w-full text-right">5.0m</div>
-                                        <div className="border-t border-slate-900 w-full text-right">3.5m</div>
-                                        <div className="border-t border-slate-900 w-full text-right">2.0m</div>
-                                        <div className="border-t border-slate-900 w-full text-right">0.5m</div>
+                                    <div className="absolute inset-0 flex flex-col justify-between p-1.5 pointer-events-none text-[7px] font-mono font-bold text-slate-400 dark:text-slate-700">
+                                        <div className="border-t border-slate-300 dark:border-slate-800 w-full text-right">5.0m</div>
+                                        <div className="border-t border-slate-300 dark:border-slate-900 w-full text-right">3.5m</div>
+                                        <div className="border-t border-slate-300 dark:border-slate-900 w-full text-right">2.0m</div>
+                                        <div className="border-t border-slate-300 dark:border-slate-900 w-full text-right">0.5m</div>
                                     </div>
                                 </div>
-                                <span className="text-xl font-black text-slate-100 font-mono mt-3">
-                                    {getSimulatedWaterLevel(selectedMapNode).toFixed(1)} <span className="text-xs text-slate-500">cm</span>
+                                <span className="text-xl font-black text-slate-900 dark:text-slate-100 font-mono mt-3">
+                                    {getSimulatedWaterLevel(selectedMapNode).toFixed(1)} <span className="text-xs text-slate-500 dark:text-slate-400 font-bold">cm</span>
                                 </span>
                             </div>
 
                             {/* Details Statistics logs */}
                             <div className="grid grid-cols-2 gap-3.5">
-                                <div className="bg-[#02050b] border border-slate-900/60 p-3 rounded-xl">
-                                    <span className="text-[8px] text-slate-500 font-bold uppercase tracking-widest block mb-0.5">Precipitation</span>
-                                    <p className="text-base font-black text-cyan-400 font-mono">
-                                        {selectedMapNode.rainfallRateMm?.toFixed(1) || '0.0'} <span className="text-[10px] text-slate-500 font-normal">mm/h</span>
+                                <div className="bg-white dark:bg-[#02050b] border border-slate-200 dark:border-slate-900/60 p-3 rounded-xl shadow-sm">
+                                    <span className="text-[8px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-widest block mb-0.5">Precipitation</span>
+                                    <p className="text-base font-black text-cyan-600 dark:text-cyan-400 font-mono">
+                                        {selectedMapNode.rainfallRateMm?.toFixed(1) || '0.0'} <span className="text-[10px] text-slate-500 dark:text-slate-400 font-normal">mm/h</span>
                                     </p>
                                 </div>
-                                <div className="bg-[#02050b] border border-slate-900/60 p-3 rounded-xl">
-                                    <span className="text-[8px] text-slate-500 font-bold uppercase tracking-widest block mb-0.5">Battery power</span>
-                                    <p className="text-base font-black text-slate-200 font-mono">
+                                <div className="bg-white dark:bg-[#02050b] border border-slate-200 dark:border-slate-900/60 p-3 rounded-xl shadow-sm">
+                                    <span className="text-[8px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-widest block mb-0.5">Battery Power</span>
+                                    <p className="text-base font-black text-slate-800 dark:text-slate-200 font-mono">
                                         {selectedMapNode.batteryLevel || 0}%
                                     </p>
                                 </div>
-                                <div className="bg-[#02050b] border border-slate-900/60 p-3 rounded-xl">
-                                    <span className="text-[8px] text-slate-500 font-bold uppercase tracking-widest block mb-0.5">RSSI signal</span>
-                                    <p className="text-base font-black text-[#a855f7] font-mono">
-                                        -74 <span className="text-[10px] text-slate-500 font-normal">dBm</span>
+                                <div className="bg-white dark:bg-[#02050b] border border-slate-200 dark:border-slate-900/60 p-3 rounded-xl shadow-sm">
+                                    <span className="text-[8px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-widest block mb-0.5">RSSI Signal</span>
+                                    <p className="text-base font-black text-purple-600 dark:text-[#a855f7] font-mono">
+                                        -74 <span className="text-[10px] text-slate-500 dark:text-slate-400 font-normal">dBm</span>
                                     </p>
                                 </div>
-                                <div className="bg-[#02050b] border border-slate-900/60 p-3 rounded-xl">
-                                    <span className="text-[8px] text-slate-500 font-bold uppercase tracking-widest block mb-0.5">ESP32 State</span>
-                                    <p className="text-xs font-black text-emerald-400 uppercase tracking-widest mt-1">
+                                <div className="bg-white dark:bg-[#02050b] border border-slate-200 dark:border-slate-900/60 p-3 rounded-xl shadow-sm">
+                                    <span className="text-[8px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-widest block mb-0.5">ESP32 State</span>
+                                    <p className="text-xs font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-widest mt-1">
                                         {selectedMapNode.status || 'ACTIVE'}
                                     </p>
                                 </div>

@@ -490,22 +490,22 @@ export const IoTPanel: React.FC<IoTPanelProps> = ({
 
           {/* Microcontroller visualization wrapper with responsive scroll */}
           <div className="w-full overflow-x-auto custom-scrollbar my-4 sm:my-6 pb-2 -mx-4 sm:mx-0 px-4 sm:px-0">
-            <div className="min-w-[480px] max-w-[640px] mx-auto bg-[#020409]/95 border border-purple-500/10 rounded-2xl sm:rounded-3xl p-4 sm:p-6 flex flex-row justify-between items-stretch gap-4 sm:gap-6 relative shadow-[inset_0_4px_30px_rgba(0,0,0,0.9)]">
+            <div className="min-w-[480px] max-w-[640px] mx-auto bg-slate-100/90 dark:bg-[#020409]/95 border border-slate-200 dark:border-purple-500/10 rounded-2xl sm:rounded-3xl p-4 sm:p-6 flex flex-row justify-between items-stretch gap-4 sm:gap-6 relative shadow-md dark:shadow-[inset_0_4px_30px_rgba(0,0,0,0.9)]">
               
               {/* Left Pin column buttons flanking */}
-              <div className="flex flex-col justify-between gap-1 z-20 shrink-0 pr-2 border-r border-slate-900/60">
+              <div className="flex flex-col justify-between gap-1 z-20 shrink-0 pr-2 border-r border-slate-200 dark:border-slate-900/60">
                 {leftPins.map(pin => (
                   <button
                     key={pin.pinNumber}
                     onClick={() => setSelectedPin(pin)}
                     className={`w-24 sm:w-28 px-1.5 sm:px-2 py-1 text-[9px] sm:text-[9.5px] font-black font-mono border rounded-lg flex items-center justify-between transition-all duration-200 active:scale-95
                       ${selectedPin?.pinNumber === pin.pinNumber
-                        ? 'bg-gradient-to-r from-cyan-500/20 to-purple-500/20 border-cyan-400 text-cyan-300 shadow-[0_0_8px_rgba(34,211,238,0.2)]'
-                        : 'bg-[#040813] border-white/5 text-slate-400 hover:text-slate-200 hover:border-slate-800'}`}
+                        ? 'bg-gradient-to-r from-cyan-500/20 to-purple-500/20 border-cyan-500 dark:border-cyan-400 text-cyan-700 dark:text-cyan-300 shadow-sm'
+                        : 'bg-white dark:bg-[#040813] border-slate-300 dark:border-white/5 text-slate-700 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:border-slate-400 dark:hover:border-slate-800 shadow-sm'}`}
                   >
                     <span className="opacity-40">{pin.pinNumber}</span>
                     <span className="tracking-wide uppercase font-extrabold">{pin.label}</span>
-                    <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${pin.state === 'HIGH' ? 'bg-emerald-400 shadow-[0_0_5px_rgba(16,185,129,0.8)]' : pin.state === 'LOW' ? 'bg-red-400 shadow-[0_0_5px_rgba(239,68,68,0.8)]' : pin.state === 'ANALOG' ? 'bg-amber-400 animate-pulse' : 'bg-slate-700'}`}></span>
+                    <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${pin.state === 'HIGH' ? 'bg-emerald-500 shadow-[0_0_5px_rgba(16,185,129,0.8)]' : pin.state === 'LOW' ? 'bg-red-500 shadow-[0_0_5px_rgba(239,68,68,0.8)]' : pin.state === 'ANALOG' ? 'bg-amber-500 animate-pulse' : 'bg-slate-400'}`}></span>
                   </button>
                 ))}
               </div>
@@ -514,12 +514,12 @@ export const IoTPanel: React.FC<IoTPanelProps> = ({
               <div className="flex-grow flex flex-col justify-center items-center relative py-4 sm:py-6 px-2 sm:px-4">
                 
                 {/* SVG vector chip background */}
-                <div className="w-full max-w-[180px] sm:max-w-[200px] aspect-[4/5] bg-gradient-to-br from-[#0c1224] to-[#04060c] border border-slate-800 rounded-2xl flex flex-col justify-between p-3 sm:p-4 relative shadow-[0_0_40px_rgba(0,0,0,0.8)] z-10">
-                  <div className="absolute inset-0 bg-[#0c1224]/10 rounded-2xl blur-lg pointer-events-none"></div>
+                <div className="w-full max-w-[180px] sm:max-w-[200px] aspect-[4/5] bg-gradient-to-br from-slate-900 to-slate-950 dark:from-[#0c1224] dark:to-[#04060c] border border-slate-700 dark:border-slate-800 rounded-2xl flex flex-col justify-between p-3 sm:p-4 relative shadow-2xl z-10">
+                  <div className="absolute inset-0 bg-cyan-500/5 rounded-2xl blur-lg pointer-events-none"></div>
                   
                   {/* Metallic shine detail line */}
-                  <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
-                  <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/5 to-transparent"></div>
+                  <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+                  <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
 
                   <div className="flex justify-between items-start">
                     <span className="text-[7.5px] font-black font-mono text-purple-400 uppercase tracking-widest">ASTU LAB</span>
@@ -531,10 +531,10 @@ export const IoTPanel: React.FC<IoTPanelProps> = ({
                       <svg className="w-4 h-4 sm:w-5 sm:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 5h10a2 2 0 012 2v10a2 2 0 01-2 2H7a2 2 0 01-2-2V7a2 2 0 012-2z" /></svg>
                     </div>
                     <h4 className="text-[11px] sm:text-xs font-black text-slate-100 tracking-wider font-mono">ESP32-WROOM</h4>
-                    <span className="text-[7.5px] sm:text-[8px] text-slate-500 font-bold uppercase tracking-widest font-mono mt-0.5">D0WDQ6 Core</span>
+                    <span className="text-[7.5px] sm:text-[8px] text-slate-400 font-bold uppercase tracking-widest font-mono mt-0.5">D0WDQ6 Core</span>
                   </div>
 
-                  <div className="flex justify-between items-end border-t border-slate-900/60 pt-1.5 sm:pt-2 text-[6.5px] font-mono text-slate-500">
+                  <div className="flex justify-between items-end border-t border-slate-700/60 pt-1.5 sm:pt-2 text-[6.5px] font-mono text-slate-400">
                     <span>RFM95W MESH</span>
                     <span>v3.3.0</span>
                   </div>
@@ -549,17 +549,17 @@ export const IoTPanel: React.FC<IoTPanelProps> = ({
               </div>
 
               {/* Right Pin column buttons flanking */}
-              <div className="flex flex-col justify-between gap-1 z-20 shrink-0 pl-2 border-l border-slate-900/60">
+              <div className="flex flex-col justify-between gap-1 z-20 shrink-0 pl-2 border-l border-slate-200 dark:border-slate-900/60">
                 {rightPins.map(pin => (
                   <button
                     key={pin.pinNumber}
                     onClick={() => setSelectedPin(pin)}
                     className={`w-24 sm:w-28 px-1.5 sm:px-2 py-1 text-[9px] sm:text-[9.5px] font-black font-mono border rounded-lg flex items-center justify-between transition-all duration-200 active:scale-95
                       ${selectedPin?.pinNumber === pin.pinNumber
-                        ? 'bg-gradient-to-r from-purple-500/20 to-cyan-500/20 border-purple-400 text-purple-300 shadow-[0_0_8px_rgba(168,85,247,0.2)]'
-                        : 'bg-[#040813] border-white/5 text-slate-400 hover:text-slate-200 hover:border-slate-800'}`}
+                        ? 'bg-gradient-to-r from-purple-500/20 to-cyan-500/20 border-purple-500 dark:border-purple-400 text-purple-700 dark:text-purple-300 shadow-sm'
+                        : 'bg-white dark:bg-[#040813] border-slate-300 dark:border-white/5 text-slate-700 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:border-slate-400 dark:hover:border-slate-800 shadow-sm'}`}
                   >
-                    <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${pin.state === 'HIGH' ? 'bg-emerald-400 shadow-[0_0_5px_rgba(16,185,129,0.8)]' : pin.state === 'LOW' ? 'bg-red-400 shadow-[0_0_5px_rgba(239,68,68,0.8)]' : pin.state === 'ANALOG' ? 'bg-amber-400 animate-pulse' : 'bg-slate-700'}`}></span>
+                    <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${pin.state === 'HIGH' ? 'bg-emerald-500 shadow-[0_0_5px_rgba(16,185,129,0.8)]' : pin.state === 'LOW' ? 'bg-red-500 shadow-[0_0_5px_rgba(239,68,68,0.8)]' : pin.state === 'ANALOG' ? 'bg-amber-500 animate-pulse' : 'bg-slate-400'}`}></span>
                     <span className="tracking-wide uppercase font-extrabold">{pin.label}</span>
                     <span className="opacity-40">{pin.pinNumber}</span>
                   </button>

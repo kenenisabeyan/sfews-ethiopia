@@ -75,10 +75,10 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
 
   const getAlertColors = (risk?: string) => {
       switch (risk) {
-          case 'Safe': return 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20';
-          case 'Warning': return 'text-amber-400 bg-amber-500/10 border-amber-500/20';
-          case 'Critical': return 'text-red-400 bg-red-500/10 border-red-500/20 shadow-[0_0_15px_rgba(239,68,68,0.2)]';
-          default: return 'text-slate-400 bg-slate-800/50 border-slate-700/50';
+          case 'Safe': return 'text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 border-emerald-500/30';
+          case 'Warning': return 'text-amber-600 dark:text-amber-400 bg-amber-500/10 border-amber-500/30';
+          case 'Critical': return 'text-red-600 dark:text-red-400 bg-red-500/10 border-red-500/30 shadow-[0_0_15px_rgba(239,68,68,0.2)]';
+          default: return 'text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-slate-800/50 border-slate-300 dark:border-slate-700/50';
       }
   };
 
@@ -283,7 +283,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
 
           {/* Interactive Hydrometric Station Selector Strip */}
           <div className="flex items-center gap-2 mb-4 overflow-x-auto pb-1.5 custom-scrollbar">
-            <span className="text-[9px] font-mono font-bold text-slate-500 uppercase tracking-widest shrink-0">ANCHOR TARGET:</span>
+            <span className="text-[9px] font-mono font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest shrink-0">ANCHOR TARGET:</span>
             {payload?.nodes.map((node) => {
               const isSelected = activeStationId === node.id;
               const isCritical = node.currentRisk === 'Critical';
@@ -294,15 +294,15 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
                   onClick={() => setActiveStationId(node.id)}
                   className={`px-3 py-1.5 rounded-xl text-xs font-mono font-bold tracking-wider transition-all flex items-center gap-2 shrink-0 ${
                     isSelected
-                      ? 'bg-gradient-to-r from-indigo-600/30 to-purple-600/30 text-indigo-200 border border-indigo-500/50 shadow-[0_0_15px_rgba(99,102,241,0.2)]'
-                      : 'bg-[#030610] text-slate-400 hover:text-slate-200 border border-white/5'
+                      ? 'bg-gradient-to-r from-indigo-600/30 to-purple-600/30 text-indigo-700 dark:text-indigo-200 border border-indigo-500/50 shadow-sm'
+                      : 'bg-slate-100 dark:bg-[#030610] text-slate-700 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 border border-slate-300 dark:border-white/5 shadow-sm'
                   }`}
                 >
                   <span className={`w-2 h-2 rounded-full ${
-                    isCritical ? 'bg-red-400 animate-ping' : isWarning ? 'bg-amber-400 animate-pulse' : 'bg-emerald-400'
+                    isCritical ? 'bg-red-500 animate-ping' : isWarning ? 'bg-amber-500 animate-pulse' : 'bg-emerald-500'
                   }`} />
                   <span>{node.id}</span>
-                  <span className="text-[10px] text-slate-500">({node.waterLevelCm || 0} cm)</span>
+                  <span className="text-[10px] text-slate-500 dark:text-slate-400">({node.waterLevelCm || 0} cm)</span>
                 </button>
               );
             })}
