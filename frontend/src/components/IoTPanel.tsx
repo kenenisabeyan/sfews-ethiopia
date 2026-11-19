@@ -419,10 +419,10 @@ export const IoTPanel: React.FC<IoTPanelProps> = ({
           </div>
 
           {selectedPin ? (
-            <div className="bg-[#030610]/90 border border-purple-500/15 rounded-2.5xl p-5 space-y-5 animate-in fade-in duration-300">
-              <div className="flex justify-between items-center border-b border-white/5 pb-3">
+            <div className="bg-slate-100/90 dark:bg-[#030610]/90 border border-slate-200 dark:border-purple-500/15 rounded-2.5xl p-5 space-y-5 animate-in fade-in duration-300">
+              <div className="flex justify-between items-center border-b border-slate-200 dark:border-white/5 pb-3">
                 <div>
-                  <h3 className="text-base font-black text-slate-100 font-mono">{selectedPin.label}</h3>
+                  <h3 className="text-base font-black text-slate-900 dark:text-slate-100 font-mono">{selectedPin.label}</h3>
                   <span className="text-[9px] text-slate-500 font-bold tracking-widest uppercase font-mono">Pin Index #{selectedPin.pinNumber}</span>
                 </div>
                 <span className={`px-3 py-1 rounded-lg border text-[9px] font-black uppercase tracking-widest font-mono ${getPinColor(selectedPin.type)}`}>
@@ -433,23 +433,23 @@ export const IoTPanel: React.FC<IoTPanelProps> = ({
               <div className="space-y-2 text-xs leading-relaxed font-mono">
                 <div>
                   <span className="text-slate-500 block text-[9.5px] uppercase tracking-wider font-sans font-bold">Signal role</span>
-                  <p className="text-slate-200 font-bold">{selectedPin.description}</p>
+                  <p className="text-slate-700 dark:text-slate-200 font-bold">{selectedPin.description}</p>
                 </div>
                 <div className="grid grid-cols-2 gap-4 pt-2">
                   <div>
                     <span className="text-slate-500 block text-[9.5px] uppercase tracking-wider font-sans font-bold">Direction</span>
-                    <p className="text-cyan-400 font-bold">{selectedPin.direction}</p>
+                    <p className="text-cyan-600 dark:text-cyan-400 font-bold">{selectedPin.direction}</p>
                   </div>
                   <div>
                     <span className="text-slate-500 block text-[9.5px] uppercase tracking-wider font-sans font-bold">Logic Level</span>
-                    <p className={`font-bold ${selectedPin.state === 'HIGH' ? 'text-emerald-400 text-glow-emerald' : selectedPin.state === 'LOW' ? 'text-red-400' : 'text-amber-400'}`}>
+                    <p className={`font-bold ${selectedPin.state === 'HIGH' ? 'text-emerald-600 dark:text-emerald-400 text-glow-emerald' : selectedPin.state === 'LOW' ? 'text-red-500 dark:text-red-400' : 'text-amber-500 dark:text-amber-400'}`}>
                       {selectedPin.state}
                     </p>
                   </div>
                 </div>
                 <div className="pt-2">
                   <span className="text-slate-500 block text-[9.5px] uppercase tracking-wider font-sans font-bold">Register debug</span>
-                  <span className="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded font-mono text-[10px] text-slate-350 mt-1 block">
+                  <span className="px-2 py-0.5 bg-slate-200 dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded font-mono text-[10px] text-slate-700 dark:text-slate-350 mt-1 block">
                     {selectedPin.type === 'GND' 
                       ? 'GND_BUS_REG: 0x00000000' 
                       : selectedPin.state === 'HIGH' 
@@ -460,7 +460,7 @@ export const IoTPanel: React.FC<IoTPanelProps> = ({
               </div>
             </div>
           ) : (
-            <div className="bg-[#030610]/50 border border-white/5 rounded-2.5xl p-5 text-center flex flex-col justify-center items-center py-12 text-slate-500 font-mono text-xs">
+            <div className="bg-slate-100/80 dark:bg-[#030610]/50 border border-slate-200 dark:border-white/5 rounded-2.5xl p-5 text-center flex flex-col justify-center items-center py-12 text-slate-500 font-mono text-xs">
               <svg className="w-10 h-10 opacity-20 mb-3 animate-pulse text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
               </svg>
@@ -468,7 +468,7 @@ export const IoTPanel: React.FC<IoTPanelProps> = ({
             </div>
           )}
 
-          <div className="text-[10px] text-purple-400/80 font-bold tracking-widest uppercase font-mono border-t border-white/5 pt-3.5">
+          <div className="text-[10px] text-purple-600 dark:text-purple-400/80 font-bold tracking-widest uppercase font-mono border-t border-slate-200 dark:border-white/5 pt-3.5">
             ⚡ GPIO reference: devkitc breakout
           </div>
         </div>
