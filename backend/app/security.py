@@ -10,7 +10,7 @@ from .database import get_db
 from . import models
 
 # Security configurations
-SECRET_KEY = os.getenv("SECRET_KEY", "super-secret-key-sfews-2026")
+SECRET_KEY = os.getenv("SECRET_KEY", "super-secret-key-sfews-ethiopia-awash-basin-2026-production")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24  # 24 hours
 

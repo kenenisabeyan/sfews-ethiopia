@@ -156,6 +156,7 @@ async def execute_prompt_with_fallback(messages: list, tools: list):
                     bat = water_level_data.get("battery_level")
                     risk = water_level_data.get("risk_level", "Unknown")
                     prob = water_level_data.get("flood_probability", 0.0)
+                    discharge = water_level_data.get("estimated_discharge_m3s", 0.0)
                     
                     emoji = "🟢"
                     if risk == "Warning":
@@ -166,6 +167,7 @@ async def execute_prompt_with_fallback(messages: list, tools: list):
                     report.append(f"🛰️ **Active Node Status: {node_name}**")
                     report.append(f"* **Current Fluid Depth:** `{wl} cm`")
                     report.append(f"* **Precipitation/Rainfall:** `{rf} mm/h`")
+                    report.append(f"* **Estimated Instantaneous Discharge:** `{discharge:.1f} m³/s`")
                     report.append(f"* **Battery Reserve:** `{bat}%`")
                     report.append(f"* **Calculated Flood Probability:** `{prob*100:.1f}%`")
                     report.append(f"* **Risk Level:** {emoji} **{risk}**\n")
