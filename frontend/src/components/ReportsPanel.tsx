@@ -63,24 +63,27 @@ export const ReportsPanel: React.FC<ReportsPanelProps> = ({ activeStationName, p
   };
 
   return (
-    <div className="w-full bg-[#0b0f19] border border-slate-800/80 rounded-2xl sm:rounded-3xl p-4 sm:p-6 relative overflow-hidden flex flex-col h-full shadow-2xl">
+    <div className="w-full glass-panel-premium rounded-2xl sm:rounded-3xl p-4 sm:p-6 relative overflow-hidden flex flex-col h-full shadow-2xl transition-all duration-300">
       {/* Visual background glow */}
-      <div className="absolute inset-0 bg-gradient-to-tr from-purple-500/5 to-transparent pointer-events-none"></div>
+      <div className="absolute inset-0 bg-gradient-to-tr from-purple-500/10 dark:from-purple-500/5 to-transparent pointer-events-none"></div>
 
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6 z-10 gap-3 border-b border-slate-800/60 pb-3 sm:pb-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6 z-10 gap-3 border-b border-slate-200 dark:border-slate-800/60 pb-3 sm:pb-4">
         <div>
-          <h2 className="text-sm sm:text-base font-bold text-slate-100 uppercase tracking-widest flex items-center gap-2">
-            📊 Reports & Analytical Timelines
+          <h2 className="text-sm sm:text-base font-extrabold text-slate-800 dark:text-slate-100 uppercase tracking-widest flex items-center gap-2">
+            <span>📊</span> Reports & Analytical Timelines
           </h2>
-          <p className="text-[11px] sm:text-xs text-slate-400 mt-0.5">Historical Regional Fluidity and Stress Accumulations</p>
+          <p className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 mt-0.5 font-medium">
+            Historical Regional Fluidity and Stress Accumulations
+          </p>
         </div>
         
         <button
           onClick={handleExportCSV}
-          className="bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-[10px] uppercase tracking-wider px-3.5 py-2 rounded-lg border border-cyan-500/30 transition-all shadow-md shadow-cyan-600/15 self-start sm:self-auto active:scale-95 flex items-center gap-1.5"
+          className="bg-cyan-600 hover:bg-cyan-500 text-white font-black text-[10px] sm:text-xs uppercase tracking-wider px-4 py-2.5 rounded-xl border border-cyan-500/30 transition-all shadow-md shadow-cyan-600/20 active:scale-95 flex items-center gap-2"
         >
-          <span>📥 Export Report (CSV)</span>
+          <span>📥</span>
+          <span>Export Hydrometric CSV</span>
         </button>
       </div>
 
@@ -89,60 +92,64 @@ export const ReportsPanel: React.FC<ReportsPanelProps> = ({ activeStationName, p
         {/* KPI Summary Cards Grid */}
         <div className="lg:col-span-1 flex flex-col justify-between gap-3 sm:gap-4">
           
-          <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest border-b border-slate-900 pb-2">
+          <h3 className="text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-widest border-b border-slate-200 dark:border-slate-800/80 pb-2">
             Active Summary Report (Last 7 Observations)
           </h3>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             {/* Stat 1: Total Alerts */}
-            <div className="bg-[#080c14] border border-slate-900 p-3.5 sm:p-4.5 rounded-xl flex flex-col justify-between min-h-[90px] sm:min-h-[100px]">
-              <span className="text-[9px] font-mono text-slate-500 uppercase font-bold">Total Active Alerts</span>
-              <div className="text-xl sm:text-2xl font-black text-slate-100 font-mono mt-1 sm:mt-2">{totalAlertHits}</div>
-              <span className="text-[8px] font-mono text-emerald-400 mt-1">✓ Live LoRa Mesh</span>
+            <div className="glass-panel-interactive p-3.5 sm:p-4.5 rounded-xl flex flex-col justify-between min-h-[95px] sm:min-h-[105px]">
+              <span className="text-[9px] font-mono text-slate-500 dark:text-slate-400 uppercase font-bold">Total Active Alerts</span>
+              <div className="text-xl sm:text-2xl font-black text-slate-900 dark:text-slate-100 font-mono mt-1">{totalAlertHits}</div>
+              <span className="text-[9px] font-mono font-bold text-emerald-600 dark:text-emerald-400 mt-1 flex items-center gap-1">
+                <span>✓</span> Live LoRa Mesh
+              </span>
             </div>
 
             {/* Stat 2: High Alerts */}
-            <div className="bg-[#080c14] border border-slate-900 p-3.5 sm:p-4.5 rounded-xl flex flex-col justify-between min-h-[90px] sm:min-h-[100px]">
-              <span className="text-[9px] font-mono text-slate-500 uppercase font-bold">Critical Anchors</span>
-              <div className="text-xl sm:text-2xl font-black text-red-400 font-mono mt-1 sm:mt-2">{criticalCount}</div>
-              <span className="text-[8px] font-mono text-red-500/60 mt-1">⚠️ Action Req.</span>
+            <div className="glass-panel-interactive p-3.5 sm:p-4.5 rounded-xl flex flex-col justify-between min-h-[95px] sm:min-h-[105px]">
+              <span className="text-[9px] font-mono text-slate-500 dark:text-slate-400 uppercase font-bold">Critical Anchors</span>
+              <div className="text-xl sm:text-2xl font-black text-red-600 dark:text-red-400 font-mono mt-1">{criticalCount}</div>
+              <span className="text-[9px] font-mono font-bold text-red-600 dark:text-red-400 mt-1 flex items-center gap-1">
+                <span>⚠️</span> Action Required
+              </span>
             </div>
 
             {/* Stat 3: Avg level */}
-            <div className="bg-[#080c14] border border-slate-900 p-3.5 sm:p-4.5 rounded-xl flex flex-col justify-between min-h-[90px] sm:min-h-[100px]">
-              <span className="text-[9px] font-mono text-slate-500 uppercase font-bold">Avg Water Depth</span>
-              <div className="text-xl sm:text-2xl font-black text-[#c084fc] font-mono mt-1 sm:mt-2">{avgHeight} m</div>
-              <span className="text-[8px] font-mono text-slate-500 mt-1">Awash baseline</span>
+            <div className="glass-panel-interactive p-3.5 sm:p-4.5 rounded-xl flex flex-col justify-between min-h-[95px] sm:min-h-[105px]">
+              <span className="text-[9px] font-mono text-slate-500 dark:text-slate-400 uppercase font-bold">Avg Water Depth</span>
+              <div className="text-xl sm:text-2xl font-black text-purple-600 dark:text-[#c084fc] font-mono mt-1">{avgHeight} m</div>
+              <span className="text-[9px] font-mono text-slate-500 dark:text-slate-400 mt-1">Awash baseline</span>
             </div>
 
             {/* Stat 4: Rainfall */}
-            <div className="bg-[#080c14] border border-slate-900 p-3.5 sm:p-4.5 rounded-xl flex flex-col justify-between min-h-[90px] sm:min-h-[100px]">
-              <span className="text-[9px] font-mono text-slate-500 uppercase font-bold">Total Rainfall Rate</span>
-              <div className="text-xl sm:text-2xl font-black text-cyan-400 font-mono mt-1 sm:mt-2">{totalRain} mm/h</div>
-              <span className="text-[8px] font-mono text-cyan-500/60 mt-1">Accumulated</span>
+            <div className="glass-panel-interactive p-3.5 sm:p-4.5 rounded-xl flex flex-col justify-between min-h-[95px] sm:min-h-[105px]">
+              <span className="text-[9px] font-mono text-slate-500 dark:text-slate-400 uppercase font-bold">Total Rainfall Rate</span>
+              <div className="text-xl sm:text-2xl font-black text-cyan-600 dark:text-cyan-400 font-mono mt-1">{totalRain} mm/h</div>
+              <span className="text-[9px] font-mono text-cyan-600 dark:text-cyan-400 font-semibold mt-1">Accumulated</span>
             </div>
           </div>
 
-          <div className="bg-slate-950/70 border border-slate-900/60 rounded-xl p-3 sm:p-4 text-[9px] sm:text-[9.5px] font-mono text-slate-400 space-y-1.5 sm:space-y-2 mt-1 sm:mt-2">
-            <div className="text-slate-300 font-bold border-b border-slate-900 pb-1">
-              REPORT AUDIT DESCRIPTIONS:
+          <div className="glass-panel-interactive rounded-xl p-3.5 sm:p-4 text-[9px] sm:text-[10px] font-mono text-slate-600 dark:text-slate-400 space-y-1.5 sm:space-y-2 mt-1 sm:mt-2">
+            <div className="text-slate-800 dark:text-slate-200 font-bold border-b border-slate-200 dark:border-slate-800/80 pb-1 flex items-center gap-1.5">
+              <span>📋</span> REPORT AUDIT METRICS:
             </div>
             <p>
-              Analytical summary plots metrics from active monitoring point (<span className="text-cyan-400 font-bold">{activeStationName.split(' ')[0]}</span>).
+              Analytical summary plots metrics from active monitoring point (<span className="text-cyan-600 dark:text-cyan-400 font-bold">{activeStationName.split(' ')[0]}</span>).
             </p>
             <p>
-              Telemetry values stream asynchronously from the early warning event bus. Tensile indexes remain within calibrated margins.
+              Telemetry values stream asynchronously from early warning event bus. Tensile indexes remain within calibrated margins.
             </p>
           </div>
         </div>
 
         {/* Bar Chart Container */}
-        <div className="lg:col-span-2 bg-[#080c14] border border-slate-900 rounded-xl sm:rounded-2xl p-4 sm:p-5 flex flex-col justify-between">
-          <div className="flex items-center justify-between mb-3 border-b border-slate-900/80 pb-2">
-            <span className="text-xs font-bold text-slate-300 uppercase tracking-wider font-mono">
+        <div className="lg:col-span-2 glass-panel-interactive rounded-xl sm:rounded-2xl p-4 sm:p-5 flex flex-col justify-between">
+          <div className="flex items-center justify-between mb-3 border-b border-slate-200 dark:border-slate-800/80 pb-2">
+            <span className="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider font-mono">
               Hydrograph Crest Depth Profile (Meters)
             </span>
-            <span className="text-[9px] font-mono text-cyan-400 border border-cyan-500/20 px-2 py-0.5 rounded-full bg-cyan-950/30">
+            <span className="text-[9px] font-mono font-bold text-cyan-600 dark:text-cyan-400 border border-cyan-500/30 px-2.5 py-0.5 rounded-full bg-cyan-500/10">
               Station: {activeStationName.split(' ')[0]}
             </span>
           </div>
@@ -150,15 +157,16 @@ export const ReportsPanel: React.FC<ReportsPanelProps> = ({ activeStationName, p
           <div className="w-full h-56 sm:h-64 mt-2">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={summaryChartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" vertical={false} />
+                <CartesianGrid strokeDasharray="3 3" stroke="#cbd5e1" className="dark:stroke-slate-800" vertical={false} />
                 <XAxis dataKey="name" stroke="#64748b" fontSize={10} tickLine={false} axisLine={false} />
                 <YAxis stroke="#64748b" fontSize={10} tickLine={false} axisLine={false} domain={[0, 'dataMax + 2']} />
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: '#030712',
+                    backgroundColor: '#0f172a',
                     borderColor: '#334155',
                     borderRadius: '8px',
                     fontSize: '11px',
+                    color: '#f8fafc',
                     fontFamily: 'monospace',
                   }}
                   formatter={(value: any) => [`${value} m`, 'Depth']}
@@ -168,9 +176,12 @@ export const ReportsPanel: React.FC<ReportsPanelProps> = ({ activeStationName, p
             </ResponsiveContainer>
           </div>
 
-          <div className="flex items-center justify-between pt-2 border-t border-slate-900/80 text-[10px] text-slate-500 font-mono mt-2">
+          <div className="flex items-center justify-between pt-2 border-t border-slate-200 dark:border-slate-800/80 text-[10px] text-slate-500 dark:text-slate-400 font-mono mt-2">
             <span>Aggregated Observations</span>
-            <span className="text-emerald-400 font-semibold">● Live Telemetry Synced</span>
+            <span className="text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              Live Telemetry Synced
+            </span>
           </div>
         </div>
 

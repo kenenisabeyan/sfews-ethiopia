@@ -220,15 +220,71 @@ html.light,
   color: #94a3b8 !important;
 }
 
-/* In-panel subtle sub-containers */
+/* In-panel subtle sub-containers & dark backgrounds mapped to executive light */
+.light .bg-\[\#02040a\],
+.light .bg-\[\#02040a\]\/40,
+.light .bg-\[\#02040a\]\/50,
 .light .bg-\[\#030610\],
+.light .bg-\[\#030610\]\/40,
+.light .bg-\[\#030610\]\/50,
+.light .bg-\[\#030610\]\/80,
+.light .bg-\[\#030610\]\/90,
 .light .bg-\[\#040812\],
 .light .bg-\[\#040813\],
 .light .bg-\[\#040814\],
+.light .bg-\[\#050911\],
+.light .bg-\[\#050911\]\/80,
+.light .bg-\[\#050913\],
 .light .bg-\[\#050914\],
-.light .bg-\[\#060a16\] {
+.light .bg-\[\#060a16\],
+.light .bg-\[\#080c14\],
+.light .bg-\[\#080d19\],
+.light .bg-\[\#080d19\]\/90,
+.light .bg-\[\#090e18\],
+.light .bg-\[\#0b0f19\],
+.light .bg-slate-950,
+.light .bg-slate-950\/40,
+.light .bg-slate-950\/50,
+.light .bg-slate-950\/70,
+.light .bg-slate-950\/80,
+.light .bg-slate-900,
+.light .bg-slate-900\/40,
+.light .bg-slate-900\/50,
+.light .bg-slate-900\/60,
+.light .bg-slate-900\/80 {
   background-color: #f1f5f9 !important;
   border-color: #e2e8f0 !important;
+}
+
+/* Hardcoded dark border overrides in light mode */
+.light .border-slate-900,
+.light .border-slate-900\/40,
+.light .border-slate-900\/50,
+.light .border-slate-900\/60,
+.light .border-slate-900\/80,
+.light .border-slate-800,
+.light .border-slate-800\/40,
+.light .border-slate-800\/60,
+.light .border-slate-800\/80,
+.light .border-white\/5,
+.light .border-white\/10,
+.light .border-white\/15,
+.light .border-purple-500\/10,
+.light .border-purple-500\/15 {
+  border-color: #e2e8f0 !important;
+}
+
+/* Light mode text glow sanitization */
+.light .text-glow-cyan,
+.light .text-glow-purple,
+.light .text-glow-emerald,
+.light .text-glow-red {
+  text-shadow: none !important;
+}
+
+.light .text-slate-350,
+.light .text-slate-550 {
+  color: #475569 !important;
 }
 
 /* Table zebra and dividers in light mode */
