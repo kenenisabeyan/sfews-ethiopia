@@ -252,40 +252,40 @@ export const SimpleSimPanel: React.FC = () => {
 
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-5">
                             {/* Threshold display */}
-                            <div className="bg-[#02040a]/40 p-3.5 sm:p-4.5 rounded-xl sm:rounded-2xl border border-slate-900/60 flex flex-col justify-between">
+                            <div className="bg-slate-100/90 dark:bg-[#02040a]/40 p-3.5 sm:p-4.5 rounded-xl sm:rounded-2xl border border-slate-200 dark:border-slate-900/60 flex flex-col justify-between">
                                 <div>
                                     <span className="text-[9px] sm:text-[10px] text-slate-500 font-bold uppercase tracking-wider block">Hardcoded Threshold</span>
-                                    <p className="text-xl sm:text-2xl font-black text-slate-200 mt-1 sm:mt-2 font-mono">500</p>
+                                    <p className="text-xl sm:text-2xl font-black text-slate-800 dark:text-slate-200 mt-1 sm:mt-2 font-mono">500</p>
                                 </div>
-                                <p className="text-[9px] sm:text-[10px] text-slate-400 font-medium leading-relaxed mt-3 sm:mt-4">
+                                <p className="text-[9px] sm:text-[10px] text-slate-600 dark:text-slate-400 font-medium leading-relaxed mt-3 sm:mt-4">
                                     Standard critical alert line evaluated directly at the edge simulator.
                                 </p>
                             </div>
 
                             {/* Live math comparator */}
-                            <div className="bg-[#02040a]/40 p-3.5 sm:p-4.5 rounded-xl sm:rounded-2xl border border-slate-900/60 flex flex-col justify-between items-center text-center">
+                            <div className="bg-slate-100/90 dark:bg-[#02040a]/40 p-3.5 sm:p-4.5 rounded-xl sm:rounded-2xl border border-slate-200 dark:border-slate-900/60 flex flex-col justify-between items-center text-center">
                                 <span className="text-[9px] sm:text-[10px] text-slate-500 font-bold uppercase tracking-wider block w-full text-left">Live Comparator</span>
                                 <div className="my-2.5 sm:my-4 font-mono font-extrabold text-sm sm:text-base flex items-center gap-2">
-                                    <span className="text-slate-300">{waterLevel}</span>
-                                    <span className="text-indigo-400">{isAlert ? '>' : '<='}</span>
-                                    <span className="text-slate-400">500</span>
+                                    <span className="text-slate-700 dark:text-slate-300">{waterLevel}</span>
+                                    <span className="text-indigo-600 dark:text-indigo-400">{isAlert ? '>' : '<='}</span>
+                                    <span className="text-slate-600 dark:text-slate-400">500</span>
                                 </div>
                                 <span className={`text-[9px] sm:text-[10px] font-black px-2.5 sm:px-3 py-1 rounded-lg uppercase tracking-wider ${
-                                    isAlert ? 'bg-red-500/10 text-red-400 border border-red-500/10' : 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/10'
+                                    isAlert ? 'bg-red-500/10 text-red-500 dark:text-red-400 border border-red-500/20' : 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20'
                                 }`}>
                                     {isAlert ? 'Threshold Triggered' : 'Threshold Safe'}
                                 </span>
                             </div>
 
                             {/* Computed Action */}
-                            <div className="bg-[#02040a]/40 p-3.5 sm:p-4.5 rounded-xl sm:rounded-2xl border border-slate-900/60 flex flex-col justify-between">
+                            <div className="bg-slate-100/90 dark:bg-[#02040a]/40 p-3.5 sm:p-4.5 rounded-xl sm:rounded-2xl border border-slate-200 dark:border-slate-900/60 flex flex-col justify-between">
                                 <div>
                                     <span className="text-[9px] sm:text-[10px] text-slate-500 font-bold uppercase tracking-wider block">Computed Output</span>
-                                    <p className={`text-base sm:text-lg font-extrabold mt-1 sm:mt-2 ${isAlert ? 'text-red-400 text-glow-red' : 'text-emerald-400 text-glow-emerald'}`}>
+                                    <p className={`text-base sm:text-lg font-extrabold mt-1 sm:mt-2 ${isAlert ? 'text-red-500 dark:text-red-400 text-glow-red' : 'text-emerald-600 dark:text-emerald-400 text-glow-emerald'}`}>
                                         {isAlert ? '🔴 Danger (Alert)' : '🟢 Normal (Safe)'}
                                     </p>
                                 </div>
-                                <p className="text-[9px] sm:text-[10px] text-slate-400 font-medium leading-relaxed mt-3 sm:mt-4">
+                                <p className="text-[9px] sm:text-[10px] text-slate-600 dark:text-slate-400 font-medium leading-relaxed mt-3 sm:mt-4">
                                     Determines warning payload metadata generated before network broadcast.
                                 </p>
                             </div>
@@ -413,22 +413,22 @@ export const SimpleSimPanel: React.FC = () => {
                     </div>
 
                     {/* Console log display */}
-                    <div className="bg-[#020408] rounded-xl sm:rounded-2xl border border-slate-950 p-3 sm:p-4 font-mono text-xs overflow-hidden">
-                        <div className="flex items-center justify-between border-b border-slate-900 pb-2 mb-2 text-slate-500 text-[9px] sm:text-[10px] font-bold uppercase tracking-wider">
+                    <div className="bg-slate-100/90 dark:bg-[#020408] rounded-xl sm:rounded-2xl border border-slate-200 dark:border-slate-950 p-3 sm:p-4 font-mono text-xs overflow-hidden">
+                        <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-900 pb-2 mb-2 text-slate-500 text-[9px] sm:text-[10px] font-bold uppercase tracking-wider">
                             <span>Request Path / Log Content</span>
                             <span className="hidden sm:inline">Payload Model</span>
                         </div>
                         <div className="h-36 sm:h-44 overflow-y-auto space-y-1.5 sm:space-y-2 pr-1 sm:pr-2 custom-scrollbar select-text text-[11px] sm:text-xs">
                             {logs.length === 0 ? (
-                                <div className="h-full flex items-center justify-center text-slate-600 text-center font-bold text-[11px] sm:text-xs select-none py-6">
+                                <div className="h-full flex items-center justify-center text-slate-500 text-center font-bold text-[11px] sm:text-xs select-none py-6">
                                     [Console Idle] Initiate simulator auto-loop or adjust the manual slider to log POST transmissions...
                                 </div>
                             ) : (
                                 logs.map((log, index) => (
-                                    <div key={index} className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-900/40 pb-1.5 sm:pb-2 leading-relaxed text-slate-300">
+                                    <div key={index} className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-200 dark:border-slate-900/40 pb-1.5 sm:pb-2 leading-relaxed text-slate-800 dark:text-slate-300">
                                         <div className="flex items-start gap-2">
                                             <span className="text-slate-500 font-semibold select-none text-[10px] sm:text-xs">[{log.timestamp}]</span>
-                                            <span className={log.status === 'success' ? 'text-indigo-400' : 'text-red-400'}>
+                                            <span className={log.status === 'success' ? 'text-indigo-600 dark:text-indigo-400' : 'text-red-500 dark:text-red-400'}>
                                                 {log.message}
                                             </span>
                                         </div>
@@ -446,14 +446,14 @@ export const SimpleSimPanel: React.FC = () => {
                 {/* COLUMN 3: PHASE 4 BACKEND STATE MANAGEMENT */}
                 <div className="lg:col-span-1 glass-panel rounded-2xl sm:rounded-3xl p-4 sm:p-6.5 flex flex-col justify-between">
                     <div className="flex items-center gap-3 mb-4 sm:mb-5">
-                        <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center border border-cyan-500/20 font-bold font-mono text-xs sm:text-sm">4</div>
+                        <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 flex items-center justify-center border border-cyan-500/20 font-bold font-mono text-xs sm:text-sm">4</div>
                         <div>
-                            <h3 className="text-xs sm:text-sm font-extrabold tracking-wide uppercase text-slate-200">Phase 4: Backend State</h3>
-                            <span className="text-[9px] sm:text-[10px] text-cyan-400 font-bold block uppercase tracking-wider">FastAPI Global State HUD</span>
+                            <h3 className="text-xs sm:text-sm font-extrabold tracking-wide uppercase text-slate-800 dark:text-slate-200">Phase 4: Backend State</h3>
+                            <span className="text-[9px] sm:text-[10px] text-cyan-600 dark:text-cyan-400 font-bold block uppercase tracking-wider">FastAPI Global State HUD</span>
                         </div>
                     </div>
 
-                    <div className="bg-[#02040a]/40 p-3.5 sm:p-4.5 rounded-xl sm:rounded-2xl border border-slate-900/60 space-y-3 sm:space-y-4">
+                    <div className="bg-slate-100/90 dark:bg-[#02040a]/40 p-3.5 sm:p-4.5 rounded-xl sm:rounded-2xl border border-slate-200 dark:border-slate-900/60 space-y-3 sm:space-y-4">
                         <div className="flex items-center justify-between">
                             <span className="text-[9px] sm:text-[10px] text-slate-500 font-bold uppercase tracking-wider block">Polled Endpoint</span>
                             <span className="font-mono text-[9px] sm:text-[10px] text-indigo-400 font-semibold">GET /flood</span>

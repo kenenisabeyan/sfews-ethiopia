@@ -210,7 +210,7 @@ export const MapTab: React.FC<MapTabProps> = ({
                 </div>
 
                 {/* 2. Interactive SVG Map View Grid */}
-                <div className="bg-[#03060c] border border-slate-900 rounded-2xl sm:rounded-3xl relative overflow-hidden flex flex-col min-h-[340px] sm:min-h-[520px] shadow-2xl p-2 sm:p-2.5">
+                <div className="bg-slate-100/90 dark:bg-[#03060c] border border-slate-300 dark:border-slate-900 rounded-2xl sm:rounded-3xl relative overflow-hidden flex flex-col min-h-[340px] sm:min-h-[520px] shadow-sm dark:shadow-2xl p-2 sm:p-2.5">
                     
                     {/* Futuristic Grid Layer */}
                     <div className="absolute inset-0 grid-bg opacity-[0.25] pointer-events-none" />
@@ -218,12 +218,12 @@ export const MapTab: React.FC<MapTabProps> = ({
                     {/* Satellite Terrain Gradient Masks */}
                     <div className="absolute inset-0 pointer-events-none opacity-40 bg-radial-gradient">
                         {showSatellite && (
-                            <div className="absolute inset-0 bg-gradient-to-tr from-slate-950 via-[#07130f]/30 to-purple-950/20" />
+                            <div className="absolute inset-0 bg-gradient-to-tr from-slate-200 via-emerald-100/20 to-purple-100/20 dark:from-slate-950 dark:via-[#07130f]/30 dark:to-purple-950/20" />
                         )}
                     </div>
 
                     {/* Compass Ring & Reticles */}
-                    <div className="absolute top-4 right-4 sm:top-8 sm:right-8 z-10 w-12 h-12 sm:w-20 sm:h-20 border border-slate-900/60 rounded-full flex items-center justify-center opacity-60 pointer-events-none">
+                    <div className="absolute top-4 right-4 sm:top-8 sm:right-8 z-10 w-12 h-12 sm:w-20 sm:h-20 border border-slate-300 dark:border-slate-900/60 rounded-full flex items-center justify-center opacity-60 pointer-events-none">
                         <div className="absolute w-10 h-10 sm:w-16 sm:h-16 border border-dashed border-purple-500/25 rounded-full animate-[spin_40s_linear_infinite]" />
                         <span className="text-[7px] sm:text-[8px] font-mono font-bold text-slate-600 absolute -top-1 sm:-top-1.5">N</span>
                         <span className="text-[7px] sm:text-[8px] font-mono font-bold text-slate-600 absolute -bottom-1 sm:-bottom-1.5">S</span>
@@ -233,25 +233,25 @@ export const MapTab: React.FC<MapTabProps> = ({
                     </div>
 
                     {/* Scale Calibration HUD */}
-                    <div className="absolute bottom-3 right-3 sm:bottom-6 sm:right-6 z-10 glass-panel-premium border border-slate-900/70 p-2 sm:p-3 rounded-xl sm:rounded-2xl text-[8px] sm:text-[9px] font-mono text-slate-400 space-y-0.5 sm:space-y-1 backdrop-blur-md">
-                        <div className="flex items-center gap-1 sm:gap-1.5 text-cyan-400 font-bold">
+                    <div className="absolute bottom-3 right-3 sm:bottom-6 sm:right-6 z-10 glass-panel-premium border border-slate-300 dark:border-slate-900/70 p-2 sm:p-3 rounded-xl sm:rounded-2xl text-[8px] sm:text-[9px] font-mono text-slate-500 dark:text-slate-400 space-y-0.5 sm:space-y-1 backdrop-blur-md">
+                        <div className="flex items-center gap-1 sm:gap-1.5 text-cyan-600 dark:text-cyan-400 font-bold">
                             <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
                             AWASH T-06
                         </div>
                         <div className="hidden xs:block">SCALE 1:12.5K</div>
-                        <div className="flex justify-between font-bold text-[7px] sm:text-[8px] text-slate-600">
+                        <div className="flex justify-between font-bold text-[7px] sm:text-[8px] text-slate-500">
                             <span>0m</span>
                             <span>250m</span>
                         </div>
-                        <div className="h-1 bg-slate-950 border border-slate-900 rounded relative overflow-hidden w-16 sm:w-20">
+                        <div className="h-1 bg-slate-200 dark:bg-slate-950 border border-slate-300 dark:border-slate-900 rounded relative overflow-hidden w-16 sm:w-20">
                             <div className="absolute left-0 top-0 h-full w-3/5 bg-gradient-to-r from-purple-500 to-cyan-500 shadow-[0_0_6px_rgba(34,211,238,0.5)]" />
                         </div>
                     </div>
 
                     {/* Live update status banner (top left) */}
-                    <div className="absolute top-3 left-3 sm:top-6 sm:left-6 z-10 flex items-center gap-2 bg-[#03060c]/90 border border-slate-900/80 px-2.5 sm:px-3.5 py-1 sm:py-2 rounded-xl sm:rounded-2xl backdrop-blur-md">
+                    <div className="absolute top-3 left-3 sm:top-6 sm:left-6 z-10 flex items-center gap-2 bg-white/90 dark:bg-[#03060c]/90 border border-slate-200 dark:border-slate-900/80 px-2.5 sm:px-3.5 py-1 sm:py-2 rounded-xl sm:rounded-2xl backdrop-blur-md">
                         <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
-                        <div className="text-[9px] sm:text-[10px] font-mono font-black text-slate-300 tracking-wider">
+                        <div className="text-[9px] sm:text-[10px] font-mono font-black text-slate-800 dark:text-slate-300 tracking-wider">
                             RADAR: <span className="text-[#a855f7] font-bold">433.92 MHz</span>
                         </div>
                     </div>
@@ -688,14 +688,14 @@ export const MapTab: React.FC<MapTabProps> = ({
                             </div>
 
                             {/* Coordinates block */}
-                            <div className="bg-[#02050b]/80 border border-slate-900 p-3.5 rounded-2xl text-[9px] font-mono text-slate-500 space-y-1">
+                            <div className="bg-slate-100/90 dark:bg-[#02050b]/80 border border-slate-200 dark:border-slate-900 p-3.5 rounded-2xl text-[9px] font-mono text-slate-500 space-y-1">
                                 <div className="flex justify-between">
                                     <span>COORD LAT:</span>
-                                    <span className="text-slate-300 font-bold">{selectedMapNode.latitude.toFixed(6)}</span>
+                                    <span className="text-slate-800 dark:text-slate-300 font-bold">{selectedMapNode.latitude.toFixed(6)}</span>
                                 </div>
                                 <div className="flex justify-between">
                                     <span>COORD LNG:</span>
-                                    <span className="text-slate-300 font-bold">{selectedMapNode.longitude.toFixed(6)}</span>
+                                    <span className="text-slate-800 dark:text-slate-300 font-bold">{selectedMapNode.longitude.toFixed(6)}</span>
                                 </div>
                             </div>
                         </div>

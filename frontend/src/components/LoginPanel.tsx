@@ -486,13 +486,13 @@ export const LoginPanel: React.FC<LoginPanelProps> = ({ onLoginSuccess }) => {
           <div className="flex gap-2.5 bg-[#050711]/80 border border-purple-500/10 p-1.5 rounded-2xl w-max mt-6">
             <button
               onClick={() => setActiveTab('standard')}
-              className={`px-4.5 py-1.5 text-[10px] font-bold uppercase tracking-wider rounded-xl transition-all duration-200 ${activeTab === 'standard' ? 'bg-purple-600 text-slate-50 shadow-md shadow-purple-600/30' : 'text-slate-400 hover:text-slate-200'}`}
+              className={`px-4.5 py-1.5 text-[10px] font-bold uppercase tracking-wider rounded-xl transition-all duration-200 ${activeTab === 'standard' ? 'bg-purple-600 text-white shadow-md shadow-purple-600/30' : 'text-slate-400 hover:text-slate-200'}`}
             >
               Credentials Gate
             </button>
             <button
               onClick={() => setActiveTab('token')}
-              className={`px-4.5 py-1.5 text-[10px] font-bold uppercase tracking-wider rounded-xl transition-all duration-200 ${activeTab === 'token' ? 'bg-purple-600 text-slate-50 shadow-md shadow-purple-600/30' : 'text-slate-400 hover:text-slate-200'}`}
+              className={`px-4.5 py-1.5 text-[10px] font-bold uppercase tracking-wider rounded-xl transition-all duration-200 ${activeTab === 'token' ? 'bg-purple-600 text-white shadow-md shadow-purple-600/30' : 'text-slate-400 hover:text-slate-200'}`}
             >
               Token Override
             </button>
@@ -558,7 +558,7 @@ export const LoginPanel: React.FC<LoginPanelProps> = ({ onLoginSuccess }) => {
               {/* Action login button with sweeping pulse line */}
               <button
                 type="submit"
-                className="w-full relative overflow-hidden group bg-gradient-to-r from-purple-600 via-indigo-600 to-indigo-700 hover:from-purple-500 hover:to-indigo-500 text-slate-50 py-4.5 rounded-2xl font-black text-sm tracking-widest uppercase transition-all duration-300 shadow-[0_4px_25px_rgba(139,92,246,0.3)] hover:shadow-[0_0_35px_rgba(139,92,246,0.55)] active:scale-[0.98] border border-purple-400/20"
+                className="w-full relative overflow-hidden group bg-gradient-to-r from-purple-600 via-indigo-600 to-indigo-700 hover:from-purple-500 hover:to-indigo-500 text-white py-4.5 rounded-2xl font-black text-sm tracking-widest uppercase transition-all duration-300 shadow-[0_4px_25px_rgba(139,92,246,0.3)] hover:shadow-[0_0_35px_rgba(139,92,246,0.55)] active:scale-[0.98] border border-purple-400/20"
               >
                 <span className="absolute inset-x-4 top-0.5 h-[1.5px] bg-gradient-to-r from-transparent via-purple-300 to-transparent opacity-50"></span>
                 AUTHORIZE LINK PORTAL
@@ -589,7 +589,7 @@ export const LoginPanel: React.FC<LoginPanelProps> = ({ onLoginSuccess }) => {
                       key={num}
                       type="button"
                       onClick={() => handleKeypadPress(num)}
-                      className="py-3 bg-[#080b1e]/50 hover:bg-purple-950/20 active:scale-95 border border-purple-500/5 hover:border-purple-500/25 text-slate-300 hover:text-slate-50 font-mono font-bold rounded-xl text-sm transition-all flex items-center justify-center shadow-inner"
+                      className="py-3 bg-[#080b1e]/50 hover:bg-purple-950/20 active:scale-95 border border-purple-500/5 hover:border-purple-500/25 text-slate-300 hover:text-white font-mono font-bold rounded-xl text-sm transition-all flex items-center justify-center shadow-inner"
                     >
                       {num}
                     </button>
@@ -608,7 +608,7 @@ export const LoginPanel: React.FC<LoginPanelProps> = ({ onLoginSuccess }) => {
                       key={num}
                       type="button"
                       onClick={() => handleKeypadPress(num)}
-                      className="py-3 bg-[#080b1e]/50 hover:bg-purple-950/20 active:scale-95 border border-purple-500/5 hover:border-purple-500/25 text-slate-300 hover:text-slate-50 font-mono font-bold rounded-xl text-sm transition-all flex items-center justify-center"
+                      className="py-3 bg-[#080b1e]/50 hover:bg-purple-950/20 active:scale-95 border border-purple-500/5 hover:border-purple-500/25 text-slate-300 hover:text-white font-mono font-bold rounded-xl text-sm transition-all flex items-center justify-center"
                     >
                       {num}
                     </button>

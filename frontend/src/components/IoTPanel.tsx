@@ -232,7 +232,7 @@ export const IoTPanel: React.FC<IoTPanelProps> = ({
       case 'SPI': return 'bg-cyan-500/10 text-cyan-400 border-cyan-500/30 shadow-[0_0_8px_rgba(34,211,238,0.15)]';
       case 'I2C': return 'bg-indigo-500/10 text-indigo-400 border-indigo-500/30 shadow-[0_0_8px_rgba(99,102,241,0.15)]';
       case 'UART': return 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30 shadow-[0_0_8px_rgba(16,185,129,0.15)]';
-      default: return 'bg-slate-900 text-slate-500 border-slate-800';
+      default: return 'bg-slate-200 dark:bg-slate-900 text-slate-600 dark:text-slate-500 border-slate-300 dark:border-slate-800';
     }
   };
 
@@ -592,7 +592,7 @@ export const IoTPanel: React.FC<IoTPanelProps> = ({
               </div>
               
               {/* Calibration Input field */}
-              <div className="flex items-center gap-2.5 sm:gap-3 bg-[#030610] border border-purple-500/15 rounded-xl px-3 sm:px-4 py-1.5 sm:py-2 shrink-0 self-start sm:self-auto">
+              <div className="flex items-center gap-2.5 sm:gap-3 bg-white dark:bg-[#030610] border border-slate-200 dark:border-purple-500/15 rounded-xl px-3 sm:px-4 py-1.5 sm:py-2 shrink-0 self-start sm:self-auto">
                 <label className="text-[9px] sm:text-[10px] font-black font-mono text-slate-500 uppercase">CALIBRATE VREF:</label>
                 <input
                   type="number"
@@ -601,7 +601,7 @@ export const IoTPanel: React.FC<IoTPanelProps> = ({
                   max="4.0"
                   value={vref}
                   onChange={(e) => setVref(Number(e.target.value))}
-                  className="w-14 sm:w-16 bg-[#080d19]/90 border border-slate-800 rounded px-2 py-0.5 sm:py-1 text-xs text-cyan-400 font-mono focus:outline-none focus:border-cyan-400 font-bold"
+                  className="w-14 sm:w-16 bg-slate-100 dark:bg-[#080d19]/90 border border-slate-300 dark:border-slate-800 rounded px-2 py-0.5 sm:py-1 text-xs text-cyan-600 dark:text-cyan-400 font-mono focus:outline-none focus:border-cyan-400 font-bold"
                 />
                 <span className="text-xs text-slate-500 font-mono">Volts</span>
               </div>
@@ -627,13 +627,13 @@ export const IoTPanel: React.FC<IoTPanelProps> = ({
                 </thead>
                 <tbody className="divide-y divide-white/5">
                   {adcTracks.map((adc) => (
-                    <tr key={adc.channel} className="hover:bg-[#030610]/40 transition-colors">
-                      <td className="py-2.5 sm:py-3.5 font-bold text-slate-200">{adc.channel}</td>
-                      <td className="py-2.5 sm:py-3.5 text-purple-400 font-bold">{adc.gpio}</td>
-                      <td className="py-2.5 sm:py-3.5 text-slate-400 font-sans font-semibold text-[11px] sm:text-xs">{adc.role}</td>
-                      <td className="py-2.5 sm:py-3.5 text-right font-black text-slate-100">{adc.rawValue}</td>
-                      <td className="py-2.5 sm:py-3.5 text-right font-black text-cyan-400 text-glow-cyan">{calcVoltage(adc.rawValue, adc.attenuation)} V</td>
-                      <td className="py-2.5 sm:py-3.5"><span className="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded text-[9px] text-slate-500 font-bold">{adc.attenuation}</span></td>
+                    <tr key={adc.channel} className="hover:bg-slate-100/80 dark:hover:bg-[#030610]/40 transition-colors">
+                      <td className="py-2.5 sm:py-3.5 font-bold text-slate-800 dark:text-slate-200">{adc.channel}</td>
+                      <td className="py-2.5 sm:py-3.5 text-purple-600 dark:text-purple-400 font-bold">{adc.gpio}</td>
+                      <td className="py-2.5 sm:py-3.5 text-slate-600 dark:text-slate-400 font-sans font-semibold text-[11px] sm:text-xs">{adc.role}</td>
+                      <td className="py-2.5 sm:py-3.5 text-right font-black text-slate-900 dark:text-slate-100">{adc.rawValue}</td>
+                      <td className="py-2.5 sm:py-3.5 text-right font-black text-cyan-600 dark:text-cyan-400 text-glow-cyan">{calcVoltage(adc.rawValue, adc.attenuation)} V</td>
+                      <td className="py-2.5 sm:py-3.5"><span className="px-2 py-0.5 bg-slate-200 dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded text-[9px] text-slate-600 dark:text-slate-500 font-bold">{adc.attenuation}</span></td>
                     </tr>
                   ))}
                 </tbody>
@@ -641,27 +641,27 @@ export const IoTPanel: React.FC<IoTPanelProps> = ({
             </div>
           </div>
 
-          <div className="border-t border-white/5 pt-3 sm:pt-4 text-[9px] sm:text-[9.5px] font-mono text-slate-500 flex flex-col sm:flex-row justify-between gap-1 leading-relaxed mt-3">
+          <div className="border-t border-slate-200 dark:border-white/5 pt-3 sm:pt-4 text-[9px] sm:text-[9.5px] font-mono text-slate-500 flex flex-col sm:flex-row justify-between gap-1 leading-relaxed mt-3">
             <span>Dynamic mapping formula: V = (ADC_RAW / 4095) * VREF * ATTEN_COEFF</span>
-            <span className="text-purple-400">Silicon Reference: Internal SAR Fuses synced</span>
+            <span className="text-purple-600 dark:text-purple-400">Silicon Reference: Internal SAR Fuses synced</span>
           </div>
         </div>
 
         {/* FreeRTOS Core Scheduler details */}
         <div className="lg:col-span-1 glass-panel rounded-2xl sm:rounded-3xl p-4 sm:p-7 flex flex-col justify-between min-h-0 sm:min-h-[460px]">
           <div>
-            <h2 className="text-base sm:text-lg font-extrabold text-slate-100 tracking-wide uppercase">FreeRTOS Thread Monitor</h2>
+            <h2 className="text-base sm:text-lg font-extrabold text-slate-900 dark:text-slate-100 tracking-wide uppercase">FreeRTOS Thread Monitor</h2>
             <p className="text-[11px] sm:text-xs text-slate-500 mt-1 font-bold uppercase tracking-widest font-mono mb-3 sm:mb-4">Task Scheduler execution stack and memory buffers</p>
             
             <div className="space-y-3 sm:space-y-4">
               
               {/* Stack gauge */}
-              <div className="bg-[#030610] border border-purple-500/10 rounded-2xl p-3.5 sm:p-4.5">
+              <div className="bg-slate-100/90 dark:bg-[#030610] border border-slate-200 dark:border-purple-500/10 rounded-2xl p-3.5 sm:p-4.5">
                 <div className="flex justify-between items-center mb-1.5 sm:mb-2">
                   <span className="text-[9px] sm:text-[10px] text-slate-500 font-bold uppercase font-mono">Heap SRAM Allocation</span>
-                  <span className="text-[11px] sm:text-xs text-purple-400 font-bold font-mono">214 KB Free / 320 KB</span>
+                  <span className="text-[11px] sm:text-xs text-purple-600 dark:text-purple-400 font-bold font-mono">214 KB Free / 320 KB</span>
                 </div>
-                <div className="w-full bg-slate-950 h-2 rounded-full overflow-hidden">
+                <div className="w-full bg-slate-200 dark:bg-slate-950 h-2 rounded-full overflow-hidden">
                   <div className="h-full bg-gradient-to-r from-purple-600 to-indigo-500 w-[67%]"></div>
                 </div>
               </div>
@@ -669,13 +669,13 @@ export const IoTPanel: React.FC<IoTPanelProps> = ({
               {/* Thread list */}
               <div className="space-y-2 max-h-[220px] overflow-y-auto pr-1">
                 {freeRTOSTasks.map(task => (
-                  <div key={task.name} className="flex items-center justify-between p-2.5 sm:p-3 bg-[#030610]/80 border border-white/5 rounded-xl sm:rounded-2xl hover:border-purple-500/20 transition-all font-mono text-[11px] sm:text-xs">
+                  <div key={task.name} className="flex items-center justify-between p-2.5 sm:p-3 bg-white dark:bg-[#030610]/80 border border-slate-200 dark:border-white/5 rounded-xl sm:rounded-2xl hover:border-purple-500/20 transition-all font-mono text-[11px] sm:text-xs">
                     <div>
-                      <h4 className="font-extrabold text-slate-100">{task.name}</h4>
+                      <h4 className="font-extrabold text-slate-900 dark:text-slate-100">{task.name}</h4>
                       <span className="text-[8.5px] sm:text-[9px] text-slate-500 block uppercase">Prio: {task.priority} • Stack: {task.stackRemaining}</span>
                     </div>
                     <div className="text-right">
-                      <span className={`px-2 py-0.5 text-[8px] sm:text-[8.5px] font-black uppercase rounded ${task.state === 'Running' ? 'bg-emerald-500/10 border border-emerald-500/25 text-emerald-400' : 'bg-slate-900 border border-slate-800 text-slate-500'}`}>
+                      <span className={`px-2 py-0.5 text-[8px] sm:text-[8.5px] font-black uppercase rounded ${task.state === 'Running' ? 'bg-emerald-500/10 border border-emerald-500/25 text-emerald-600 dark:text-emerald-400' : 'bg-slate-200 dark:bg-slate-900 border border-slate-300 dark:border-slate-800 text-slate-600 dark:text-slate-500'}`}>
                         {task.state}
                       </span>
                       <span className="block text-[9px] sm:text-[9.5px] text-cyan-400 font-black mt-0.5 sm:mt-1">{task.cpuLoad}</span>
@@ -728,7 +728,7 @@ export const IoTPanel: React.FC<IoTPanelProps> = ({
             )}
           </div>
 
-          <div className="border-t border-white/5 pt-3 sm:pt-4 text-xs font-mono text-slate-400 flex justify-between bg-[#030610]/45 p-2.5 sm:p-3 rounded-xl sm:rounded-2xl border border-white/5 mt-3">
+          <div className="border-t border-slate-200 dark:border-white/5 pt-3 sm:pt-4 text-xs font-mono text-slate-700 dark:text-slate-400 flex justify-between bg-slate-100/90 dark:bg-[#030610]/45 p-2.5 sm:p-3 rounded-xl sm:rounded-2xl border border-slate-200 dark:border-white/5 mt-3">
             <div>
               <span className="text-[8.5px] sm:text-[9px] text-slate-500 uppercase block font-sans font-bold">Packet Loss</span>
               <span className={`font-black text-xs sm:text-sm ${packetLoss > 1.0 ? 'text-red-400' : 'text-emerald-400'}`}>{packetLoss.toFixed(2)}%</span>
@@ -758,7 +758,7 @@ export const IoTPanel: React.FC<IoTPanelProps> = ({
           </div>
 
           {/* Styled monospaced console view */}
-          <div className="flex-grow w-full bg-[#020409]/95 border border-purple-500/10 rounded-xl sm:rounded-2xl p-3.5 sm:p-5 font-mono text-[10px] sm:text-[11px] leading-relaxed text-slate-350 space-y-1.5 sm:space-y-2 overflow-y-auto h-[200px] sm:h-[240px] max-h-[250px] shadow-[inset_0_4px_30px_rgba(0,0,0,0.95)] scrollbar-thin">
+          <div className="flex-grow w-full bg-slate-100/90 dark:bg-[#020409]/95 border border-slate-200 dark:border-purple-500/10 rounded-xl sm:rounded-2xl p-3.5 sm:p-5 font-mono text-[10px] sm:text-[11px] leading-relaxed text-slate-800 dark:text-slate-350 space-y-1.5 sm:space-y-2 overflow-y-auto h-[200px] sm:h-[240px] max-h-[250px] shadow-inner dark:shadow-[inset_0_4px_30px_rgba(0,0,0,0.95)] scrollbar-thin">
             {serialLogs.map((log, index) => {
               let logColorClass = 'text-slate-300';
               if (log.includes('🖥️')) logColorClass = 'text-slate-400';
