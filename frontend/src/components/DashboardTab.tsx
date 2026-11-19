@@ -113,10 +113,10 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
         <div className="absolute bottom-0 left-0 w-24 h-0.5 bg-gradient-to-r from-purple-500 to-cyan-400"></div>
         <div>
           <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-            <span className="text-[9px] sm:text-[10px] font-black uppercase text-purple-400 tracking-widest font-mono bg-purple-500/10 border border-purple-500/20 px-2.5 sm:px-3.5 py-0.5 sm:py-1 rounded-full shadow-[0_0_12px_rgba(168,85,247,0.1)]">
+            <span className="text-[9px] sm:text-[10px] font-black uppercase text-purple-700 dark:text-purple-400 tracking-widest font-mono bg-purple-500/10 border border-purple-500/20 px-2.5 sm:px-3.5 py-0.5 sm:py-1 rounded-full shadow-[0_0_12px_rgba(168,85,247,0.1)]">
               🛰️ AWASH BASIN RELAY CHANNEL [01]
             </span>
-            <span className="text-[9px] sm:text-[10px] font-black uppercase text-cyan-400 tracking-widest font-mono bg-cyan-500/10 border border-cyan-500/20 px-2.5 sm:px-3.5 py-0.5 sm:py-1 rounded-full shadow-[0_0_12px_rgba(34,211,238,0.1)]">
+            <span className="text-[9px] sm:text-[10px] font-black uppercase text-cyan-700 dark:text-cyan-400 tracking-widest font-mono bg-cyan-500/10 border border-cyan-500/20 px-2.5 sm:px-3.5 py-0.5 sm:py-1 rounded-full shadow-[0_0_12px_rgba(34,211,238,0.1)]">
               ASTU LAB PROJECT
             </span>
             <span className="text-[9px] sm:text-[10px] font-black uppercase text-slate-700 dark:text-slate-400 tracking-widest font-mono bg-slate-100 dark:bg-white/5 border border-slate-300 dark:border-white/10 px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full">
@@ -182,10 +182,10 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
             <span className="text-[10px] text-slate-600 dark:text-slate-400 font-extrabold uppercase tracking-widest">Active Stations</span>
           </div>
 
-          <div className="text-[9px] text-slate-600 dark:text-slate-400 font-bold uppercase tracking-wider mt-3 flex flex-wrap gap-2 border-t border-slate-200 dark:border-white/5 pt-2.5 z-10 font-mono">
-            <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Safe: {safeCount}</span>
-            <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span> Warn: {warningCount}</span>
-            <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-ping"></span> Crit: {criticalCount}</span>
+          <div className="text-[8.5px] sm:text-[9px] text-slate-600 dark:text-slate-400 font-bold uppercase tracking-wider mt-3 flex flex-wrap gap-x-2 gap-y-1 border-t border-slate-200 dark:border-white/5 pt-2.5 z-10 font-mono">
+            <span className="flex items-center gap-1 shrink-0"><span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Safe: {safeCount}</span>
+            <span className="flex items-center gap-1 shrink-0"><span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span> Warn: {warningCount}</span>
+            <span className="flex items-center gap-1 shrink-0"><span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-ping"></span> Crit: {criticalCount}</span>
           </div>
         </div>
 
@@ -207,9 +207,9 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
             <span className="text-xs font-bold text-cyan-700 dark:text-cyan-300 font-mono">m³/s</span>
           </div>
 
-          <div className="text-[9px] text-slate-600 dark:text-slate-400 font-bold uppercase tracking-wider mt-3 border-t border-slate-200 dark:border-white/5 pt-2.5 z-10 font-mono flex items-center justify-between">
-            <span className="text-cyan-700 dark:text-cyan-400">Power Law: Q = C·(h-h₀)ᵝ</span>
-            <span className="text-slate-500">Peak Flow Rate</span>
+          <div className="text-[8.5px] sm:text-[9px] text-slate-600 dark:text-slate-400 font-bold uppercase tracking-wider mt-3 border-t border-slate-200 dark:border-white/5 pt-2.5 z-10 font-mono flex items-center justify-between gap-1">
+            <span className="text-cyan-700 dark:text-cyan-400 truncate">Power Law: Q = C·(h-h₀)ᵝ</span>
+            <span className="text-slate-500 shrink-0">Peak Flow Rate</span>
           </div>
         </div>
 
@@ -233,7 +233,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
             <span className="text-[10px] text-slate-600 dark:text-slate-400 font-extrabold uppercase tracking-widest">Open Alerts</span>
           </div>
 
-          <div className="text-[9px] text-slate-600 dark:text-slate-400 font-bold uppercase tracking-wider mt-3 border-t border-slate-200 dark:border-white/5 pt-2.5 z-10 font-mono">
+          <div className="text-[8.5px] sm:text-[9px] text-slate-600 dark:text-slate-400 font-bold uppercase tracking-wider mt-3 border-t border-slate-200 dark:border-white/5 pt-2.5 z-10 font-mono">
             <span className="text-red-600 dark:text-red-400 flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-ping shrink-0"></span>
               <span>Emergency SMS Gateway Armed</span>
@@ -255,12 +255,12 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
           </div>
           
           <div className="flex items-baseline mt-3">
-            <span className={`text-2xl sm:text-3xl font-black tracking-tight uppercase ${isSystemOnline ? 'text-emerald-700 dark:text-emerald-400' : 'text-amber-700 dark:text-amber-400 animate-pulse'}`}>
+            <span className={`text-xl sm:text-2xl xl:text-3xl font-black tracking-tight uppercase whitespace-nowrap ${isSystemOnline ? 'text-emerald-700 dark:text-emerald-400' : 'text-amber-700 dark:text-amber-400 animate-pulse'}`}>
               {isSystemOnline ? 'Operational' : 'Standby Mode'}
             </span>
           </div>
 
-          <div className="text-[9px] text-slate-700 dark:text-slate-400 font-bold uppercase tracking-wider mt-3 flex flex-wrap gap-x-3 gap-y-1 border-t border-slate-200 dark:border-white/5 pt-2.5 z-10 font-mono">
+          <div className="text-[8.5px] sm:text-[9px] text-slate-700 dark:text-slate-400 font-bold uppercase tracking-wider mt-3 flex flex-wrap gap-x-2 gap-y-1 border-t border-slate-200 dark:border-white/5 pt-2.5 z-10 font-mono">
             <span>Stage: <strong className="text-indigo-700 dark:text-indigo-400 font-black">{(avgWaterLevel ?? 285.5).toFixed(1)} cm</strong></span>
             <span>Rain: <strong className="text-cyan-700 dark:text-cyan-400 font-black">{(maxRainfall ?? 14.8).toFixed(1)} mm/h</strong></span>
             <span>Risk: <strong className="text-purple-700 dark:text-purple-400 font-black">{latestFloodProb}%</strong></span>

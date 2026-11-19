@@ -502,9 +502,9 @@ const App: React.FC = () => {
                 </div>
 
                 {/* Categorized Nav Items */}
-                <nav className="flex-1 px-3 sm:px-4 py-4 space-y-5 overflow-y-auto custom-scrollbar">
+                <nav className="flex-1 min-h-0 px-3 sm:px-4 py-3 space-y-4 overflow-y-auto custom-scrollbar">
                     {navCategories.map((group, gIdx) => (
-                        <div key={gIdx} className="space-y-1.5">
+                        <div key={gIdx} className="space-y-1">
                             <h3 className="px-3 text-[9px] font-mono font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">
                                 {group.category}
                             </h3>
@@ -547,7 +547,7 @@ const App: React.FC = () => {
                 </nav>
 
                 {/* Sidebar Footer User & Status */}
-                <div className="p-4 border-t border-slate-200 dark:border-white/5 bg-slate-50/90 dark:bg-[#03060c]/60 space-y-3">
+                <div className="p-3.5 sm:p-4 border-t border-slate-200 dark:border-white/5 bg-slate-50/90 dark:bg-[#03060c]/60 space-y-2.5 shrink-0">
                     <div className="flex items-center justify-between text-[10px] font-mono text-slate-500 dark:text-slate-400">
                         <span className="flex items-center gap-1.5">
                             <span className={`w-2 h-2 rounded-full ${isSystemOnline ? 'bg-emerald-500 shadow-[0_0_6px_#10b981]' : 'bg-red-500'}`}></span>
@@ -556,7 +556,7 @@ const App: React.FC = () => {
                         <span className="text-cyan-600 dark:text-cyan-400 font-bold">LORA: 22ms</span>
                     </div>
 
-                    <div className="flex items-center gap-3 pt-1">
+                    <div className="flex items-center gap-3 pt-0.5">
                         <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-slate-200 to-indigo-200 dark:from-slate-800 dark:to-indigo-950 border border-slate-300 dark:border-white/10 flex items-center justify-center font-bold text-xs text-indigo-700 dark:text-indigo-300 font-mono shrink-0">
                             OP
                         </div>
@@ -569,7 +569,7 @@ const App: React.FC = () => {
                                 sessionStorage.removeItem('sfews_authenticated');
                                 setIsAuthenticated(false);
                             }}
-                            className="w-7 h-7 rounded-lg bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 dark:bg-red-950/30 dark:hover:bg-red-950/60 dark:text-red-400 dark:border-red-500/20 flex items-center justify-center transition-colors shadow-xs"
+                            className="w-7 h-7 rounded-lg bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 dark:bg-red-950/30 dark:hover:bg-red-950/60 dark:text-red-400 dark:border-red-500/20 flex items-center justify-center transition-colors shadow-xs shrink-0"
                             title="Log Out"
                         >
                             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
@@ -582,8 +582,8 @@ const App: React.FC = () => {
             <main className="flex-1 flex flex-col min-w-0 overflow-hidden relative z-10 grid-bg">
                 
                 {/* UNIFIED TOP COMMAND BAR (Visible on Desktop & Mobile, Ultra-Adaptive) */}
-                <header className="bg-white/95 dark:bg-[#040812]/90 border-b border-slate-200 dark:border-white/5 px-2.5 sm:px-6 py-2 sm:py-3 flex items-center justify-between backdrop-blur-xl shrink-0 z-30 shadow-xs">
-                    <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+                <header className="bg-white/95 dark:bg-[#040812]/90 border-b border-slate-200 dark:border-white/5 px-3 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between backdrop-blur-xl shrink-0 z-30 shadow-xs">
+                    <div className="flex items-center gap-2 sm:gap-3 min-w-0 shrink-0">
                         <button
                             onClick={() => setIsMobileMenuOpen(true)}
                             className="lg:hidden w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-slate-100 dark:bg-slate-900/80 hover:bg-slate-200 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-200 flex items-center justify-center transition-colors active:scale-95 shrink-0"
@@ -594,14 +594,13 @@ const App: React.FC = () => {
                             </svg>
                         </button>
                         
-                        <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-                            <span className="text-sm sm:text-lg shrink-0">🇪🇹</span>
+                        <div className="flex items-center gap-2 sm:gap-3">
+                            <span className="text-base sm:text-lg shrink-0">🇪🇹</span>
                             <div className="min-w-0">
-                                <h1 className="text-xs sm:text-sm font-black text-slate-800 dark:text-slate-100 leading-tight flex items-center gap-1.5 sm:gap-2 truncate">
-                                    <span className="sm:hidden font-extrabold truncate">SFEWS Command</span>
-                                    <span className="hidden sm:inline truncate">Awash River Hydrometric Command</span>
-                                    <span className="hidden sm:inline-block w-1.5 h-1.5 rounded-full bg-slate-400 dark:bg-slate-700 shrink-0"></span>
-                                    <span className="hidden sm:inline-block text-[10px] font-mono font-medium text-slate-500 dark:text-slate-400 truncate">Ethiopian Basin Grid</span>
+                                <h1 className="text-xs sm:text-sm font-black text-slate-800 dark:text-slate-100 leading-tight flex items-center gap-2 whitespace-nowrap">
+                                    <span>Awash River Hydrometric Command</span>
+                                    <span className="hidden xl:inline-block w-1.5 h-1.5 rounded-full bg-slate-400 dark:bg-slate-700"></span>
+                                    <span className="hidden xl:inline-block text-[10px] font-mono font-medium text-slate-500 dark:text-slate-400">Ethiopian Basin Grid</span>
                                 </h1>
                             </div>
                         </div>

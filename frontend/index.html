@@ -1,9 +1,19 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="light">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SFEWS Smart Flood Warning System — Awash River Basin</title>
+    <script>
+      (function() {
+        try {
+          var saved = sessionStorage.getItem('sfews_theme') || localStorage.getItem('sfews_theme');
+          var theme = (saved === 'dark') ? 'dark' : 'light';
+          document.documentElement.classList.add(theme);
+          document.documentElement.classList.remove(theme === 'dark' ? 'light' : 'dark');
+        } catch(e) {}
+      })();
+    </script>
     <!-- Premium Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
