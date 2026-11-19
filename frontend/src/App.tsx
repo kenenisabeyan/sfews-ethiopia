@@ -602,11 +602,11 @@ const App: React.FC = () => {
                                             }}
                                             className={`w-full flex items-center gap-3 pl-4 pr-3 py-2.5 text-[13px] transition-all duration-150 group relative text-left ${
                                                 isActive 
-                                                    ? 'bg-[#edf5ff] text-blue-600 border-l-[3.5px] border-blue-600 rounded-r-xl font-bold shadow-xs dark:bg-blue-950/40 dark:text-blue-400 dark:border-blue-500' 
-                                                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-950 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/40 font-semibold rounded-xl ml-1'}`}
+                                                    ? 'active-nav-item bg-[#edf5ff] text-blue-600 border-l-[3.5px] border-blue-600 font-bold shadow-xs dark:bg-blue-950/40 dark:text-blue-400 dark:border-blue-500' 
+                                                    : 'inactive-nav-item text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-white hover:bg-blue-50/50 dark:hover:bg-slate-800/40 font-semibold ml-1'}`}
                                         >
                                             <span className={`w-5 h-5 shrink-0 flex items-center justify-center transition-colors ${
-                                                isActive ? 'text-blue-600 dark:text-blue-400' : 'text-slate-500 dark:text-slate-400 group-hover:text-slate-800 dark:group-hover:text-slate-200'
+                                                isActive ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400 dark:text-slate-500 group-hover:text-blue-600 dark:group-hover:text-slate-200'
                                             }`}>
                                                 {item.icon}
                                             </span>
@@ -631,7 +631,7 @@ const App: React.FC = () => {
                 </nav>
 
                 {/* Sidebar Footer User & Status */}
-                <div className="p-3 border-t border-slate-100 dark:border-slate-800/80 bg-slate-50/70 dark:bg-[#040810]/70 space-y-2.5 shrink-0">
+                <div className="p-3 border-t border-slate-100 dark:border-slate-800/80 sidebar-footer bg-white dark:bg-[#040810]/70 space-y-2.5 shrink-0">
                     <div className="flex items-center justify-between text-[10px] font-mono text-slate-500 dark:text-slate-400">
                         <span className="flex items-center gap-1.5 font-bold">
                             <span className={`w-2 h-2 rounded-full ${isSystemOnline ? 'bg-emerald-500 shadow-[0_0_6px_#10b981]' : 'bg-red-500'}`}></span>
@@ -641,7 +641,7 @@ const App: React.FC = () => {
                     </div>
 
                     <div className="flex items-center gap-2.5 pt-0.5">
-                        <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-blue-100 to-indigo-100 dark:from-slate-800 dark:to-indigo-950 border border-blue-200 dark:border-white/10 flex items-center justify-center font-bold text-xs text-blue-700 dark:text-indigo-300 font-mono shrink-0 shadow-2xs">
+                        <div className="w-8 h-8 rounded-xl sidebar-avatar bg-blue-50 border border-blue-200 dark:bg-slate-800 dark:border-white/10 flex items-center justify-center font-bold text-xs text-blue-600 dark:text-blue-300 font-mono shrink-0 shadow-2xs">
                             OP
                         </div>
                         <div className="min-w-0 flex-1">

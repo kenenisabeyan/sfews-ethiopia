@@ -405,8 +405,8 @@ html.light .bg-slate-900\/60,
 .light .bg-slate-900\/60,
 html.light .bg-slate-900\/80,
 .light .bg-slate-900\/80 {
-  background-color: #f1f5f9 !important;
-  border-color: #cbd5e1 !important;
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
 }
 
 /* Light mode button sanitization */
@@ -483,23 +483,85 @@ html.light button[class*="bg-black"],
   color: #ffffff !important;
 }
 
-/* Inactive aside navigation buttons in light mode */
-.light aside nav button:not([class*="bg-indigo-600"]) {
-  color: #1e293b !important;
-  font-weight: 700 !important;
-}
-.light aside nav button:not([class*="bg-indigo-600"]):hover {
-  background-color: #f1f5f9 !important;
-  color: #0f172a !important;
+/* =========================================================================
+   CLIENTFLOW ADMIN ERP SIDEBAR - PURE CLEAN LIGHT MODE
+   Eliminates all dark/gray backgrounds, black text, and murky borders
+   ========================================================================= */
+.light aside {
+  background-color: #ffffff !important;
+  border-right-color: #e2e8f0 !important;
+  box-shadow: 2px 0 16px rgba(15, 23, 42, 0.03) !important;
 }
 
-/* Active aside navigation button in light mode */
-.light aside nav button[class*="bg-indigo-600"] {
-  background-color: #4f46e5 !important;
-  color: #ffffff !important;
+.light aside nav {
+  background-color: transparent !important;
 }
-.light aside nav button[class*="bg-indigo-600"] * {
-  color: #ffffff !important;
+
+/* Inactive aside navigation buttons in light mode - pure clean transparent with soft slate text */
+.light aside nav button.inactive-nav-item,
+.light aside nav button:not(.active-nav-item):not([class*="border-blue-600"]):not([class*="bg-[#edf5ff]"]) {
+  background-color: transparent !important;
+  color: #475569 !important;
+  border-color: transparent !important;
+}
+
+.light aside nav button.inactive-nav-item:hover,
+.light aside nav button:not(.active-nav-item):not([class*="border-blue-600"]):not([class*="bg-[#edf5ff]"]):hover {
+  background-color: #f8fafc !important;
+  color: #2563eb !important;
+}
+
+.light aside nav button.inactive-nav-item svg,
+.light aside nav button:not(.active-nav-item):not([class*="border-blue-600"]):not([class*="bg-[#edf5ff]"]) svg {
+  color: #64748b !important;
+}
+
+.light aside nav button.inactive-nav-item:hover svg,
+.light aside nav button:not(.active-nav-item):not([class*="border-blue-600"]):not([class*="bg-[#edf5ff]"]):hover svg {
+  color: #2563eb !important;
+}
+
+/* Active aside navigation button in light mode - ClientFlow Pastel Blue + Royal Blue */
+.light aside nav button.active-nav-item,
+.light aside nav button[class*="active-nav-item"],
+.light aside nav button[class*="border-blue-600"],
+.light aside nav button[class*="bg-[#edf5ff]"] {
+  background-color: #edf5ff !important;
+  color: #2563eb !important;
+  border-left: 3.5px solid #2563eb !important;
+  border-top-color: transparent !important;
+  border-right-color: transparent !important;
+  border-bottom-color: transparent !important;
+  font-weight: 700 !important;
+}
+
+.light aside nav button.active-nav-item *,
+.light aside nav button[class*="active-nav-item"] *,
+.light aside nav button[class*="border-blue-600"] *,
+.light aside nav button[class*="bg-[#edf5ff]"] * {
+  color: #2563eb !important;
+}
+
+/* Sidebar Footer & Operator Avatar in Light Mode - Pure White and Soft Blue */
+.light aside .sidebar-footer {
+  background-color: #ffffff !important;
+  border-top-color: #f1f5f9 !important;
+}
+
+.light .sidebar-avatar,
+.light aside .sidebar-avatar {
+  background-color: #eff6ff !important;
+  color: #2563eb !important;
+  border-color: #bfdbfe !important;
+}
+
+.light .sidebar-avatar *,
+.light aside .sidebar-avatar * {
+  color: #2563eb !important;
+}
+
+.light aside .sidebar-category-title {
+  color: #94a3b8 !important;
 }
 
 /* SVG Text High-Contrast Visibility in Light Mode */
