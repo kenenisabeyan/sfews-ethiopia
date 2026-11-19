@@ -151,7 +151,7 @@ export const AlertsPanel: React.FC<AlertsPanelProps> = ({
           <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-slate-100 mt-2 tracking-tight">
             Emergency Alerts & Civil Protection Console
           </h1>
-          <p className="text-xs sm:text-sm text-slate-400 mt-1 font-semibold">
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-1 font-semibold">
             Real-time hazard detection, automated subscriber alerts, and geospatial SMS broadcast dispatch.
           </p>
         </div>

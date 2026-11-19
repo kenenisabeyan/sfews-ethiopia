@@ -109,7 +109,7 @@ export const MapTab: React.FC<MapTabProps> = ({
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-5 relative z-10">
                         {/* Title details */}
                         <div>
-                            <h2 className="text-xs sm:text-sm font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                            <h2 className="text-xs sm:text-sm font-black text-slate-700 dark:text-slate-400 uppercase tracking-widest flex items-center gap-2">
                                 <span className="w-2 h-2 rounded-full bg-purple-500 border border-purple-400 animate-pulse" />
                                 GIS Control Console
                             </h2>

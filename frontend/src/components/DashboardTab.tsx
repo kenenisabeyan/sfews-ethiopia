@@ -119,7 +119,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
             <span className="text-[9px] sm:text-[10px] font-black uppercase text-cyan-400 tracking-widest font-mono bg-cyan-500/10 border border-cyan-500/20 px-2.5 sm:px-3.5 py-0.5 sm:py-1 rounded-full shadow-[0_0_12px_rgba(34,211,238,0.1)]">
               ASTU LAB PROJECT
             </span>
-            <span className="text-[9px] sm:text-[10px] font-black uppercase text-slate-400 tracking-widest font-mono bg-white/5 border border-white/10 px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full">
+            <span className="text-[9px] sm:text-[10px] font-black uppercase text-slate-700 dark:text-slate-400 tracking-widest font-mono bg-slate-100 dark:bg-white/5 border border-slate-300 dark:border-white/10 px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full">
               SECURE DESKTOP CONSOLE
             </span>
           </div>
@@ -136,8 +136,8 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
         <div className="flex flex-wrap items-center gap-3 sm:gap-6 w-full lg:w-auto justify-between lg:justify-end">
           {/* LoRa Ping Indicator */}
           <div className="flex flex-col text-left sm:text-right font-mono text-[9px] sm:text-[10px] text-slate-500 leading-snug">
-            <span className="font-bold text-slate-400 uppercase tracking-widest">LoRa Mesh Ping</span>
-            <span className="text-cyan-400 font-extrabold text-xs text-glow-cyan mt-0.5">22 ms (STABLE)</span>
+            <span className="font-bold text-slate-600 dark:text-slate-400 uppercase tracking-widest">LoRa Mesh Ping</span>
+            <span className="text-cyan-700 dark:text-cyan-400 font-extrabold text-xs mt-0.5">22 ms (STABLE)</span>
           </div>
           
           <div className="flex items-center gap-2.5 sm:gap-3 bg-white/80 dark:bg-[#060a16] border border-slate-200 dark:border-purple-500/20 px-3.5 sm:px-5 py-2 sm:py-3.5 rounded-2xl shadow-sm dark:shadow-[0_4px_30px_rgba(0,0,0,0.5)] backdrop-blur-md relative overflow-hidden group">
@@ -838,7 +838,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
         <div className="overflow-x-auto custom-scrollbar">
           <table className="w-full text-left border-collapse text-xs md:text-sm min-w-[640px]">
             <thead>
-              <tr className="border-b border-white/5 text-slate-400 font-black uppercase tracking-widest text-[9px] sm:text-[9.5px] font-mono">
+              <tr className="border-b border-slate-200 dark:border-white/5 text-slate-700 dark:text-slate-400 font-black uppercase tracking-widest text-[9px] sm:text-[9.5px] font-mono">
                 <th className="py-3 sm:py-4.5 px-3 sm:px-6">Event ID</th>
                 <th className="py-3 sm:py-4.5 px-3 sm:px-6">Source Node Station</th>
                 <th className="py-3 sm:py-4.5 px-3 sm:px-6">Hydrological Metrics Trigger</th>
@@ -884,7 +884,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
                         <span className="text-xs truncate">{responseText}</span>
                       </div>
                     </td>
-                    <td className="py-3 sm:py-4.5 px-3 sm:px-6 text-right text-slate-400 text-xs font-mono whitespace-nowrap">
+                    <td className="py-3 sm:py-4.5 px-3 sm:px-6 text-right text-slate-600 dark:text-slate-400 text-xs font-mono whitespace-nowrap">
                       {i === 0 ? 'Just Now' : `${i * 12} min ago`}
                     </td>
                   </tr>
