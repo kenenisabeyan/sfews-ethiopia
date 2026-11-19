@@ -581,37 +581,38 @@ const App: React.FC = () => {
             {/* MAIN CONTENT CONTAINER */}
             <main className="flex-1 flex flex-col min-w-0 overflow-hidden relative z-10 grid-bg">
                 
-                {/* UNIFIED TOP COMMAND BAR (Visible on Desktop & Mobile) */}
-                <header className="bg-white/90 dark:bg-[#040812]/85 border-b border-slate-200 dark:border-white/5 px-4 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between backdrop-blur-xl shrink-0 z-30 shadow-xs">
-                    <div className="flex items-center gap-3">
+                {/* UNIFIED TOP COMMAND BAR (Visible on Desktop & Mobile, Ultra-Adaptive) */}
+                <header className="bg-white/95 dark:bg-[#040812]/90 border-b border-slate-200 dark:border-white/5 px-2.5 sm:px-6 py-2 sm:py-3 flex items-center justify-between backdrop-blur-xl shrink-0 z-30 shadow-xs">
+                    <div className="flex items-center gap-2 sm:gap-3 min-w-0">
                         <button
                             onClick={() => setIsMobileMenuOpen(true)}
-                            className="lg:hidden w-9 h-9 rounded-xl bg-slate-100 dark:bg-slate-900/80 hover:bg-slate-200 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-200 flex items-center justify-center transition-colors active:scale-95"
+                            className="lg:hidden w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-slate-100 dark:bg-slate-900/80 hover:bg-slate-200 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-200 flex items-center justify-center transition-colors active:scale-95 shrink-0"
                             aria-label="Open Navigation Drawer"
                         >
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg className="w-4.5 h-4.5 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 6h16M4 12h16M4 18h16" />
                             </svg>
                         </button>
                         
-                        <div className="flex items-center gap-3">
-                            <span className="text-base sm:text-lg">🇪🇹</span>
+                        <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+                            <span className="text-sm sm:text-lg shrink-0">🇪🇹</span>
                             <div className="min-w-0">
-                                <h1 className="text-xs sm:text-sm font-black text-slate-800 dark:text-slate-100 leading-tight flex items-center gap-2">
-                                    <span>Awash River Hydrometric Command</span>
-                                    <span className="hidden sm:inline-block w-1.5 h-1.5 rounded-full bg-slate-400 dark:bg-slate-700"></span>
-                                    <span className="hidden sm:inline-block text-[10px] font-mono font-medium text-slate-500 dark:text-slate-400">Ethiopian Basin Grid</span>
+                                <h1 className="text-xs sm:text-sm font-black text-slate-800 dark:text-slate-100 leading-tight flex items-center gap-1.5 sm:gap-2 truncate">
+                                    <span className="sm:hidden font-extrabold truncate">SFEWS Command</span>
+                                    <span className="hidden sm:inline truncate">Awash River Hydrometric Command</span>
+                                    <span className="hidden sm:inline-block w-1.5 h-1.5 rounded-full bg-slate-400 dark:bg-slate-700 shrink-0"></span>
+                                    <span className="hidden sm:inline-block text-[10px] font-mono font-medium text-slate-500 dark:text-slate-400 truncate">Ethiopian Basin Grid</span>
                                 </h1>
                             </div>
                         </div>
                     </div>
 
                     {/* Right-Side Header Control Pills */}
-                    <div className="flex items-center gap-2 sm:gap-3.5">
+                    <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
                         {/* Live Clock Pill */}
-                        <div className="hidden sm:flex items-center gap-2 px-3 py-1 bg-slate-100 dark:bg-[#030610] border border-slate-300 dark:border-white/5 rounded-xl font-mono text-[10px] font-bold text-slate-700 dark:text-slate-400 shadow-sm">
+                        <div className="hidden sm:flex items-center gap-2 px-2.5 sm:px-3 py-1 bg-slate-100 dark:bg-[#030610] border border-slate-300 dark:border-white/5 rounded-xl font-mono text-[10px] font-bold text-slate-700 dark:text-slate-400 shadow-sm">
                             <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 dark:bg-cyan-400 animate-pulse"></span>
-                            <span>EAT: {liveTime.split(',')[1] || liveTime}</span>
+                            <span className="whitespace-nowrap">EAT: {liveTime.split(',')[1] || liveTime}</span>
                         </div>
 
                         {/* Database Engine Status Pill */}
@@ -625,7 +626,7 @@ const App: React.FC = () => {
                         {/* Acoustic Siren Alert Toggle */}
                         <button
                             onClick={toggleSound}
-                            className={`px-2.5 sm:px-3 py-1 rounded-xl text-[10px] font-mono font-bold tracking-wider transition-all flex items-center gap-1.5 border shadow-sm ${
+                            className={`p-1.5 sm:px-3 sm:py-1 rounded-xl text-[10px] font-mono font-bold tracking-wider transition-all flex items-center gap-1.5 border shadow-sm active:scale-95 ${
                                 !soundMuted
                                     ? 'bg-amber-500/15 text-amber-700 dark:text-amber-300 border-amber-500/30'
                                     : 'bg-slate-100 dark:bg-[#030610] text-slate-500 dark:text-slate-400 border-slate-300 dark:border-white/5'
@@ -651,7 +652,7 @@ const App: React.FC = () => {
                         {/* Light / Dark Mode Brightness Toggle */}
                         <button
                             onClick={toggleTheme}
-                            className={`px-2.5 sm:px-3 py-1 rounded-xl text-[10px] font-mono font-bold tracking-wider transition-all flex items-center gap-1.5 border shadow-sm ${
+                            className={`p-1.5 sm:px-3 sm:py-1 rounded-xl text-[10px] font-mono font-bold tracking-wider transition-all flex items-center gap-1.5 border shadow-sm active:scale-95 ${
                                 theme === 'dark'
                                     ? 'bg-[#030610] text-amber-300 border-white/5 hover:border-amber-400/40 hover:bg-amber-400/10'
                                     : 'bg-white text-indigo-700 border-slate-300 hover:border-indigo-400 hover:bg-indigo-50'
@@ -666,10 +667,11 @@ const App: React.FC = () => {
                         {/* Quick 1-Click Broadcast Action */}
                         <button
                             onClick={() => setActiveTab('alerts')}
-                            className="px-3 py-1 bg-red-500/10 hover:bg-red-500/20 text-red-600 dark:text-red-400 border border-red-500/25 rounded-xl text-[10px] font-black uppercase tracking-wider font-mono transition-all flex items-center gap-1.5 shadow-sm active:scale-95"
+                            className="px-2.5 sm:px-3 py-1 bg-red-500/10 hover:bg-red-500/20 text-red-600 dark:text-red-400 border border-red-500/25 rounded-xl text-[10px] font-black uppercase tracking-wider font-mono transition-all flex items-center gap-1.5 shadow-sm active:scale-95 whitespace-nowrap"
                         >
                             <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-ping"></span>
-                            <span>Dispatch Alert</span>
+                            <span className="sm:hidden">Alert</span>
+                            <span className="hidden sm:inline">Dispatch Alert</span>
                         </button>
                     </div>
                 </header>
@@ -705,6 +707,7 @@ const App: React.FC = () => {
                             activeStationId={activeStationId}
                             setActiveStationId={setActiveStationId}
                             broadcastEmergencySMS={broadcastEmergencySMS}
+                            theme={theme}
                         />
                     )}
 

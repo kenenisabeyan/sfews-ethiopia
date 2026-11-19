@@ -680,3 +680,45 @@ html.light .radial-track,
   width: 4px;
   height: 4px;
 }
+
+/* ==========================================================================
+   MOBILE & MULTI-DEVICE RESPONSIVE OPTIMIZATIONS
+   ========================================================================== */
+@media (max-width: 640px) {
+  /* Prevent horizontal bouncing on mobile */
+  html, body {
+    overflow-x: hidden;
+    position: relative;
+    width: 100%;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Safe area handling for modern smartphones */
+  header {
+    padding-top: max(0.5rem, env(safe-area-inset-top));
+  }
+
+  aside {
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+
+  /* Mobile tables smooth touch scrolling */
+  table {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Ensure touch targets are comfortable on small touchscreens */
+  button {
+    touch-action: manipulation;
+  }
+}
+
+@media (min-width: 1920px) {
+  /* Ultra-wide 2K & 4K monitor readability */
+  .max-w-\[1600px\] {
+    max-w: 1800px;
+  }
+}

@@ -11,6 +11,7 @@ interface DashboardTabProps {
   activeStationId: string;
   setActiveStationId: (id: string) => void;
   broadcastEmergencySMS: (node: SensorNode) => void;
+  theme?: 'light' | 'dark';
 }
 
 // Landscape imagery for live camera feeds carousel
@@ -40,7 +41,9 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
   activeStationId,
   setActiveStationId,
   broadcastEmergencySMS,
+  theme = 'light',
 }) => {
+  const isDark = theme === 'dark';
   // Robust Fallback Node Stations ensuring UI components never display empty states
   const fallbackNodes: SensorNode[] = [
     { id: 'AWASH-STN-01', name: 'Awash Melka Weir', latitude: 8.9806, longitude: 39.0569, waterLevelCm: 485.2, rainfallRateMm: 14.8, batteryLevel: 92, currentRisk: 'Critical', status: 'ACTIVE' },
@@ -120,13 +123,13 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
               SECURE DESKTOP CONSOLE
             </span>
           </div>
-          <h1 className="text-2xl sm:text-4xl md:text-5xl font-black tracking-tight bg-gradient-to-r from-slate-50 via-slate-100 to-indigo-300 bg-clip-text text-transparent mt-2.5 sm:mt-3.5">
+          <h1 className={`text-xl sm:text-3xl md:text-5xl font-black tracking-tight ${isDark ? 'bg-gradient-to-r from-slate-50 via-slate-100 to-indigo-300 bg-clip-text text-transparent' : 'text-slate-900'} mt-2.5 sm:mt-3.5`}>
             Awash Command Console
           </h1>
-          <p className="text-slate-400 mt-1 sm:mt-1.5 text-xs sm:text-sm font-semibold tracking-wide flex flex-wrap items-center gap-1.5 sm:gap-2">
+          <p className="text-slate-600 dark:text-slate-400 mt-1 sm:mt-1.5 text-xs sm:text-sm font-semibold tracking-wide flex flex-wrap items-center gap-1.5 sm:gap-2">
             <span>Hydrology Intelligence Platform — Ethiopia</span>
             <span className="hidden sm:inline">•</span>
-            <span className="font-mono text-cyan-400 text-glow-cyan font-bold">{liveTime}</span>
+            <span className="font-mono text-cyan-700 dark:text-cyan-400 font-bold">{liveTime}</span>
           </p>
         </div>
         
@@ -163,8 +166,8 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
         <div className="glass-panel-interactive rounded-3xl p-5 relative overflow-hidden flex flex-col justify-between min-h-[175px] group">
           <div className="absolute top-0 right-0 w-28 h-28 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none group-hover:bg-indigo-500/15 transition-colors"></div>
           <div className="flex items-center justify-between">
-            <h3 className="text-slate-400 text-xs font-extrabold uppercase tracking-widest flex items-center gap-2">
-              <svg className="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <h3 className="text-slate-600 dark:text-slate-400 text-xs font-extrabold uppercase tracking-widest flex items-center gap-2">
+              <svg className="w-4 h-4 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
               </svg>
               Fleet Anchors
@@ -333,10 +336,10 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
                       <stop offset="95%" stopColor="#06b6d4" stopOpacity={0}/>
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#12182e" vertical={false} opacity={0.4} />
+                  <CartesianGrid strokeDasharray="3 3" stroke={isDark ? "#1e293b" : "#e2e8f0"} vertical={false} opacity={0.6} />
                   <XAxis 
                     dataKey="timestamp" 
-                    stroke="#475569" 
+                    stroke={isDark ? "#94a3b8" : "#475569"} 
                     fontSize={10} 
                     tickFormatter={(val) => new Date(val).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'})}
                     tickMargin={12}
@@ -345,7 +348,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
                     className="font-mono font-bold"
                   />
                   <YAxis 
-                    stroke="#475569" 
+                    stroke={isDark ? "#94a3b8" : "#475569"} 
                     fontSize={10} 
                     tickLine={false} 
                     axisLine={false}
@@ -354,16 +357,16 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
                   />
                   <Tooltip 
                     contentStyle={{ 
-                      backgroundColor: 'rgba(5, 8, 20, 0.9)', 
-                      borderColor: 'rgba(168, 85, 247, 0.3)', 
+                      backgroundColor: isDark ? 'rgba(5, 8, 20, 0.95)' : 'rgba(255, 255, 255, 0.98)', 
+                      borderColor: isDark ? 'rgba(168, 85, 247, 0.3)' : '#cbd5e1', 
                       borderRadius: '1.25rem', 
-                      boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.85)',
+                      boxShadow: isDark ? '0 25px 50px -12px rgba(0, 0, 0, 0.85)' : '0 15px 30px -5px rgba(0, 0, 0, 0.12)',
                       padding: '1rem',
                       borderWidth: '1.5px',
                       backdropFilter: 'blur(12px)',
                     }}
-                    itemStyle={{ color: '#f8fafc', fontWeight: 700 }}
-                    labelStyle={{ color: '#c084fc', marginBottom: '0.5rem', fontWeight: 900, fontSize: '0.75rem', textTransform: 'uppercase', fontFamily: 'monospace', letterSpacing: '0.1em' }}
+                    itemStyle={{ color: isDark ? '#f8fafc' : '#0f172a', fontWeight: 700 }}
+                    labelStyle={{ color: isDark ? '#c084fc' : '#6366f1', marginBottom: '0.5rem', fontWeight: 900, fontSize: '0.75rem', textTransform: 'uppercase', fontFamily: 'monospace', letterSpacing: '0.1em' }}
                     labelFormatter={(val) => new Date(val).toLocaleString()}
                   />
                   <Area 
