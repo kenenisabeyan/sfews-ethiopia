@@ -135,8 +135,10 @@ async def run_live_showcase():
             dash_data = dash_res.json()
             summary = dash_data["summary"]
             print(f"   • Fleet Anchors   : {summary['totalNodes']} Stations Online")
-            print(f"   • Basin Status    : {summary['basinStatus']}")
-            print(f"   • Max Stage Depth : {summary['maxWaterLevelCm']} cm")
+            print(f"   • System Health   : {summary['systemHealthStatus']}")
+            print(f"   • Active Alerts   : {summary['activeAlerts']} Unacknowledged")
+            print(f"   • Critical Anchors: {summary['criticalNodesCount']} in Breach")
+            print(f"   • Average Stage   : {summary['averageWaterLevel']:.1f} cm")
             print(f"   • History Points  : {len(dash_data['history'])} 24-hr time-series points")
             print(f"   • In-Memory Cache : Served in {dash_res.headers.get('X-Process-Time-Ms')} ms")
 
