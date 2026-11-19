@@ -410,6 +410,8 @@ const App: React.FC = () => {
     if (!isAuthenticated) {
         return (
             <LoginPanel
+                theme={theme}
+                onToggleTheme={toggleTheme}
                 onLoginSuccess={() => {
                     sessionStorage.setItem('sfews_authenticated', 'true');
                     setIsAuthenticated(true);
@@ -459,7 +461,7 @@ const App: React.FC = () => {
                     {/* Close button for mobile drawer */}
                     <button 
                         onClick={() => setIsMobileMenuOpen(false)}
-                        className="lg:hidden w-8 h-8 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-400 hover:text-slate-100 flex items-center justify-center border border-slate-800 transition-colors"
+                        className="lg:hidden w-8 h-8 rounded-xl bg-slate-100 dark:bg-slate-900/80 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 flex items-center justify-center border border-slate-200 dark:border-slate-800 transition-colors"
                         aria-label="Close navigation drawer"
                     >
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
@@ -551,7 +553,7 @@ const App: React.FC = () => {
                     <div className="flex items-center gap-3">
                         <button
                             onClick={() => setIsMobileMenuOpen(true)}
-                            className="lg:hidden w-9 h-9 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-slate-800 text-slate-200 flex items-center justify-center transition-colors active:scale-95"
+                            className="lg:hidden w-9 h-9 rounded-xl bg-slate-100 dark:bg-slate-900/80 hover:bg-slate-200 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-200 flex items-center justify-center transition-colors active:scale-95"
                             aria-label="Open Navigation Drawer"
                         >
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -779,7 +781,7 @@ const App: React.FC = () => {
                             </div>
                             <button
                                 onClick={() => setIsChatOpen(false)}
-                                className="w-8 h-8 rounded-xl hover:bg-slate-900/60 text-slate-400 hover:text-slate-200 flex items-center justify-center transition-colors border border-transparent hover:border-white/10 shrink-0"
+                                className="w-8 h-8 rounded-xl bg-slate-100 dark:bg-slate-900/60 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 flex items-center justify-center transition-colors border border-slate-200 dark:border-white/10 shrink-0"
                                 aria-label="Close chat"
                             >
                                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

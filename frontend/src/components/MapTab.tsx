@@ -495,7 +495,7 @@ export const MapTab: React.FC<MapTabProps> = ({
                                         {/* Active micro badge with reading display on hover */}
                                         <g className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" transform="translate(0, 22)">
                                             <rect x="-35" y="-10" width="70" height="16" rx="4" fill="#ffffff" className="dark:fill-[#03060c]" stroke={pinColor} strokeWidth="1" />
-                                            <text y="1" textAnchor="middle" fill="#0f172a" className="dark:fill-[#94a3b8]" fontSize="8" fontWeight="bold" className="font-mono">
+                                            <text y="1" textAnchor="middle" fill="#0f172a" fontSize="8" fontWeight="bold" className="dark:fill-[#94a3b8] font-mono">
                                                 {getSimulatedWaterLevel(node).toFixed(0)}cm
                                             </text>
                                         </g>
