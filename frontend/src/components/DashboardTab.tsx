@@ -166,13 +166,13 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
           </div>
           
           <div className="flex items-baseline mt-3 gap-2 relative z-10">
-            <span className="text-4xl sm:text-5xl font-black text-slate-900 dark:text-slate-50 tracking-tight text-glow-purple font-mono">
+            <span className="text-4xl sm:text-5xl font-black text-slate-900 dark:text-slate-100 tracking-tight font-mono">
               {payload?.summary.totalNodes || 3}
             </span>
-            <span className="text-[10px] text-slate-500 font-extrabold uppercase tracking-widest">Active Stations</span>
+            <span className="text-[10px] text-slate-600 dark:text-slate-400 font-extrabold uppercase tracking-widest">Active Stations</span>
           </div>
 
-          <div className="text-[9px] text-slate-400 font-bold uppercase tracking-wider mt-3 flex flex-wrap gap-2 border-t border-white/5 pt-2.5 z-10 font-mono">
+          <div className="text-[9px] text-slate-600 dark:text-slate-400 font-bold uppercase tracking-wider mt-3 flex flex-wrap gap-2 border-t border-slate-200 dark:border-white/5 pt-2.5 z-10 font-mono">
             <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Safe: {safeCount}</span>
             <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span> Warn: {warningCount}</span>
             <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-ping"></span> Crit: {criticalCount}</span>
@@ -183,22 +183,22 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
         <div className="glass-panel-interactive rounded-3xl p-5 relative overflow-hidden flex flex-col justify-between min-h-[175px] group">
           <div className="absolute top-0 right-0 w-28 h-28 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none group-hover:bg-cyan-500/15 transition-colors"></div>
           <div className="flex items-center justify-between">
-            <h3 className="text-slate-400 text-xs font-extrabold uppercase tracking-widest flex items-center gap-2">
-              <span className="text-cyan-400">🌊</span>
+            <h3 className="text-slate-600 dark:text-slate-400 text-xs font-extrabold uppercase tracking-widest flex items-center gap-2">
+              <span className="text-cyan-600 dark:text-cyan-400">🌊</span>
               Peak Discharge (Q)
             </h3>
-            <span className="text-[8px] font-mono font-black text-cyan-400 bg-cyan-500/15 px-2 py-0.5 rounded-md border border-cyan-500/30 tracking-widest">AWASH RATING</span>
+            <span className="text-[8px] font-mono font-black text-cyan-700 dark:text-cyan-400 bg-cyan-500/15 px-2 py-0.5 rounded-md border border-cyan-500/30 tracking-widest">AWASH RATING</span>
           </div>
           
           <div className="flex items-baseline mt-3 gap-1.5 relative z-10">
-            <span className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-slate-50 tracking-tight text-glow-cyan font-mono">
+            <span className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-slate-100 tracking-tight font-mono">
               {Math.max(...(payload?.nodes.map(n => Math.round(0.045 * Math.pow(Math.max(0, (n.waterLevelCm || 0) - 15), 1.62))) || [450]))}
             </span>
-            <span className="text-xs font-bold text-cyan-600 dark:text-cyan-300 font-mono">m³/s</span>
+            <span className="text-xs font-bold text-cyan-700 dark:text-cyan-300 font-mono">m³/s</span>
           </div>
 
-          <div className="text-[9px] text-slate-400 font-bold uppercase tracking-wider mt-3 border-t border-white/5 pt-2.5 z-10 font-mono flex items-center justify-between">
-            <span className="text-cyan-400">Power Law: Q = C·(h-h₀)ᵝ</span>
+          <div className="text-[9px] text-slate-600 dark:text-slate-400 font-bold uppercase tracking-wider mt-3 border-t border-slate-200 dark:border-white/5 pt-2.5 z-10 font-mono flex items-center justify-between">
+            <span className="text-cyan-700 dark:text-cyan-400">Power Law: Q = C·(h-h₀)ᵝ</span>
             <span className="text-slate-500">Peak Flow Rate</span>
           </div>
         </div>
@@ -207,24 +207,24 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
         <div className="glass-panel-interactive rounded-3xl p-5 relative overflow-hidden flex flex-col justify-between min-h-[175px] group">
           <div className="absolute top-0 right-0 w-28 h-28 bg-amber-500/10 rounded-full blur-3xl pointer-events-none group-hover:bg-amber-500/15 transition-colors"></div>
           <div className="flex items-center justify-between">
-            <h3 className="text-slate-400 text-xs font-extrabold uppercase tracking-widest flex items-center gap-2">
-              <svg className="w-4 h-4 text-amber-400 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <h3 className="text-slate-600 dark:text-slate-400 text-xs font-extrabold uppercase tracking-widest flex items-center gap-2">
+              <svg className="w-4 h-4 text-amber-500 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
               </svg>
               Active Hazards
             </h3>
-            <span className="text-[8px] font-mono font-black text-amber-400 bg-amber-500/15 px-2 py-0.5 rounded-md border border-amber-500/30 tracking-widest">CIVIL DEFENSE</span>
+            <span className="text-[8px] font-mono font-black text-amber-700 dark:text-amber-400 bg-amber-500/15 px-2 py-0.5 rounded-md border border-amber-500/30 tracking-widest">CIVIL DEFENSE</span>
           </div>
           
           <div className="flex items-baseline mt-3 gap-2 relative z-10">
-            <span className="text-4xl sm:text-5xl font-black text-slate-900 dark:text-slate-100 tracking-tight text-glow-purple font-mono">
+            <span className="text-4xl sm:text-5xl font-black text-slate-900 dark:text-slate-100 tracking-tight font-mono">
               {payload?.summary.activeAlerts || 0}
             </span>
-            <span className="text-[10px] text-slate-500 font-extrabold uppercase tracking-widest">Open Alerts</span>
+            <span className="text-[10px] text-slate-600 dark:text-slate-400 font-extrabold uppercase tracking-widest">Open Alerts</span>
           </div>
 
-          <div className="text-[9px] text-slate-400 font-bold uppercase tracking-wider mt-3 border-t border-white/5 pt-2.5 z-10 font-mono">
-            <span className="text-red-400 flex items-center gap-1.5">
+          <div className="text-[9px] text-slate-600 dark:text-slate-400 font-bold uppercase tracking-wider mt-3 border-t border-slate-200 dark:border-white/5 pt-2.5 z-10 font-mono">
+            <span className="text-red-600 dark:text-red-400 flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-ping shrink-0"></span>
               <span>Emergency SMS Gateway Armed</span>
             </span>
@@ -235,17 +235,17 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
         <div className="glass-panel-interactive rounded-3xl p-5 relative overflow-hidden flex flex-col justify-between min-h-[175px] group">
           <div className="absolute top-0 right-0 w-28 h-28 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none group-hover:bg-emerald-500/15 transition-colors"></div>
           <div className="flex items-center justify-between">
-            <h3 className="text-slate-400 text-xs font-extrabold uppercase tracking-widest flex items-center gap-2">
-              <svg className="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <h3 className="text-slate-600 dark:text-slate-400 text-xs font-extrabold uppercase tracking-widest flex items-center gap-2">
+              <svg className="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
               </svg>
               Basin Health
             </h3>
-            <span className="text-[8px] font-mono font-black text-emerald-400 bg-emerald-500/15 px-2 py-0.5 rounded-md border border-emerald-500/30 tracking-widest">STATUS: OK</span>
+            <span className="text-[8px] font-mono font-black text-emerald-700 dark:text-emerald-400 bg-emerald-500/15 px-2 py-0.5 rounded-md border border-emerald-500/30 tracking-widest">STATUS: OK</span>
           </div>
           
           <div className="flex items-baseline mt-3">
-            <span className={`text-2xl sm:text-3xl font-black tracking-tight uppercase text-glow-emerald ${isSystemOnline ? 'text-emerald-400' : 'text-amber-400 animate-pulse'}`}>
+            <span className={`text-2xl sm:text-3xl font-black tracking-tight uppercase ${isSystemOnline ? 'text-emerald-700 dark:text-emerald-400' : 'text-amber-700 dark:text-amber-400 animate-pulse'}`}>
               {isSystemOnline ? 'Operational' : 'Standby Mode'}
             </span>
           </div>
@@ -427,17 +427,17 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
               </defs>
             </svg>
             <div className="absolute flex flex-col items-center justify-center">
-              <span className="text-4xl sm:text-6xl font-black text-slate-900 dark:text-slate-50 tracking-tight font-mono text-glow-purple animate-pulse">{latestFloodProb}%</span>
-              <span className="text-[8px] sm:text-[9px] text-purple-600 dark:text-purple-400 font-black tracking-widest uppercase mt-1">HIGH RISK BIAS</span>
+              <span className="text-4xl sm:text-6xl font-black text-slate-900 dark:text-slate-50 tracking-tight font-mono animate-pulse">{latestFloodProb}%</span>
+              <span className="text-[8px] sm:text-[9px] text-purple-700 dark:text-purple-400 font-black tracking-widest uppercase mt-1">HIGH RISK BIAS</span>
             </div>
           </div>
 
           {/* Detailed Forecast Metrics */}
           <div className="w-full bg-slate-100/90 dark:bg-[#040812] border border-slate-200 dark:border-purple-500/15 rounded-2.5xl p-4 sm:p-5 text-center">
-            <span className={`px-3 py-1 rounded-full border text-[8.5px] sm:text-[9px] font-black uppercase tracking-widest block mx-auto w-fit mb-2.5 sm:mb-3 ${latestFloodProb > 75 ? 'bg-red-500/10 border-red-500/30 text-red-500 dark:text-red-400 animate-pulse shadow-[0_0_12px_rgba(239,68,68,0.2)]' : 'bg-amber-500/10 border-amber-500/30 text-amber-600 dark:text-amber-400'}`}>
+            <span className={`px-3 py-1 rounded-full border text-[8.5px] sm:text-[9px] font-black uppercase tracking-widest block mx-auto w-fit mb-2.5 sm:mb-3 ${latestFloodProb > 75 ? 'bg-red-500/10 border-red-500/30 text-red-700 dark:text-red-400 animate-pulse shadow-[0_0_12px_rgba(239,68,68,0.2)]' : 'bg-amber-500/10 border-amber-500/30 text-amber-700 dark:text-amber-400'}`}>
               {latestFloodProb > 75 ? '⚠️ NEURAL OVERFLOW DETECTED' : '⚠️ ELEVATED OUTFLOW STATUS'}
             </span>
-            <p className="text-slate-700 dark:text-slate-300 text-[11px] sm:text-xs font-semibold leading-relaxed">
+            <p className="text-slate-800 dark:text-slate-300 text-[11px] sm:text-xs font-semibold leading-relaxed">
               {latestFloodProb > 75 
                 ? 'ML networks compute imminent channel overflow at Melka Weir within a +6 Hour horizon. SMS dispatching ready.' 
                 : 'River discharge rate accelerated by upstream precipitation. LoRa telemetry registers are normal.'}
@@ -460,9 +460,9 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
           <div className="grid grid-cols-2 gap-4.5 my-6">
             
             <div className="bg-slate-100/90 dark:bg-[#030610] border border-slate-200 dark:border-purple-500/10 p-4 rounded-2xl flex flex-col justify-between hover:border-purple-500/30 transition-all">
-              <span className="text-[9px] text-slate-500 font-extrabold uppercase tracking-widest font-mono">solar battery</span>
+              <span className="text-[9px] text-slate-600 dark:text-slate-400 font-extrabold uppercase tracking-widest font-mono">solar battery</span>
               <div className="flex items-baseline mt-2 gap-1.5">
-                <span className="text-2xl font-mono font-black text-cyan-600 dark:text-cyan-400 text-glow-cyan">3.72</span>
+                <span className="text-2xl font-mono font-black text-cyan-700 dark:text-cyan-400">3.72</span>
                 <span className="text-[10px] text-slate-600 dark:text-slate-400 font-bold uppercase">Volts</span>
               </div>
               <div className="w-full bg-slate-200 dark:bg-slate-900 h-1.5 rounded-full mt-3 overflow-hidden">
@@ -471,29 +471,29 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
             </div>
 
             <div className="bg-slate-100/90 dark:bg-[#030610] border border-slate-200 dark:border-purple-500/10 p-4 rounded-2xl flex flex-col justify-between hover:border-purple-500/30 transition-all">
-              <span className="text-[9px] text-slate-500 font-extrabold uppercase tracking-widest font-mono">solar load watt</span>
+              <span className="text-[9px] text-slate-600 dark:text-slate-400 font-extrabold uppercase tracking-widest font-mono">solar load watt</span>
               <div className="flex items-baseline mt-2 gap-1.5">
-                <span className="text-2xl font-mono font-black text-slate-800 dark:text-slate-200">1.45</span>
-                <span className="text-[10px] text-slate-600 dark:text-slate-400 font-bold uppercase">Watts</span>
+                <span className="text-2xl font-mono font-black text-slate-900 dark:text-slate-100">1.45</span>
+                <span className="text-[10px] text-slate-700 dark:text-slate-400 font-bold uppercase">Watts</span>
               </div>
-              <span className="text-[8px] text-slate-500 mt-3 font-mono">Solar efficiency: 94.2%</span>
+              <span className="text-[8px] text-slate-600 dark:text-slate-400 mt-3 font-mono font-bold">Solar efficiency: 94.2%</span>
             </div>
 
             <div className="bg-slate-100/90 dark:bg-[#030610] border border-slate-200 dark:border-purple-500/10 p-4 rounded-2xl flex flex-col justify-between hover:border-purple-500/30 transition-all">
-              <span className="text-[9px] text-slate-500 font-extrabold uppercase tracking-widest font-mono">LoRa network delay</span>
-              <span className="text-2xl font-mono font-black text-emerald-600 dark:text-emerald-400 text-glow-emerald mt-2">18 ms</span>
-              <span className="text-[8px] text-emerald-600 dark:text-emerald-400 mt-3 font-bold tracking-widest uppercase font-mono">RSSI: EXCELLENT</span>
+              <span className="text-[9px] text-slate-600 dark:text-slate-400 font-extrabold uppercase tracking-widest font-mono">LoRa network delay</span>
+              <span className="text-2xl font-mono font-black text-emerald-700 dark:text-emerald-400 mt-2">18 ms</span>
+              <span className="text-[8px] text-emerald-700 dark:text-emerald-400 mt-3 font-bold tracking-widest uppercase font-mono">RSSI: EXCELLENT</span>
             </div>
 
             <div className="bg-slate-100/90 dark:bg-[#030610] border border-slate-200 dark:border-purple-500/10 p-4 rounded-2xl flex flex-col justify-between hover:border-purple-500/30 transition-all">
-              <span className="text-[9px] text-slate-500 font-extrabold uppercase tracking-widest font-mono">free stack heap</span>
-              <span className="text-2xl font-mono font-black text-slate-800 dark:text-slate-350 mt-2">214 KB</span>
-              <span className="text-[8px] text-slate-500 mt-3 font-mono">SRAM usage: 34.2%</span>
+              <span className="text-[9px] text-slate-600 dark:text-slate-400 font-extrabold uppercase tracking-widest font-mono">free stack heap</span>
+              <span className="text-2xl font-mono font-black text-slate-900 dark:text-slate-100 mt-2">214 KB</span>
+              <span className="text-[8px] text-slate-600 dark:text-slate-400 mt-3 font-mono font-bold">SRAM usage: 34.2%</span>
             </div>
 
           </div>
 
-          <div className="border-t border-slate-200 dark:border-white/5 pt-4.5 text-[9px] font-mono text-slate-550 uppercase font-black flex justify-between tracking-wider">
+          <div className="border-t border-slate-200 dark:border-white/5 pt-4.5 text-[9px] font-mono text-slate-700 dark:text-slate-400 uppercase font-black flex justify-between tracking-wider">
             <span>Protocol: ESP-MESH v3.1</span>
             <span>Clock Rate: 240 MHz</span>
           </div>
@@ -613,7 +613,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
             <div className="absolute inset-x-0 h-0.5 bg-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.7)] opacity-40 z-10 animate-scanline pointer-events-none"></div>
 
             {/* night vision camera overlay text */}
-            <div className="flex justify-between text-[8px] sm:text-[9px] font-mono text-emerald-400 z-20 font-black tracking-widest uppercase">
+            <div className="flex justify-between text-[8px] sm:text-[9px] font-mono text-emerald-700 dark:text-emerald-400 z-20 font-black tracking-widest uppercase">
               <span className="truncate max-w-[60%]">{CAMERA_FEED_SLIDES[(payload?.nodes.findIndex(n => n.id === activeStationId) !== -1 ? (payload?.nodes.findIndex(n => n.id === activeStationId) ?? 0) : 0) % CAMERA_FEED_SLIDES.length].title.toUpperCase()}</span>
               <span>REC [●]</span>
             </div>
@@ -632,18 +632,18 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
                 <path d="M0,10 C30,12 70,8 100,10 L100,20 L0,20 Z" fill="currentColor" className="animate-wave"></path>
                 <path d="M0,12 C40,7 60,13 100,12 L100,20 L0,20 Z" fill="currentColor" opacity="0.5" style={{ animationDelay: '2s' }} className="animate-wave"></path>
               </svg>
-              <div className="absolute flex flex-col items-center justify-center text-center text-emerald-450 font-mono text-[9px] sm:text-[10px] gap-2 z-20 font-black tracking-widest">
-                <svg className="w-6 h-6 sm:w-8 sm:h-8 opacity-80 animate-pulse text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="absolute flex flex-col items-center justify-center text-center text-emerald-700 dark:text-emerald-400 font-mono text-[9px] sm:text-[10px] gap-2 z-20 font-black tracking-widest">
+                <svg className="w-6 h-6 sm:w-8 sm:h-8 opacity-80 animate-pulse text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
                 </svg>
-                <span className="text-glow-emerald bg-emerald-950/40 px-2.5 sm:px-3.5 py-0.5 sm:py-1 rounded-md border border-emerald-500/20 truncate max-w-full">
+                <span className="bg-emerald-100/90 dark:bg-emerald-950/40 text-emerald-900 dark:text-emerald-300 px-2.5 sm:px-3.5 py-0.5 sm:py-1 rounded-md border border-emerald-500/30 truncate max-w-full font-bold">
                   OPTICAL LINK — {activeStation?.name || 'NODE-BETA-2'}
                 </span>
               </div>
             </div>
 
             {/* Bottom camera diagnostics */}
-            <div className="flex justify-between text-[8px] sm:text-[9px] font-mono text-emerald-450 z-20 font-bold border-t border-emerald-950/30 pt-2 tracking-widest font-mono">
+            <div className="flex justify-between text-[8px] sm:text-[9px] font-mono text-emerald-700 dark:text-emerald-400 z-20 font-bold border-t border-emerald-500/20 pt-2 tracking-widest font-mono">
               <span>ISO 1250 • f/1.8</span>
               <span>VOLUMETRIC: ~124.5 m³/s</span>
             </div>
@@ -773,22 +773,22 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
           </div>
 
           <div className="flex flex-col items-center justify-center my-4 sm:my-6 space-y-1.5 sm:space-y-2">
-            <span className="text-glow-purple text-4xl sm:text-6xl font-black text-slate-900 dark:text-slate-50 font-mono tracking-tight flex items-start">
-              24<span className="text-2xl sm:text-2.5xl text-purple-600 dark:text-purple-400 font-medium font-sans mt-1">°C</span>
+            <span className="text-4xl sm:text-6xl font-black text-slate-900 dark:text-slate-100 font-mono tracking-tight flex items-start">
+              24<span className="text-2xl sm:text-2.5xl text-purple-700 dark:text-purple-400 font-bold font-sans mt-1">°C</span>
             </span>
             <div className="text-center">
-              <p className="text-xs sm:text-sm font-black text-slate-800 dark:text-slate-100 uppercase tracking-wider">Heavy Rain Watch</p>
-              <span className="text-[9px] sm:text-[9.5px] text-slate-500 font-bold uppercase tracking-widest font-mono">humidity: 89% | wind: 12km/h</span>
+              <p className="text-xs sm:text-sm font-black text-slate-900 dark:text-slate-100 uppercase tracking-wider">Heavy Rain Watch</p>
+              <span className="text-[9px] sm:text-[9.5px] text-slate-700 dark:text-slate-400 font-bold uppercase tracking-widest font-mono">humidity: 89% | wind: 12km/h</span>
             </div>
           </div>
 
           <div className="space-y-3 sm:space-y-4">
-            <div className="text-[9px] sm:text-[10px] text-slate-500 font-black uppercase tracking-widest border-b border-slate-200 dark:border-white/5 pb-2 font-mono">3-Day Forecast Grid</div>
+            <div className="text-[9px] sm:text-[10px] text-slate-700 dark:text-slate-400 font-black uppercase tracking-widest border-b border-slate-200 dark:border-white/5 pb-2 font-mono">3-Day Forecast Grid</div>
             <div className="grid grid-cols-3 gap-2 sm:gap-3">
               {weatherForecast.slice(0, 3).map((fc, i) => (
                 <div key={i} className="bg-slate-100/90 dark:bg-[#030610] border border-slate-200 dark:border-purple-500/10 p-2.5 sm:p-3.5 rounded-2xl flex flex-col items-center justify-center text-center hover:border-purple-500/30 transition-all hover:scale-102">
-                  <span className="text-slate-500 font-extrabold text-[8px] sm:text-[8.5px] uppercase tracking-widest font-mono">{fc.day}</span>
-                  <div className="w-5 h-5 sm:w-7 sm:h-7 my-1.5 sm:my-2 text-indigo-400">
+                  <span className="text-slate-700 dark:text-slate-400 font-extrabold text-[8px] sm:text-[8.5px] uppercase tracking-widest font-mono">{fc.day}</span>
+                  <div className="w-5 h-5 sm:w-7 sm:h-7 my-1.5 sm:my-2 text-indigo-600 dark:text-indigo-400">
                     {fc.icon === 'cloud' && (
                       <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" /></svg>
                     )}
@@ -802,7 +802,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
                       <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z" /></svg>
                     )}
                   </div>
-                  <span className="font-mono text-slate-800 dark:text-slate-200 font-bold text-[11px] sm:text-xs">{fc.temp}</span>
+                  <span className="font-mono text-slate-900 dark:text-slate-100 font-black text-[11px] sm:text-xs">{fc.temp}</span>
                 </div>
               ))}
             </div>

@@ -32,9 +32,13 @@ const App: React.FC = () => {
         if (theme === 'light') {
             root.classList.add('light');
             root.classList.remove('dark');
+            document.body.classList.add('light');
+            document.body.classList.remove('dark');
         } else {
             root.classList.add('dark');
             root.classList.remove('light');
+            document.body.classList.add('dark');
+            document.body.classList.remove('light');
         }
         localStorage.setItem('sfews_theme', theme);
         sessionStorage.setItem('sfews_theme', theme);
@@ -421,7 +425,7 @@ const App: React.FC = () => {
     }
 
     return (
-        <div className={`flex h-screen ${theme === 'light' ? 'light bg-slate-50 text-slate-800' : 'bg-[#02040a] text-slate-200'} overflow-hidden font-sans relative`}>
+        <div className={`flex h-screen ${theme === 'light' ? 'light bg-slate-50 text-slate-900' : 'dark bg-[#02040a] text-slate-200'} overflow-hidden font-sans relative`}>
             
             {/* Ambient Background Glowing Blobs */}
             <div className={`absolute top-[-10%] left-[-10%] w-[50%] h-[50%] ${theme === 'light' ? 'ambient-blob-1 bg-indigo-300/20' : 'bg-indigo-500/10'} rounded-full blur-[160px] pointer-events-none`}></div>
@@ -487,10 +491,10 @@ const App: React.FC = () => {
                                             }}
                                             className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold tracking-wide transition-all duration-200 group relative
                                                 ${isActive 
-                                                    ? 'bg-gradient-to-r from-indigo-600/20 via-purple-600/15 to-cyan-500/10 text-indigo-700 dark:text-indigo-200 border border-indigo-500/40 shadow-sm' 
-                                                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-900/40 border border-transparent'}`}
+                                                    ? 'bg-indigo-600 text-white font-extrabold shadow-md shadow-indigo-600/25 dark:bg-gradient-to-r dark:from-indigo-600/30 dark:via-purple-600/20 dark:to-cyan-500/15 dark:text-cyan-200 dark:border dark:border-indigo-500/40' 
+                                                    : 'text-slate-700 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white font-bold hover:bg-slate-100 dark:hover:bg-slate-900/40 border border-transparent'}`}
                                         >
-                                            <span className={`transition-colors duration-200 shrink-0 ${isActive ? 'text-cyan-600 dark:text-cyan-400' : 'text-slate-500 dark:text-slate-400 group-hover:text-slate-800 dark:group-hover:text-slate-300'}`}>
+                                            <span className={`transition-colors duration-200 shrink-0 ${isActive ? 'text-white dark:text-cyan-400' : 'text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-slate-200'}`}>
                                                 {item.icon}
                                             </span>
                                             <span className="truncate">{item.label}</span>
