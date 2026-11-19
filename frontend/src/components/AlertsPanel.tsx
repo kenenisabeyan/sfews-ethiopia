@@ -150,21 +150,21 @@ export const AlertsPanel: React.FC<AlertsPanelProps> = ({
         </div>
 
         <div className="flex flex-wrap items-center gap-3 sm:gap-4 w-full lg:w-auto">
-          <div className="bg-[#040813] border border-white/5 rounded-2xl p-3 sm:p-4 text-center min-w-[120px] flex-1 sm:flex-initial">
-            <span className="text-[10px] font-mono font-bold text-slate-500 uppercase tracking-wider block">Active Alerts</span>
-            <span className="text-2xl sm:text-3xl font-black text-red-400 font-mono text-glow-red mt-0.5 block">
+          <div className="bg-slate-100 dark:bg-[#040813] border border-slate-300 dark:border-white/5 rounded-2xl p-3 sm:p-4 text-center min-w-[120px] flex-1 sm:flex-initial shadow-sm">
+            <span className="text-[10px] font-mono font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block">Active Alerts</span>
+            <span className="text-2xl sm:text-3xl font-black text-red-600 dark:text-red-400 font-mono mt-0.5 block">
               {alerts.filter(a => !a.is_acknowledged).length}
             </span>
           </div>
-          <div className="bg-[#040813] border border-white/5 rounded-2xl p-3 sm:p-4 text-center min-w-[120px] flex-1 sm:flex-initial">
-            <span className="text-[10px] font-mono font-bold text-slate-500 uppercase tracking-wider block">SMS Subscribers</span>
-            <span className="text-2xl sm:text-3xl font-black text-cyan-400 font-mono text-glow-cyan mt-0.5 block">
+          <div className="bg-slate-100 dark:bg-[#040813] border border-slate-300 dark:border-white/5 rounded-2xl p-3 sm:p-4 text-center min-w-[120px] flex-1 sm:flex-initial shadow-sm">
+            <span className="text-[10px] font-mono font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block">SMS Subscribers</span>
+            <span className="text-2xl sm:text-3xl font-black text-cyan-600 dark:text-cyan-400 font-mono mt-0.5 block">
               {subscribers.filter(s => s.status === 'Active').length}
             </span>
           </div>
-          <div className="bg-[#040813] border border-white/5 rounded-2xl p-3 sm:p-4 text-center min-w-[120px] flex-1 sm:flex-initial">
-            <span className="text-[10px] font-mono font-bold text-slate-500 uppercase tracking-wider block">Coverage Radius</span>
-            <span className="text-2xl sm:text-3xl font-black text-indigo-400 font-mono text-glow-purple mt-0.5 block">
+          <div className="bg-slate-100 dark:bg-[#040813] border border-slate-300 dark:border-white/5 rounded-2xl p-3 sm:p-4 text-center min-w-[120px] flex-1 sm:flex-initial shadow-sm">
+            <span className="text-[10px] font-mono font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block">Coverage Radius</span>
+            <span className="text-2xl sm:text-3xl font-black text-indigo-600 dark:text-indigo-400 font-mono mt-0.5 block">
               {broadcastRadius} <span className="text-xs font-normal">km</span>
             </span>
           </div>
@@ -175,27 +175,27 @@ export const AlertsPanel: React.FC<AlertsPanelProps> = ({
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8">
         
         {/* LEFT COLUMN: Active Alerts Incident Feed (7 cols) */}
-        <div className="lg:col-span-7 glass-panel rounded-3xl p-5 sm:p-7 space-y-6 flex flex-col justify-between">
+        <div className="lg:col-span-7 glass-panel rounded-3xl p-5 sm:p-7 space-y-6 flex flex-col justify-between shadow-2xl">
           <div>
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/5">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200 dark:border-white/5">
               <div>
-                <h2 className="text-lg font-black text-slate-100 uppercase tracking-wide flex items-center gap-2.5">
-                  <span className="w-2 h-2 rounded-full bg-red-400 shadow-[0_0_8px_#ef4444]"></span>
+                <h2 className="text-lg font-black text-slate-800 dark:text-slate-100 uppercase tracking-wide flex items-center gap-2.5">
+                  <span className="w-2 h-2 rounded-full bg-red-500 shadow-[0_0_8px_#ef4444]"></span>
                   Live Flood Anomaly Feed
                 </h2>
-                <p className="text-[11px] font-mono text-slate-500 font-bold uppercase tracking-wider mt-0.5">
+                <p className="text-[11px] font-mono text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider mt-0.5">
                   Hydrological breaches & automated threshold incidents
                 </p>
               </div>
 
               {/* Filter Tabs */}
-              <div className="flex items-center gap-1.5 bg-[#030610] p-1 rounded-xl border border-white/5 text-[10px] font-bold font-mono">
+              <div className="flex items-center gap-1.5 bg-slate-100 dark:bg-[#030610] p-1 rounded-xl border border-slate-300 dark:border-white/5 text-[10px] font-bold font-mono shadow-inner">
                 <button
                   onClick={() => setAlertFilter('unacknowledged')}
                   className={`px-3 py-1 rounded-lg transition-all ${
                     alertFilter === 'unacknowledged'
-                      ? 'bg-red-500/20 text-red-300 border border-red-500/30 shadow'
-                      : 'text-slate-400 hover:text-slate-200'
+                      ? 'bg-red-500/20 text-red-700 dark:text-red-300 border border-red-500/40 shadow-sm'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
                   }`}
                 >
                   Open ({alerts.filter(a => !a.is_acknowledged).length})
@@ -204,8 +204,8 @@ export const AlertsPanel: React.FC<AlertsPanelProps> = ({
                   onClick={() => setAlertFilter('critical')}
                   className={`px-3 py-1 rounded-lg transition-all ${
                     alertFilter === 'critical'
-                      ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30 shadow'
-                      : 'text-slate-400 hover:text-slate-200'
+                      ? 'bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-500/40 shadow-sm'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
                   }`}
                 >
                   Critical Only
@@ -214,8 +214,8 @@ export const AlertsPanel: React.FC<AlertsPanelProps> = ({
                   onClick={() => setAlertFilter('all')}
                   className={`px-3 py-1 rounded-lg transition-all ${
                     alertFilter === 'all'
-                      ? 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 shadow'
-                      : 'text-slate-400 hover:text-slate-200'
+                      ? 'bg-indigo-500/20 text-indigo-700 dark:text-indigo-300 border border-indigo-500/40 shadow-sm'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
                   }`}
                 >
                   All Logs ({alerts.length})
