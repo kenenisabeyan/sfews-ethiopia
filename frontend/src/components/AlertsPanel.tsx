@@ -244,52 +244,52 @@ export const AlertsPanel: React.FC<AlertsPanelProps> = ({
                       key={alert.id}
                       className={`p-4 sm:p-5 rounded-2xl border transition-all ${
                         alert.is_acknowledged
-                          ? 'bg-[#040812]/50 border-white/5 opacity-70'
+                          ? 'bg-slate-100/60 dark:bg-[#040812]/50 border-slate-200 dark:border-white/5 opacity-80'
                           : isCritical
-                          ? 'bg-red-950/20 border-red-500/30 shadow-[0_0_20px_rgba(239,68,68,0.08)]'
-                          : 'bg-amber-950/20 border-amber-500/25'
+                          ? 'bg-red-500/10 dark:bg-red-950/20 border-red-500/30 shadow-sm'
+                          : 'bg-amber-500/10 dark:bg-amber-950/20 border-amber-500/30 shadow-sm'
                       }`}
                     >
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-2 border-b border-white/5">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-2 border-b border-slate-200 dark:border-white/5">
                         <div className="flex items-center gap-2">
                           <span className={`px-2.5 py-0.5 rounded-full text-[9px] font-mono font-black uppercase tracking-wider ${
-                            isCritical ? 'bg-red-500/20 text-red-300 border border-red-500/30' : 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
+                            isCritical ? 'bg-red-500/20 text-red-700 dark:text-red-300 border border-red-500/30' : 'bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-500/30'
                           }`}>
                             {alert.severity}
                           </span>
                           {alert.node_id && (
-                            <span className="text-[10px] font-mono font-bold text-indigo-300 bg-indigo-500/15 px-2 py-0.5 rounded-md border border-indigo-500/25">
+                            <span className="text-[10px] font-mono font-bold text-indigo-700 dark:text-indigo-300 bg-indigo-500/15 px-2 py-0.5 rounded-md border border-indigo-500/25">
                               {alert.node_id}
                             </span>
                           )}
                           {alert.water_level_cm && (
-                            <span className="text-[10px] font-mono font-black text-cyan-400">
+                            <span className="text-[10px] font-mono font-black text-cyan-700 dark:text-cyan-400">
                               {alert.water_level_cm.toFixed(1)} cm
                             </span>
                           )}
                         </div>
 
-                        <span className="text-[10px] font-mono text-slate-500">
+                        <span className="text-[10px] font-mono text-slate-500 dark:text-slate-400">
                           {new Date(alert.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
                         </span>
                       </div>
 
-                      <h3 className="text-sm font-black text-slate-100 mt-2.5 tracking-tight">
+                      <h3 className="text-sm font-black text-slate-900 dark:text-slate-100 mt-2.5 tracking-tight">
                         {alert.title}
                       </h3>
-                      <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+                      <p className="text-xs text-slate-700 dark:text-slate-400 mt-1 leading-relaxed font-medium">
                         {alert.message}
                       </p>
 
-                      <div className="flex items-center justify-between mt-3.5 pt-2.5 border-t border-white/5">
-                        <span className="text-[10px] font-mono text-slate-500">
+                      <div className="flex items-center justify-between mt-3.5 pt-2.5 border-t border-slate-200 dark:border-white/5">
+                        <span className="text-[10px] font-mono text-slate-500 dark:text-slate-400">
                           {alert.is_acknowledged ? `Acknowledged by: ${alert.acknowledged_by || 'Officer'}` : 'Status: Unacknowledged Action Required'}
                         </span>
 
                         {!alert.is_acknowledged && (
                           <button
                             onClick={() => handleAcknowledge(alert.id)}
-                            className="px-3 py-1 bg-red-500/15 hover:bg-red-500/25 text-red-300 border border-red-500/30 hover:border-red-500/50 rounded-xl text-[10px] font-extrabold uppercase tracking-wider transition-all"
+                            className="px-3.5 py-1.5 bg-red-600 hover:bg-red-500 text-white rounded-xl text-[10px] font-black uppercase tracking-wider transition-all shadow-sm active:scale-95"
                           >
                             ✓ Acknowledge Incident
                           </button>
