@@ -199,26 +199,26 @@ export const SimpleSimPanel: React.FC = () => {
                             </button>
                         </div>
 
-                        <div className="space-y-4 sm:space-y-6 bg-[#02040a]/40 p-3.5 sm:p-5 rounded-xl sm:rounded-2xl border border-slate-900/50">
+                        <div className="space-y-4 sm:space-y-6 bg-slate-100/60 dark:bg-[#02040a]/40 p-3.5 sm:p-5 rounded-xl sm:rounded-2xl border border-slate-200 dark:border-slate-900/50">
                             {/* Generator HUD Display */}
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                                <div className="bg-[#050913] p-3 sm:p-4 rounded-xl border border-slate-900">
-                                    <span className="text-[9px] sm:text-[10px] text-slate-500 font-bold uppercase tracking-wider block">Telemetry Source</span>
-                                    <p className="text-xs sm:text-sm font-extrabold text-slate-300 mt-1 font-mono">
+                                <div className="bg-white dark:bg-[#050913] p-3 sm:p-4 rounded-xl border border-slate-200 dark:border-slate-900 shadow-sm">
+                                    <span className="text-[9px] sm:text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider block">Telemetry Source</span>
+                                    <p className="text-xs sm:text-sm font-extrabold text-slate-800 dark:text-slate-300 mt-1 font-mono">
                                         {isSimulating ? '🎲 Auto Generator' : '🕹️ Manual Slider'}
                                     </p>
                                 </div>
-                                <div className="bg-[#050913] p-3 sm:p-4 rounded-xl border border-slate-900">
-                                    <span className="text-[9px] sm:text-[10px] text-slate-500 font-bold uppercase tracking-wider block">Generated Value Range</span>
-                                    <p className="text-xs sm:text-sm font-extrabold text-indigo-400 mt-1 font-mono">0 - 1023 (10-bit integer)</p>
+                                <div className="bg-white dark:bg-[#050913] p-3 sm:p-4 rounded-xl border border-slate-200 dark:border-slate-900 shadow-sm">
+                                    <span className="text-[9px] sm:text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider block">Generated Value Range</span>
+                                    <p className="text-xs sm:text-sm font-extrabold text-indigo-600 dark:text-indigo-400 mt-1 font-mono">0 - 1023 (10-bit integer)</p>
                                 </div>
                             </div>
 
                             {/* Manual Control Slider */}
                             <div className="space-y-2.5 sm:space-y-3">
                                 <div className="flex items-center justify-between">
-                                    <label className="text-xs font-bold text-slate-400">Manual Inject Override:</label>
-                                    <span className="text-xs font-extrabold font-mono text-cyan-400 bg-cyan-950/20 border border-cyan-800/20 px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-lg">
+                                    <label className="text-xs font-bold text-slate-700 dark:text-slate-300">Manual Inject Override:</label>
+                                    <span className="text-xs font-extrabold font-mono text-cyan-600 dark:text-cyan-400 bg-cyan-500/10 border border-cyan-500/20 px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-lg">
                                         {waterLevel} Units
                                     </span>
                                 </div>
@@ -229,9 +229,9 @@ export const SimpleSimPanel: React.FC = () => {
                                     value={waterLevel}
                                     onChange={handleSliderChange}
                                     disabled={isSimulating}
-                                    className="w-full h-2.5 bg-slate-900 rounded-lg appearance-none cursor-pointer accent-indigo-500 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+                                    className="w-full h-2.5 bg-slate-200 dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-lg appearance-none cursor-pointer accent-indigo-500 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
                                 />
-                                <div className="flex items-center justify-between text-[8.5px] sm:text-[9px] font-bold text-slate-500 uppercase tracking-widest px-1">
+                                <div className="flex items-center justify-between text-[8.5px] sm:text-[9px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest px-1">
                                     <span>0 (Min)</span>
                                     <span>500 (Threshold)</span>
                                     <span>1023 (Max)</span>
@@ -308,10 +308,10 @@ export const SimpleSimPanel: React.FC = () => {
 
                     {/* Circular Glowing Gauge */}
                     <div className="flex-1 flex flex-col items-center justify-center my-4 sm:my-6 relative select-none">
-                        <div className="w-44 h-44 sm:w-52 sm:h-52 rounded-full bg-slate-950 border border-slate-900/65 flex flex-col items-center justify-center relative overflow-hidden shadow-inner">
+                        <div className="w-44 h-44 sm:w-52 sm:h-52 rounded-full bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 flex flex-col items-center justify-center relative overflow-hidden shadow-inner">
                             {/* Glowing Backlights */}
                             <div className={`absolute inset-0 transition-colors duration-500 ${
-                                isAlert ? 'bg-red-500/5' : 'bg-emerald-500/5'
+                                isAlert ? 'bg-red-500/10 dark:bg-red-500/5' : 'bg-emerald-500/10 dark:bg-emerald-500/5'
                             }`}></div>
 
                             {/* Water level arc overlay */}
@@ -320,7 +320,8 @@ export const SimpleSimPanel: React.FC = () => {
                                     cx="104"
                                     cy="104"
                                     r="86"
-                                    stroke="rgba(30, 41, 59, 0.3)"
+                                    stroke="currentColor"
+                                    className="text-slate-200 dark:text-slate-800"
                                     strokeWidth="10"
                                     fill="transparent"
                                 />
@@ -342,13 +343,13 @@ export const SimpleSimPanel: React.FC = () => {
 
                             {/* Gauge Readout */}
                             <div className="relative z-10 text-center">
-                                <span className="text-[9px] sm:text-[10px] text-slate-500 font-extrabold uppercase tracking-widest block leading-none">Water Level</span>
+                                <span className="text-[9px] sm:text-[10px] text-slate-500 dark:text-slate-400 font-extrabold uppercase tracking-widest block leading-none">Water Level</span>
                                 <h2 className={`text-3xl sm:text-4xl font-black font-mono my-2 sm:my-2.5 transition-colors duration-300 ${
-                                    isAlert ? 'text-red-400 text-glow-red' : 'text-emerald-400 text-glow-emerald'
+                                    isAlert ? 'text-red-600 dark:text-red-400' : 'text-emerald-600 dark:text-emerald-400'
                                 }`}>
                                     {waterLevel}
                                 </h2>
-                                <span className="text-[8.5px] sm:text-[9px] text-slate-400 font-extrabold uppercase tracking-widest font-mono">
+                                <span className="text-[8.5px] sm:text-[9px] text-slate-600 dark:text-slate-400 font-extrabold uppercase tracking-widest font-mono">
                                     Units
                                 </span>
                             </div>

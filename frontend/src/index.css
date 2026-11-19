@@ -221,6 +221,16 @@ html.light,
 }
 
 /* In-panel subtle sub-containers & dark backgrounds mapped to executive light */
+.light .bg-\[\#020408\],
+.light .bg-\[\#020409\],
+.light .bg-\[\#020409\]\/95,
+.light .bg-\[\#02050b\],
+.light .bg-\[\#03060c\],
+.light .bg-\[\#03060c\]\/90,
+.light .bg-\[\#03070f\],
+.light .bg-\[\#03070f\]\/90,
+.light .bg-\[\#040811\],
+.light .bg-\[\#040811\]\/40,
 .light .bg-\[\#02040a\],
 .light .bg-\[\#02040a\]\/40,
 .light .bg-\[\#02040a\]\/50,
@@ -257,6 +267,7 @@ html.light,
 }
 
 /* Hardcoded dark border overrides in light mode */
+.light .border-slate-950,
 .light .border-slate-900,
 .light .border-slate-900\/40,
 .light .border-slate-900\/50,
