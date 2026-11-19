@@ -439,7 +439,7 @@ const App: React.FC = () => {
                 <nav className="flex-1 px-3 sm:px-4 py-4 space-y-5 overflow-y-auto custom-scrollbar">
                     {navCategories.map((group, gIdx) => (
                         <div key={gIdx} className="space-y-1.5">
-                            <h3 className="px-3 text-[9px] font-mono font-black text-slate-500 uppercase tracking-widest">
+                            <h3 className="px-3 text-[9px] font-mono font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">
                                 {group.category}
                             </h3>
                             <div className="space-y-1">
@@ -454,23 +454,23 @@ const App: React.FC = () => {
                                             }}
                                             className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold tracking-wide transition-all duration-200 group relative
                                                 ${isActive 
-                                                    ? 'bg-gradient-to-r from-indigo-600/20 via-purple-600/15 to-cyan-500/10 text-indigo-200 border border-indigo-500/30 shadow-md shadow-indigo-500/10' 
-                                                    : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/40 border border-transparent'}`}
+                                                    ? 'bg-gradient-to-r from-indigo-600/20 via-purple-600/15 to-cyan-500/10 text-indigo-700 dark:text-indigo-200 border border-indigo-500/40 shadow-sm' 
+                                                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-900/40 border border-transparent'}`}
                                         >
-                                            <span className={`transition-colors duration-200 shrink-0 ${isActive ? 'text-cyan-400' : 'text-slate-500 group-hover:text-slate-300'}`}>
+                                            <span className={`transition-colors duration-200 shrink-0 ${isActive ? 'text-cyan-600 dark:text-cyan-400' : 'text-slate-500 dark:text-slate-400 group-hover:text-slate-800 dark:group-hover:text-slate-300'}`}>
                                                 {item.icon}
                                             </span>
                                             <span className="truncate">{item.label}</span>
                                             
                                             {/* Dynamic Badge Counter */}
                                             {item.badge !== undefined && item.badge > 0 && (
-                                                <span className="ml-auto px-1.5 py-0.5 rounded-md bg-red-500/20 border border-red-500/30 text-[9px] font-mono font-black text-red-400 animate-pulse shrink-0">
+                                                <span className="ml-auto px-1.5 py-0.5 rounded-md bg-red-500/20 border border-red-500/30 text-[9px] font-mono font-black text-red-600 dark:text-red-400 animate-pulse shrink-0">
                                                     {item.badge}
                                                 </span>
                                             )}
 
                                             {isActive && !item.badge && (
-                                                <span className="ml-auto w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.8)] shrink-0"></span>
+                                                <span className="ml-auto w-1.5 h-1.5 rounded-full bg-cyan-500 dark:bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.8)] shrink-0"></span>
                                             )}
                                         </button>
                                     );
@@ -481,22 +481,22 @@ const App: React.FC = () => {
                 </nav>
 
                 {/* Sidebar Footer User & Status */}
-                <div className="p-4 border-t border-white/5 bg-[#03060c]/60 space-y-3">
-                    <div className="flex items-center justify-between text-[10px] font-mono text-slate-400">
+                <div className="p-4 border-t border-slate-200 dark:border-white/5 bg-slate-50/90 dark:bg-[#03060c]/60 space-y-3">
+                    <div className="flex items-center justify-between text-[10px] font-mono text-slate-500 dark:text-slate-400">
                         <span className="flex items-center gap-1.5">
-                            <span className={`w-2 h-2 rounded-full ${isSystemOnline ? 'bg-emerald-400 shadow-[0_0_6px_#10b981]' : 'bg-red-400'}`}></span>
+                            <span className={`w-2 h-2 rounded-full ${isSystemOnline ? 'bg-emerald-500 shadow-[0_0_6px_#10b981]' : 'bg-red-500'}`}></span>
                             ENGINE: {isSystemOnline ? 'ONLINE' : 'OFFLINE'}
                         </span>
-                        <span className="text-cyan-400 font-bold">LORA: 22ms</span>
+                        <span className="text-cyan-600 dark:text-cyan-400 font-bold">LORA: 22ms</span>
                     </div>
 
                     <div className="flex items-center gap-3 pt-1">
-                        <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-slate-800 to-indigo-950 border border-white/10 flex items-center justify-center font-bold text-xs text-indigo-300 font-mono shrink-0">
+                        <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-slate-200 to-indigo-200 dark:from-slate-800 dark:to-indigo-950 border border-slate-300 dark:border-white/10 flex items-center justify-center font-bold text-xs text-indigo-700 dark:text-indigo-300 font-mono shrink-0">
                             OP
                         </div>
                         <div className="min-w-0 flex-1">
-                            <p className="text-[11px] font-bold text-slate-200 truncate">Command Operator</p>
-                            <p className="text-[9px] text-slate-500 font-mono truncate">admin@sfews.gov.et</p>
+                            <p className="text-[11px] font-bold text-slate-900 dark:text-slate-200 truncate">Command Operator</p>
+                            <p className="text-[9px] text-slate-500 dark:text-slate-400 font-mono truncate">admin@sfews.gov.et</p>
                         </div>
                         <button
                             onClick={() => {
@@ -531,10 +531,10 @@ const App: React.FC = () => {
                         <div className="flex items-center gap-3">
                             <span className="text-base sm:text-lg">🇪🇹</span>
                             <div className="min-w-0">
-                                <h1 className="text-xs sm:text-sm font-extrabold text-slate-100 leading-tight flex items-center gap-2">
+                                <h1 className="text-xs sm:text-sm font-black text-slate-800 dark:text-slate-100 leading-tight flex items-center gap-2">
                                     <span>Awash River Hydrometric Command</span>
-                                    <span className="hidden sm:inline-block w-1.5 h-1.5 rounded-full bg-slate-700"></span>
-                                    <span className="hidden sm:inline-block text-[10px] font-mono font-normal text-slate-400">Ethiopian Basin Grid</span>
+                                    <span className="hidden sm:inline-block w-1.5 h-1.5 rounded-full bg-slate-400 dark:bg-slate-700"></span>
+                                    <span className="hidden sm:inline-block text-[10px] font-mono font-medium text-slate-500 dark:text-slate-400">Ethiopian Basin Grid</span>
                                 </h1>
                             </div>
                         </div>
@@ -543,15 +543,15 @@ const App: React.FC = () => {
                     {/* Right-Side Header Control Pills */}
                     <div className="flex items-center gap-2 sm:gap-3.5">
                         {/* Live Clock Pill */}
-                        <div className="hidden sm:flex items-center gap-2 px-3 py-1 bg-[#030610] border border-white/5 rounded-xl font-mono text-[10px] font-bold text-slate-400">
-                            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
+                        <div className="hidden sm:flex items-center gap-2 px-3 py-1 bg-slate-100 dark:bg-[#030610] border border-slate-300 dark:border-white/5 rounded-xl font-mono text-[10px] font-bold text-slate-700 dark:text-slate-400 shadow-sm">
+                            <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 dark:bg-cyan-400 animate-pulse"></span>
                             <span>EAT: {liveTime.split(',')[1] || liveTime}</span>
                         </div>
 
                         {/* Database Engine Status Pill */}
-                        <div className="hidden md:flex items-center gap-1.5 px-3 py-1 bg-[#030610] border border-white/5 rounded-xl text-[10px] font-mono font-bold text-indigo-300">
+                        <div className="hidden md:flex items-center gap-1.5 px-3 py-1 bg-slate-100 dark:bg-[#030610] border border-slate-300 dark:border-white/5 rounded-xl text-[10px] font-mono font-bold text-indigo-700 dark:text-indigo-300 shadow-sm">
                             <span>DB:</span>
-                            <span className="text-emerald-400 font-black">
+                            <span className="text-emerald-600 dark:text-emerald-400 font-black">
                                 {health?.database_driver ? health.database_driver.split(' ')[0] : 'RESILIENT'}
                             </span>
                         </div>
@@ -562,7 +562,7 @@ const App: React.FC = () => {
                             className={`px-2.5 sm:px-3 py-1 rounded-xl text-[10px] font-mono font-bold tracking-wider transition-all flex items-center gap-1.5 border shadow-sm ${
                                 theme === 'dark'
                                     ? 'bg-[#030610] text-amber-300 border-white/5 hover:border-amber-400/40 hover:bg-amber-400/10'
-                                    : 'bg-white text-indigo-700 border-slate-200 hover:border-indigo-400 hover:bg-indigo-50'
+                                    : 'bg-white text-indigo-700 border-slate-300 hover:border-indigo-400 hover:bg-indigo-50'
                             }`}
                             title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
                             aria-label="Toggle Brightness Theme"
@@ -574,9 +574,9 @@ const App: React.FC = () => {
                         {/* Quick 1-Click Broadcast Action */}
                         <button
                             onClick={() => setActiveTab('alerts')}
-                            className="px-3 py-1 bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/25 rounded-xl text-[10px] font-extrabold uppercase tracking-wider font-mono transition-all flex items-center gap-1.5"
+                            className="px-3 py-1 bg-red-500/10 hover:bg-red-500/20 text-red-600 dark:text-red-400 border border-red-500/25 rounded-xl text-[10px] font-black uppercase tracking-wider font-mono transition-all flex items-center gap-1.5 shadow-sm active:scale-95"
                         >
-                            <span className="w-1.5 h-1.5 rounded-full bg-red-400 animate-ping"></span>
+                            <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-ping"></span>
                             <span>Dispatch Alert</span>
                         </button>
                     </div>
