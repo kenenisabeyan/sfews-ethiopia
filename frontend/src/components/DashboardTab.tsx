@@ -149,108 +149,111 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
         </div>
       </div>
 
-      {/* 2. Top Row: High-Fidelity KPI Cards Grid with Sparklines */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+      {/* 2. Top Row: High-Fidelity 4-Card Hydrological KPI Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
         
         {/* KPI 1: Active Stations Monitored */}
-        <div className="glass-panel-interactive rounded-3xl p-5 sm:p-6.5 relative overflow-hidden flex flex-col justify-between min-h-[170px] sm:min-h-[190px] group">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/5 rounded-full blur-3xl pointer-events-none group-hover:bg-indigo-500/10 transition-colors"></div>
+        <div className="glass-panel-interactive rounded-3xl p-5 relative overflow-hidden flex flex-col justify-between min-h-[175px] group">
+          <div className="absolute top-0 right-0 w-28 h-28 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none group-hover:bg-indigo-500/15 transition-colors"></div>
           <div className="flex items-center justify-between">
-            <h3 className="text-slate-400 text-xs font-extrabold uppercase tracking-widest flex items-center gap-2 sm:gap-2.5">
-              <svg className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <h3 className="text-slate-400 text-xs font-extrabold uppercase tracking-widest flex items-center gap-2">
+              <svg className="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
               </svg>
-              Active Stations
+              Fleet Anchors
             </h3>
-            <span className="text-[8px] font-mono font-black text-indigo-400 bg-indigo-500/15 px-2 py-0.5 rounded-md border border-indigo-500/30 tracking-widest">LIVE SCANNER</span>
+            <span className="text-[8px] font-mono font-black text-indigo-400 bg-indigo-500/15 px-2 py-0.5 rounded-md border border-indigo-500/30 tracking-widest">LORA MESH</span>
           </div>
           
-          <div className="flex items-baseline mt-3 sm:mt-4.5 gap-2 sm:gap-3 relative z-10">
-            <span className="text-4xl sm:text-5xl md:text-6xl font-black text-slate-50 tracking-tight text-glow-purple font-mono">
-              {payload?.summary.totalNodes || 4}
+          <div className="flex items-baseline mt-3 gap-2 relative z-10">
+            <span className="text-4xl sm:text-5xl font-black text-slate-50 tracking-tight text-glow-purple font-mono">
+              {payload?.summary.totalNodes || 3}
             </span>
-            <span className="text-[10px] text-slate-500 font-extrabold uppercase tracking-widest font-sans">mesh node units</span>
-          </div>
-          
-          {/* Glowing Sparkline Visualization SVG */}
-          <div className="absolute bottom-14 sm:bottom-16 right-5 sm:right-7 w-28 sm:w-36 h-8 sm:h-9 opacity-80 group-hover:opacity-100 transition-opacity">
-            <svg className="w-full h-full text-indigo-400" viewBox="0 0 100 30" fill="none">
-              <path d="M 0,25 Q 15,10 30,20 T 60,5 T 90,15 L 100,8" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
-              <path d="M 0,25 Q 15,10 30,20 T 60,5 T 90,15 L 100,8 L 100,30 L 0,30 Z" fill="url(#sparklineGradHome)" opacity="0.1" />
-              <defs>
-                <linearGradient id="sparklineGradHome" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#6366f1" />
-                  <stop offset="100%" stopColor="#6366f1" stopOpacity="0" />
-                </linearGradient>
-              </defs>
-            </svg>
+            <span className="text-[10px] text-slate-500 font-extrabold uppercase tracking-widest">Active Stations</span>
           </div>
 
-          <div className="text-[9px] sm:text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-3.5 sm:mt-4.5 flex flex-wrap gap-2.5 sm:gap-3.5 border-t border-white/5 pt-3 sm:pt-3.5 z-10 font-mono">
-            <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Safe: {safeCount}</span>
-            <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span> Warn: {warningCount}</span>
-            <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-ping"></span> Crit: {criticalCount}</span>
+          <div className="text-[9px] text-slate-400 font-bold uppercase tracking-wider mt-3 flex flex-wrap gap-2 border-t border-white/5 pt-2.5 z-10 font-mono">
+            <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Safe: {safeCount}</span>
+            <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span> Warn: {warningCount}</span>
+            <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-ping"></span> Crit: {criticalCount}</span>
           </div>
         </div>
 
-        {/* KPI 2: Critical Alerts */}
-        <div className="glass-panel-interactive rounded-3xl p-5 sm:p-6.5 relative overflow-hidden flex flex-col justify-between min-h-[170px] sm:min-h-[190px] group">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/5 rounded-full blur-3xl pointer-events-none group-hover:bg-amber-500/10 transition-colors"></div>
+        {/* KPI 2: Peak River Discharge Q */}
+        <div className="glass-panel-interactive rounded-3xl p-5 relative overflow-hidden flex flex-col justify-between min-h-[175px] group">
+          <div className="absolute top-0 right-0 w-28 h-28 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none group-hover:bg-cyan-500/15 transition-colors"></div>
           <div className="flex items-center justify-between">
-            <h3 className="text-slate-400 text-xs font-extrabold uppercase tracking-widest flex items-center gap-2 sm:gap-2.5">
-              <svg className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-amber-400 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <h3 className="text-slate-400 text-xs font-extrabold uppercase tracking-widest flex items-center gap-2">
+              <span className="text-cyan-400">🌊</span>
+              Peak Discharge (Q)
+            </h3>
+            <span className="text-[8px] font-mono font-black text-cyan-400 bg-cyan-500/15 px-2 py-0.5 rounded-md border border-cyan-500/30 tracking-widest">AWASH RATING</span>
+          </div>
+          
+          <div className="flex items-baseline mt-3 gap-1.5 relative z-10">
+            <span className="text-3xl sm:text-4xl font-black text-slate-50 tracking-tight text-glow-cyan font-mono">
+              {Math.max(...(payload?.nodes.map(n => Math.round(0.045 * Math.pow(Math.max(0, (n.waterLevelCm || 0) - 15), 1.62))) || [450]))}
+            </span>
+            <span className="text-xs font-bold text-cyan-300 font-mono">m³/s</span>
+          </div>
+
+          <div className="text-[9px] text-slate-400 font-bold uppercase tracking-wider mt-3 border-t border-white/5 pt-2.5 z-10 font-mono flex items-center justify-between">
+            <span className="text-cyan-400">Power Law: Q = C·(h-h₀)ᵝ</span>
+            <span className="text-slate-500">Peak Flow Rate</span>
+          </div>
+        </div>
+
+        {/* KPI 3: Critical Alert Indexes */}
+        <div className="glass-panel-interactive rounded-3xl p-5 relative overflow-hidden flex flex-col justify-between min-h-[175px] group">
+          <div className="absolute top-0 right-0 w-28 h-28 bg-amber-500/10 rounded-full blur-3xl pointer-events-none group-hover:bg-amber-500/15 transition-colors"></div>
+          <div className="flex items-center justify-between">
+            <h3 className="text-slate-400 text-xs font-extrabold uppercase tracking-widest flex items-center gap-2">
+              <svg className="w-4 h-4 text-amber-400 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
               </svg>
-              Critical Alert Indexes
+              Active Hazards
             </h3>
-            <span className="text-[8px] font-mono font-black text-amber-400 bg-amber-500/15 px-2 py-0.5 rounded-md border border-amber-500/30 tracking-widest">WARNING DISPATCH</span>
+            <span className="text-[8px] font-mono font-black text-amber-400 bg-amber-500/15 px-2 py-0.5 rounded-md border border-amber-500/30 tracking-widest">CIVIL DEFENSE</span>
           </div>
           
-          <div className="flex items-baseline mt-3 sm:mt-4.5 gap-2 sm:gap-3 relative z-10">
-            <span className="text-4xl sm:text-5xl md:text-6xl font-black text-slate-100 tracking-tight text-glow-purple font-mono">
-              {payload?.summary.activeAlerts || 3}
+          <div className="flex items-baseline mt-3 gap-2 relative z-10">
+            <span className="text-4xl sm:text-5xl font-black text-slate-100 tracking-tight text-glow-purple font-mono">
+              {payload?.summary.activeAlerts || 0}
             </span>
-            <span className="text-[10px] text-slate-500 font-extrabold uppercase tracking-widest font-sans">active registers</span>
-          </div>
-          
-          {/* Danger Wave Micro-Sparkline */}
-          <div className="absolute bottom-14 sm:bottom-16 right-5 sm:right-7 w-28 sm:w-36 h-8 sm:h-9 opacity-80 group-hover:opacity-100 transition-opacity">
-            <svg className="w-full h-full text-amber-500" viewBox="0 0 100 30" fill="none">
-              <path d="M 0,15 L 20,15 L 30,5 L 40,25 L 50,12 L 60,18 L 70,2 L 80,28 L 100,15" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+            <span className="text-[10px] text-slate-500 font-extrabold uppercase tracking-widest">Open Alerts</span>
           </div>
 
-          <div className="text-[9px] sm:text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-3.5 sm:mt-4.5 border-t border-white/5 pt-3 sm:pt-3.5 z-10 font-mono">
-            <span className="text-red-400 flex items-center gap-1.5 sm:gap-2">
+          <div className="text-[9px] text-slate-400 font-bold uppercase tracking-wider mt-3 border-t border-white/5 pt-2.5 z-10 font-mono">
+            <span className="text-red-400 flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-ping shrink-0"></span>
-              <span className="truncate">LoRa Emergency SMS Broadcasting Active</span>
+              <span>Emergency SMS Gateway Armed</span>
             </span>
           </div>
         </div>
 
-        {/* KPI 3: Hydrological & ESP32 Node Vitals */}
-        <div className="glass-panel-interactive rounded-3xl p-5 sm:p-6.5 relative overflow-hidden flex flex-col justify-between min-h-[170px] sm:min-h-[190px] group sm:col-span-2 lg:col-span-1">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none group-hover:bg-emerald-500/10 transition-colors"></div>
+        {/* KPI 4: Hydrological & System Health Matrix */}
+        <div className="glass-panel-interactive rounded-3xl p-5 relative overflow-hidden flex flex-col justify-between min-h-[175px] group">
+          <div className="absolute top-0 right-0 w-28 h-28 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none group-hover:bg-emerald-500/15 transition-colors"></div>
           <div className="flex items-center justify-between">
-            <h3 className="text-slate-400 text-xs font-extrabold uppercase tracking-widest flex items-center gap-2 sm:gap-2.5">
-              <svg className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <h3 className="text-slate-400 text-xs font-extrabold uppercase tracking-widest flex items-center gap-2">
+              <svg className="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
               </svg>
-              System Vitals Matrix
+              Basin Health
             </h3>
-            <span className="text-[8px] font-mono font-black text-emerald-400 bg-emerald-500/15 px-2 py-0.5 rounded-md border border-emerald-500/30 tracking-widest">HEALTH: OK</span>
+            <span className="text-[8px] font-mono font-black text-emerald-400 bg-emerald-500/15 px-2 py-0.5 rounded-md border border-emerald-500/30 tracking-widest">STATUS: OK</span>
           </div>
           
-          <div className="flex items-baseline mt-3 sm:mt-4">
-            <span className={`text-2xl sm:text-3xl md:text-3.5xl font-black tracking-tight uppercase text-glow-emerald ${isSystemOnline ? 'text-emerald-400' : 'text-amber-400 animate-pulse'}`}>
-              {isSystemOnline ? 'Operational' : 'Degraded State'}
+          <div className="flex items-baseline mt-3">
+            <span className={`text-2xl sm:text-3xl font-black tracking-tight uppercase text-glow-emerald ${isSystemOnline ? 'text-emerald-400' : 'text-amber-400 animate-pulse'}`}>
+              {isSystemOnline ? 'Operational' : 'Standby Mode'}
             </span>
           </div>
 
-          <div className="text-[9px] sm:text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-3.5 sm:mt-4.5 flex flex-wrap gap-x-3 sm:gap-x-4 gap-y-1 sm:gap-y-1.5 border-t border-white/5 pt-3 sm:pt-3.5 z-10 font-mono">
-            <span>Avg WL: <strong className="text-indigo-400 font-black">{avgWaterLevel.toFixed(1)} cm</strong></span>
-            <span>Max Rain: <strong className="text-cyan-400 font-black">{maxRainfall.toFixed(1)} mm/h</strong></span>
-            <span>Risk: <strong className="text-purple-400 font-black">{latestFloodProb}%</strong></span>
+          <div className="text-[9px] text-slate-400 font-bold uppercase tracking-wider mt-3 flex flex-wrap gap-x-3 gap-y-1 border-t border-white/5 pt-2.5 z-10 font-mono">
+            <span>Stage: <strong className="text-indigo-400">{avgWaterLevel.toFixed(1)} cm</strong></span>
+            <span>Rain: <strong className="text-cyan-400">{maxRainfall.toFixed(1)} mm/h</strong></span>
+            <span>Risk: <strong className="text-purple-400">{latestFloodProb}%</strong></span>
           </div>
         </div>
 
@@ -276,6 +279,33 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
                 <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_8px_#22d3ee] animate-pulse"></span> Rain (mm/h)
               </span>
             </div>
+          </div>
+
+          {/* Interactive Hydrometric Station Selector Strip */}
+          <div className="flex items-center gap-2 mb-4 overflow-x-auto pb-1.5 custom-scrollbar">
+            <span className="text-[9px] font-mono font-bold text-slate-500 uppercase tracking-widest shrink-0">ANCHOR TARGET:</span>
+            {payload?.nodes.map((node) => {
+              const isSelected = activeStationId === node.id;
+              const isCritical = node.currentRisk === 'Critical';
+              const isWarning = node.currentRisk === 'Warning';
+              return (
+                <button
+                  key={node.id}
+                  onClick={() => setActiveStationId(node.id)}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-mono font-bold tracking-wider transition-all flex items-center gap-2 shrink-0 ${
+                    isSelected
+                      ? 'bg-gradient-to-r from-indigo-600/30 to-purple-600/30 text-indigo-200 border border-indigo-500/50 shadow-[0_0_15px_rgba(99,102,241,0.2)]'
+                      : 'bg-[#030610] text-slate-400 hover:text-slate-200 border border-white/5'
+                  }`}
+                >
+                  <span className={`w-2 h-2 rounded-full ${
+                    isCritical ? 'bg-red-400 animate-ping' : isWarning ? 'bg-amber-400 animate-pulse' : 'bg-emerald-400'
+                  }`} />
+                  <span>{node.id}</span>
+                  <span className="text-[10px] text-slate-500">({node.waterLevelCm || 0} cm)</span>
+                </button>
+              );
+            })}
           </div>
 
           <div className="flex-grow w-full relative min-h-[260px] sm:min-h-[360px]">
