@@ -471,41 +471,41 @@ const App: React.FC = () => {
             )}
 
             {/* SIDEBAR NAVIGATION (Desktop Static, Mobile Off-Canvas Drawer) */}
-            <aside className={`fixed inset-y-0 left-0 z-50 w-48 sm:w-52 border-r border-slate-200 dark:border-slate-900/60 bg-white/95 dark:bg-[#040810]/95 lg:bg-white/90 dark:lg:bg-[#040810]/75 backdrop-blur-2xl flex flex-col shrink-0 select-none transition-transform duration-300 ease-in-out lg:static lg:translate-x-0 ${
+            <aside className={`fixed inset-y-0 left-0 z-50 w-[172px] border-r border-slate-200 dark:border-slate-900/60 bg-white/95 dark:bg-[#040810]/95 lg:bg-white/90 dark:lg:bg-[#040810]/75 backdrop-blur-2xl flex flex-col shrink-0 select-none transition-transform duration-300 ease-in-out lg:static lg:translate-x-0 ${
                 isMobileMenuOpen ? 'translate-x-0 shadow-2xl dark:shadow-[0_0_50px_rgba(0,0,0,0.95)]' : '-translate-x-full'
             }`}>
                 
                 {/* Logo / Title Branding */}
-                <div className="p-3 border-b border-slate-200 dark:border-white/5 flex items-center justify-between">
-                    <div className="flex items-center gap-2 min-w-0">
-                        <div className="w-7.5 h-7.5 rounded-lg bg-gradient-to-tr from-indigo-600 via-purple-600 to-cyan-400 flex items-center justify-center shadow-md shadow-indigo-600/25 relative shrink-0">
-                            <span className="animate-ping absolute inline-flex h-2.5 w-2.5 rounded-full bg-cyan-400 opacity-40 -top-0.5 -right-0.5"></span>
-                            <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                <div className="p-2.5 border-b border-slate-200 dark:border-white/5 flex items-center justify-between">
+                    <div className="flex items-center gap-1.5 min-w-0">
+                        <div className="w-6.5 h-6.5 rounded-lg bg-gradient-to-tr from-indigo-600 via-purple-600 to-cyan-400 flex items-center justify-center shadow-md shadow-indigo-600/25 relative shrink-0">
+                            <span className="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-cyan-400 opacity-40 -top-0.5 -right-0.5"></span>
+                            <svg className="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
                         </div>
                         <div className="min-w-0 flex-1">
                             <div className="flex items-center gap-1">
-                                <h2 className="text-xs font-black tracking-tight text-slate-900 dark:bg-gradient-to-r dark:from-slate-100 dark:via-indigo-100 dark:to-cyan-200 dark:bg-clip-text dark:text-transparent truncate">SFEWS Awash</h2>
-                                <span className="text-[7.5px] font-mono font-black text-cyan-600 dark:text-cyan-400 bg-cyan-500/10 border border-cyan-500/20 px-1 py-0.2 rounded shrink-0">v2.1</span>
+                                <h2 className="text-[11px] font-black tracking-tight text-slate-900 dark:bg-gradient-to-r dark:from-slate-100 dark:via-indigo-100 dark:to-cyan-200 dark:bg-clip-text dark:text-transparent truncate">SFEWS Awash</h2>
+                                <span className="text-[7px] font-mono font-black text-cyan-600 dark:text-cyan-400 bg-cyan-500/10 border border-cyan-500/20 px-1 py-0.2 rounded shrink-0">v2.1</span>
                             </div>
-                            <span className="text-[8px] font-bold text-slate-500 tracking-wider block font-mono truncate">Basin Warning Sys</span>
+                            <span className="text-[7.5px] font-bold text-slate-500 tracking-wider block font-mono truncate">Basin Warning Sys</span>
                         </div>
                     </div>
                     
                     {/* Close button for mobile drawer */}
                     <button 
                         onClick={() => setIsMobileMenuOpen(false)}
-                        className="lg:hidden w-6.5 h-6.5 rounded-md bg-slate-100 dark:bg-slate-900/80 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 flex items-center justify-center border border-slate-200 dark:border-slate-800 transition-colors shrink-0"
+                        className="lg:hidden w-6 h-6 rounded-md bg-slate-100 dark:bg-slate-900/80 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 flex items-center justify-center border border-slate-200 dark:border-slate-800 transition-colors shrink-0"
                         aria-label="Close navigation drawer"
                     >
-                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
                     </button>
                 </div>
 
                 {/* Categorized Nav Items */}
-                <nav className="flex-1 min-h-0 px-1.5 sm:px-2 py-2 space-y-2.5 overflow-y-auto custom-scrollbar">
+                <nav className="flex-1 min-h-0 px-1 py-2 space-y-2 overflow-y-auto custom-scrollbar">
                     {navCategories.map((group, gIdx) => (
                         <div key={gIdx} className="space-y-0.5">
-                            <h3 className="px-2 text-[7.5px] font-mono font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                            <h3 className="px-1.5 text-[7px] font-mono font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                                 {group.category}
                             </h3>
                             <div className="space-y-0.5">
@@ -518,7 +518,7 @@ const App: React.FC = () => {
                                                 setActiveTab(item.id);
                                                 setIsMobileMenuOpen(false);
                                             }}
-                                            className={`w-full flex items-center gap-2 px-2 py-1.5 rounded-lg text-[10.5px] font-bold tracking-tight transition-all duration-200 group relative
+                                            className={`w-full flex items-center gap-1.5 px-1.5 py-1.5 rounded-lg text-[10px] font-bold tracking-tight transition-all duration-200 group relative
                                                 ${isActive 
                                                     ? 'bg-indigo-600 text-white font-extrabold shadow-md shadow-indigo-600/25 dark:bg-gradient-to-r dark:from-indigo-600/30 dark:via-purple-600/20 dark:to-cyan-500/15 dark:text-cyan-200 dark:border dark:border-indigo-500/40' 
                                                     : 'text-slate-700 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white font-bold hover:bg-slate-100 dark:hover:bg-slate-900/40 border border-transparent'}`}
@@ -526,11 +526,11 @@ const App: React.FC = () => {
                                             <span className={`[&>svg]:w-3.5 [&>svg]:h-3.5 transition-colors duration-200 shrink-0 ${isActive ? 'text-white dark:text-cyan-400' : 'text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-slate-200'}`}>
                                                 {item.icon}
                                             </span>
-                                            <span className="truncate text-left flex-1">{item.label}</span>
+                                            <span className="truncate text-left flex-1 whitespace-nowrap">{item.label}</span>
                                             
                                             {/* Dynamic Badge Counter */}
                                             {item.badge !== undefined && item.badge > 0 && (
-                                                <span className="ml-auto px-1 py-0.2 rounded-md bg-red-500/20 border border-red-500/30 text-[8px] font-mono font-black text-red-600 dark:text-red-400 animate-pulse shrink-0">
+                                                <span className="ml-auto px-1 py-0.2 rounded-md bg-red-500/20 border border-red-500/30 text-[7.5px] font-mono font-black text-red-600 dark:text-red-400 animate-pulse shrink-0">
                                                     {item.badge}
                                                 </span>
                                             )}
@@ -547,29 +547,29 @@ const App: React.FC = () => {
                 </nav>
 
                 {/* Sidebar Footer User & Status */}
-                <div className="p-2.5 sm:p-3 border-t border-slate-200 dark:border-white/5 bg-slate-50/90 dark:bg-[#03060c]/60 space-y-1.5 shrink-0">
-                    <div className="flex items-center justify-between text-[8px] font-mono text-slate-500 dark:text-slate-400">
+                <div className="p-2 border-t border-slate-200 dark:border-white/5 bg-slate-50/90 dark:bg-[#03060c]/60 space-y-1 shrink-0">
+                    <div className="flex items-center justify-between text-[7.5px] font-mono text-slate-500 dark:text-slate-400">
                         <span className="flex items-center gap-1">
                             <span className={`w-1.5 h-1.5 rounded-full ${isSystemOnline ? 'bg-emerald-500 shadow-[0_0_6px_#10b981]' : 'bg-red-500'}`}></span>
                             ONLINE
                         </span>
-                        <span className="text-cyan-600 dark:text-cyan-400 font-bold">LORA: 22ms</span>
+                        <span className="text-cyan-600 dark:text-cyan-400 font-bold">22ms</span>
                     </div>
 
-                    <div className="flex items-center gap-2 pt-0.5">
-                        <div className="w-6.5 h-6.5 rounded-md bg-gradient-to-tr from-slate-200 to-indigo-200 dark:from-slate-800 dark:to-indigo-950 border border-slate-300 dark:border-white/10 flex items-center justify-center font-bold text-[9.5px] text-indigo-700 dark:text-indigo-300 font-mono shrink-0">
+                    <div className="flex items-center gap-1.5 pt-0.5">
+                        <div className="w-6 h-6 rounded-md bg-gradient-to-tr from-slate-200 to-indigo-200 dark:from-slate-800 dark:to-indigo-950 border border-slate-300 dark:border-white/10 flex items-center justify-center font-bold text-[9px] text-indigo-700 dark:text-indigo-300 font-mono shrink-0">
                             OP
                         </div>
                         <div className="min-w-0 flex-1">
-                            <p className="text-[10px] font-bold text-slate-900 dark:text-slate-200 truncate">Operator</p>
-                            <p className="text-[7.5px] text-slate-500 dark:text-slate-400 font-mono truncate">admin@sfews</p>
+                            <p className="text-[9.5px] font-bold text-slate-900 dark:text-slate-200 truncate">Operator</p>
+                            <p className="text-[7px] text-slate-500 dark:text-slate-400 font-mono truncate">admin@sfews</p>
                         </div>
                         <button
                             onClick={() => {
                                 sessionStorage.removeItem('sfews_authenticated');
                                 setIsAuthenticated(false);
                             }}
-                            className="w-6 h-6 rounded-md bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 dark:bg-red-950/30 dark:hover:bg-red-950/60 dark:text-red-400 dark:border-red-500/20 flex items-center justify-center transition-colors shadow-xs shrink-0"
+                            className="w-5.5 h-5.5 rounded-md bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 dark:bg-red-950/30 dark:hover:bg-red-950/60 dark:text-red-400 dark:border-red-500/20 flex items-center justify-center transition-colors shadow-xs shrink-0"
                             title="Log Out"
                         >
                             <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
