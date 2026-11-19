@@ -13,7 +13,14 @@ import { IoTPanel } from './components/IoTPanel';
 import { SimpleSimPanel } from './components/SimpleSimPanel';
 import { sound } from './utils/audio';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const getApiBaseUrl = () => {
+    if (import.meta.env.VITE_API_URL) return import.meta.env.VITE_API_URL;
+    if (typeof window !== 'undefined' && window.location.hostname) {
+        return `http://${window.location.hostname}:8000`;
+    }
+    return 'http://localhost:8000';
+};
+const API_BASE_URL = getApiBaseUrl();
 
 const App: React.FC = () => {
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
@@ -215,6 +222,27 @@ const App: React.FC = () => {
         }
     };
 
+    // Immediate REST dashboard fetch on startup / reconnect
+    const fetchDashboardREST = async () => {
+        try {
+            const res = await axios.get<DashboardPayload>(`${API_BASE_URL}/api/v1/dashboard/`);
+            if (res.data) {
+                const chronologicalHistory = [...(res.data.history || [])].reverse();
+                setPayload({
+                    ...res.data,
+                    history: chronologicalHistory
+                });
+                if (res.data.nodes && res.data.nodes.length > 0) {
+                    setActiveStationId(prev => prev || res.data.nodes[0].id);
+                }
+                setLoading(false);
+                setError(null);
+            }
+        } catch (err: any) {
+            console.warn('Initial REST dashboard fetch error:', err);
+        }
+    };
+
     // Reconnect trigger
     const handleReconnect = () => {
         setLoading(true);
@@ -227,6 +255,7 @@ const App: React.FC = () => {
         fetchHealth();
         fetchSettings();
         fetchSubscribers();
+        fetchDashboardREST();
         
         const wsUrl = API_BASE_URL.replace(/^http/, 'ws') + '/api/v1/ws/dashboard';
         const ws = new WebSocket(wsUrl);
