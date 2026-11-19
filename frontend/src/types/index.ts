@@ -8,6 +8,9 @@ export interface SensorNode {
     waterLevelCm?: number;
     rainfallRateMm?: number;
     currentRisk?: 'Safe' | 'Warning' | 'Critical';
+    rateOfRiseCmPerHr?: number;
+    estimatedDischargeM3s?: number;
+    basinName?: string;
 }
 
 export interface HydroLog {
@@ -24,6 +27,9 @@ export interface DashboardSummary {
     totalNodes: number;
     activeAlerts: number;
     systemHealthStatus: string;
+    criticalNodesCount?: number;
+    warningNodesCount?: number;
+    averageWaterLevel?: number;
 }
 
 export interface DashboardPayload {
@@ -36,7 +42,9 @@ export interface SystemHealth {
     status: string;
     api_version: string;
     database_connection: string;
+    database_driver?: string;
     server_time: string;
+    registered_domains?: string[];
 }
 
 export interface WeatherForecast {
@@ -56,3 +64,23 @@ export interface WeatherInfo {
     forecast: WeatherForecast[];
 }
 
+export interface AlertLog {
+    id: number;
+    node_id?: string;
+    title: string;
+    message: string;
+    severity: 'Safe' | 'Warning' | 'Critical' | 'Emergency' | 'Info';
+    water_level_cm?: number;
+    is_acknowledged: boolean;
+    acknowledged_by?: string;
+    timestamp: string;
+}
+
+export interface Subscriber {
+    id: string;
+    name: string;
+    phone: string;
+    stationId: string;
+    status: 'Active' | 'Muted';
+    createdAt?: string;
+}
