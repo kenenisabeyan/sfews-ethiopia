@@ -1,33 +1,38 @@
-# Use a lightweight Python base image
+# ==========================================
+# SFEWS Command Center - Production Backend
+# High-Concurrency FastAPI + Gunicorn Worker Cluster
+# ==========================================
+
 FROM python:3.12-slim
 
-# Set environment variables
-# PYTHONDONTWRITEBYTECODE: Prevents Python from writing .pyc files to disk
-# PYTHONUNBUFFERED: Ensures Python output is sent straight to terminal (logs) without being buffered
-# PATH: Prepend the uv virtual environment path so that we can run `uvicorn` directly
+# Prevent bytecode write & ensure unbuffered stdout for container log streams
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PATH="/app/.venv/bin:$PATH"
 
-# Install `uv` directly from the official astral image
+# Install curl for container orchestration health checks
+RUN apt-get update && apt-get install -y --no-install-recommends curl && rm -rf /var/lib/apt/lists/*
+
+# Install astral-sh/uv for ultra-fast dependency resolution
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
-# Set the working directory inside the container
 WORKDIR /app
 
-# Copy ONLY the dependency definition files first
-# This ensures Docker caches the dependency installation step
+# Cache dependencies layer
 COPY pyproject.toml uv.lock* ./
 
-# Install dependencies using `uv`
-# (Uses --frozen if a lockfile exists, otherwise just installs from pyproject.toml)
+# Install dependencies into container virtual environment
 RUN uv sync --frozen || uv sync
 
-# Now copy the rest of the application code
+# Copy application sources and configurations
 COPY . .
 
-# Expose port (Render sets the PORT environment variable dynamically, but typically uses 10000 or similar)
+# Expose API port
 EXPOSE 8000
 
-# Start Uvicorn server, binding to 0.0.0.0 and the PORT env var (with a fallback to 8000)
-CMD ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}"]
+# Docker / Kubernetes Healthcheck
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+    CMD curl -f http://localhost:${PORT:-8000}/ || exit 1
+
+# Production Entrypoint: Gunicorn ASGI Cluster with Uvicorn fallback
+CMD ["sh", "-c", "if command -v gunicorn > /dev/null 2>&1; then gunicorn -c gunicorn_conf.py app.main:app; else uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}; fi"]
