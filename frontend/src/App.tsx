@@ -436,8 +436,8 @@ const App: React.FC = () => {
             )}
 
             {/* SIDEBAR NAVIGATION (Desktop Static, Mobile Off-Canvas Drawer) */}
-            <aside className={`fixed inset-y-0 left-0 z-50 w-72 sm:w-80 border-r border-slate-900/60 bg-[#040810]/95 lg:bg-[#040810]/75 backdrop-blur-2xl flex flex-col shrink-0 select-none transition-transform duration-300 ease-in-out lg:static lg:translate-x-0 ${
-                isMobileMenuOpen ? 'translate-x-0 shadow-[0_0_50px_rgba(0,0,0,0.95)]' : '-translate-x-full'
+            <aside className={`fixed inset-y-0 left-0 z-50 w-72 sm:w-80 border-r border-slate-200 dark:border-slate-900/60 bg-white/95 dark:bg-[#040810]/95 lg:bg-white/90 dark:lg:bg-[#040810]/75 backdrop-blur-2xl flex flex-col shrink-0 select-none transition-transform duration-300 ease-in-out lg:static lg:translate-x-0 ${
+                isMobileMenuOpen ? 'translate-x-0 shadow-2xl dark:shadow-[0_0_50px_rgba(0,0,0,0.95)]' : '-translate-x-full'
             }`}>
                 
                 {/* Logo / Title Branding */}
@@ -547,7 +547,7 @@ const App: React.FC = () => {
             <main className="flex-1 flex flex-col min-w-0 overflow-hidden relative z-10 grid-bg">
                 
                 {/* UNIFIED TOP COMMAND BAR (Visible on Desktop & Mobile) */}
-                <header className="bg-[#040812]/85 border-b border-white/5 px-4 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between backdrop-blur-xl shrink-0 z-30">
+                <header className="bg-white/90 dark:bg-[#040812]/85 border-b border-slate-200 dark:border-white/5 px-4 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between backdrop-blur-xl shrink-0 z-30 shadow-xs">
                     <div className="flex items-center gap-3">
                         <button
                             onClick={() => setIsMobileMenuOpen(true)}
@@ -762,9 +762,9 @@ const App: React.FC = () => {
                         </svg>
                     </button>
                 ) : (
-                    <div className="fixed inset-x-3 bottom-3 sm:inset-auto sm:bottom-6 sm:right-6 sm:w-[420px] h-[84vh] sm:h-[560px] max-w-full bg-[#050913]/95 border border-purple-500/25 rounded-3xl shadow-[0_25px_60px_rgba(0,0,0,0.95)] backdrop-blur-2xl z-50 flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-8 duration-300">
+                    <div className="fixed inset-x-3 bottom-3 sm:inset-auto sm:bottom-6 sm:right-6 sm:w-[420px] h-[84vh] sm:h-[560px] max-w-full bg-white/95 dark:bg-[#050913]/95 border border-purple-500/25 rounded-3xl shadow-2xl dark:shadow-[0_25px_60px_rgba(0,0,0,0.95)] backdrop-blur-2xl z-50 flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-8 duration-300">
                         {/* Top Header */}
-                        <div className="p-3.5 sm:p-4 bg-gradient-to-r from-purple-950/40 via-indigo-950/40 to-cyan-950/40 border-b border-white/5 flex items-center justify-between shrink-0">
+                        <div className="p-3.5 sm:p-4 bg-gradient-to-r from-purple-50 via-indigo-50 to-cyan-50 dark:from-purple-950/40 dark:via-indigo-950/40 dark:to-cyan-950/40 border-b border-slate-200 dark:border-white/5 flex items-center justify-between shrink-0">
                             <div className="flex items-center gap-3">
                                 <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-purple-600 to-cyan-400 flex items-center justify-center shadow-lg relative shrink-0">
                                     <span className="w-2 h-2 rounded-full bg-emerald-400 border border-slate-900 absolute -top-0.5 -right-0.5 animate-pulse"></span>
@@ -773,7 +773,7 @@ const App: React.FC = () => {
                                     </svg>
                                 </div>
                                 <div className="min-w-0">
-                                    <h3 className="text-xs sm:text-sm font-extrabold tracking-wide text-slate-100 truncate">SFEWS AI Situational Analyst</h3>
+                                    <h3 className="text-xs sm:text-sm font-extrabold tracking-wide text-slate-900 dark:text-slate-100 truncate">SFEWS AI Situational Analyst</h3>
                                     <span className="text-[9px] font-bold text-cyan-400 tracking-widest block font-mono mt-0.5">Autonomous Hydrology Engine</span>
                                 </div>
                             </div>

@@ -200,7 +200,7 @@ export const MapTab: React.FC<MapTabProps> = ({
                                     setSimulationLevel(Number(e.target.value));
                                     if (isSimulating) setIsSimulating(false);
                                 }}
-                                className="flex-grow accent-purple-500 h-1 bg-slate-950 border border-slate-900 rounded-lg cursor-pointer appearance-none"
+                                className="flex-grow accent-purple-500 h-1 bg-slate-200 dark:bg-slate-950 border border-slate-300 dark:border-slate-900 rounded-lg cursor-pointer appearance-none"
                             />
                             <span className="text-xs font-mono font-bold text-purple-400 w-10 text-right">
                                 {simulationLevel}%

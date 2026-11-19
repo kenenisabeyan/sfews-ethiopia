@@ -150,7 +150,7 @@ export const SimpleSimPanel: React.FC = () => {
                         High-fidelity software-only simulation of water level telemetry, decision logic thresholds, and real-time alerts.
                     </p>
                 </div>
-                <div className="flex items-center gap-3 bg-slate-900/30 px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-xl sm:rounded-2xl border border-slate-800/40 select-none self-start md:self-auto">
+                <div className="flex items-center gap-3 bg-slate-100 dark:bg-slate-900/30 px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-xl sm:rounded-2xl border border-slate-200 dark:border-slate-800/40 select-none self-start md:self-auto">
                     <span className="text-[10px] font-extrabold tracking-widest text-slate-500 block leading-none">Simulation Server:</span>
                     <span className={`flex items-center gap-2 text-xs font-bold font-mono px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-lg ${backendStatus === 'Online' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-red-500/10 text-red-400'}`}>
                         <span className={`w-2 h-2 rounded-full ${backendStatus === 'Online' ? 'bg-emerald-400 animate-pulse' : 'bg-red-400'}`}></span>
@@ -405,7 +405,7 @@ export const SimpleSimPanel: React.FC = () => {
                         {logs.length > 0 && (
                             <button
                                 onClick={() => setLogs([])}
-                                className="px-3 py-1 sm:px-3.5 sm:py-1.5 bg-slate-900/60 hover:bg-slate-900 border border-slate-800/85 hover:border-slate-800 rounded-lg sm:rounded-xl text-[9px] sm:text-[10px] font-bold text-slate-400 hover:text-slate-200 transition-colors uppercase tracking-widest font-mono"
+                                className="px-3 py-1 sm:px-3.5 sm:py-1.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-900/60 dark:hover:bg-slate-900 border border-slate-300 dark:border-slate-800/85 hover:border-slate-400 dark:hover:border-slate-800 rounded-lg sm:rounded-xl text-[9px] sm:text-[10px] font-bold text-slate-700 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 transition-colors uppercase tracking-widest font-mono"
                             >
                                 Clear logs
                             </button>
@@ -499,7 +499,7 @@ export const SimpleSimPanel: React.FC = () => {
                                 </div>
                             )
                         ) : (
-                            <div className="bg-slate-900/30 border border-slate-800/40 p-3 sm:p-3.5 rounded-xl text-center text-slate-500 font-bold text-xs">
+                            <div className="bg-slate-100/80 dark:bg-slate-900/30 border border-slate-200 dark:border-slate-800/40 p-3 sm:p-3.5 rounded-xl text-center text-slate-500 font-bold text-xs">
                                 Waiting for telemetry transmission...
                             </div>
                         )}
