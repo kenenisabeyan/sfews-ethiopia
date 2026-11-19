@@ -11,6 +11,7 @@ import { AlertsPanel } from './components/AlertsPanel';
 import { SettingsPanel } from './components/SettingsPanel';
 import { IoTPanel } from './components/IoTPanel';
 import { SimpleSimPanel } from './components/SimpleSimPanel';
+import { sound } from './utils/audio';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
@@ -40,7 +41,29 @@ const App: React.FC = () => {
     }, [theme]);
 
     const toggleTheme = () => {
+        sound.playActionBeep();
         setTheme(prev => prev === 'dark' ? 'light' : 'dark');
+    };
+
+    // Acoustic Siren State
+    const [soundMuted, setSoundMuted] = useState<boolean>(() => sound.isMuted());
+    const toggleSound = () => {
+        const next = sound.toggleMute();
+        setSoundMuted(next);
+        if (!next) {
+            sound.playActionBeep();
+        }
+    };
+
+    // Fullscreen Theater Mode
+    const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
+    const toggleFullscreen = () => {
+        sound.playActionBeep();
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen().then(() => setIsFullscreen(true)).catch(() => {});
+        } else {
+            document.exitFullscreen().then(() => setIsFullscreen(false)).catch(() => {});
+        }
     };
 
     // Core states (integrated with API & WebSockets)
@@ -222,6 +245,14 @@ const App: React.FC = () => {
                     setActiveStationId(data.nodes[0].id);
                 }
                 setLoading(false);
+
+                // Acoustic Early Warning Siren & Packet Ping
+                const hasCriticalThreat = data.nodes.some(n => n.currentRisk === 'Critical') || (data.summary?.activeAlerts > 0);
+                if (hasCriticalThreat) {
+                    sound.playEmergencySiren();
+                } else {
+                    sound.playTelemetryPing();
+                }
             } catch (e) {
                 console.error("Failed to parse WebSocket data", e);
             }
@@ -556,6 +587,32 @@ const App: React.FC = () => {
                             </span>
                         </div>
 
+                        {/* Acoustic Siren Alert Toggle */}
+                        <button
+                            onClick={toggleSound}
+                            className={`px-2.5 sm:px-3 py-1 rounded-xl text-[10px] font-mono font-bold tracking-wider transition-all flex items-center gap-1.5 border shadow-sm ${
+                                !soundMuted
+                                    ? 'bg-amber-500/15 text-amber-700 dark:text-amber-300 border-amber-500/30'
+                                    : 'bg-slate-100 dark:bg-[#030610] text-slate-500 dark:text-slate-400 border-slate-300 dark:border-white/5'
+                            }`}
+                            title={soundMuted ? 'Unmute Acoustic Siren' : 'Mute Acoustic Siren'}
+                            aria-label="Toggle Siren Alert Audio"
+                        >
+                            <span>{soundMuted ? '🔇' : '🔊'}</span>
+                            <span className="hidden lg:inline">{soundMuted ? 'Siren Off' : 'Siren Armed'}</span>
+                        </button>
+
+                        {/* Tactical Fullscreen Theater Mode */}
+                        <button
+                            onClick={toggleFullscreen}
+                            className="hidden xl:flex items-center gap-1.5 px-2.5 sm:px-3 py-1 bg-slate-100 dark:bg-[#030610] hover:bg-slate-200 dark:hover:bg-slate-900 border border-slate-300 dark:border-white/5 rounded-xl font-mono text-[10px] font-bold text-slate-700 dark:text-slate-300 transition-all shadow-sm"
+                            title="Toggle Tactical Theater Mode"
+                            aria-label="Toggle Fullscreen"
+                        >
+                            <span>⛶</span>
+                            <span>{isFullscreen ? 'Exit Theater' : 'Theater HUD'}</span>
+                        </button>
+
                         {/* Light / Dark Mode Brightness Toggle */}
                         <button
                             onClick={toggleTheme}
@@ -732,12 +789,12 @@ const App: React.FC = () => {
                         </div>
 
                         {/* Quick Suggestion Chips */}
-                        <div className="px-3.5 py-2 bg-[#030610]/80 border-b border-white/5 flex items-center gap-1.5 overflow-x-auto custom-scrollbar shrink-0">
+                        <div className="px-3.5 py-2 bg-slate-50/90 dark:bg-[#030610]/80 border-b border-slate-200 dark:border-white/5 flex items-center gap-1.5 overflow-x-auto custom-scrollbar shrink-0">
                             {quickPrompts.map((prompt, pIdx) => (
                                 <button
                                     key={pIdx}
                                     onClick={() => handleSendChat(prompt)}
-                                    className="px-2.5 py-1 rounded-lg bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-300 border border-indigo-500/20 text-[9.5px] font-mono whitespace-nowrap transition-all"
+                                    className="px-2.5 py-1 rounded-lg bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-700 dark:text-indigo-300 border border-indigo-500/30 text-[9.5px] font-mono whitespace-nowrap transition-all shadow-sm"
                                 >
                                     {prompt}
                                 </button>
@@ -745,18 +802,18 @@ const App: React.FC = () => {
                         </div>
 
                         {/* Messages Container */}
-                        <div className="flex-grow overflow-y-auto p-3.5 sm:p-4 space-y-3.5 min-h-0 custom-scrollbar bg-[#02040a]/50">
+                        <div className="flex-grow overflow-y-auto p-3.5 sm:p-4 space-y-3.5 min-h-0 custom-scrollbar bg-slate-50/50 dark:bg-[#02040a]/50">
                             {chatHistory.map((msg, i) => {
                                 const isUser = msg.sender === 'user';
                                 return (
                                     <div key={i} className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}>
                                         <div className={`max-w-[90%] rounded-2xl p-3 sm:p-3.5 text-xs leading-relaxed font-semibold shadow-md ${
                                             isUser 
-                                                ? 'bg-gradient-to-r from-purple-600/40 to-indigo-600/40 text-slate-100 border border-purple-500/25 rounded-tr-none' 
-                                                : 'bg-[#080d19]/90 text-slate-200 border border-white/5 rounded-tl-none'
+                                                ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-tr-none' 
+                                                : 'bg-white dark:bg-[#080d19]/90 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-white/5 rounded-tl-none'
                                         }`}>
                                             <p className="whitespace-pre-line break-words">{msg.text}</p>
-                                            <span className="text-[9px] text-slate-500 block font-mono mt-1.5 text-right">
+                                            <span className="text-[9px] text-slate-400 dark:text-slate-500 block font-mono mt-1.5 text-right">
                                                 {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                             </span>
                                         </div>
@@ -765,11 +822,11 @@ const App: React.FC = () => {
                             })}
                             {isTyping && (
                                 <div className="flex justify-start">
-                                    <div className="bg-[#080d19]/90 text-slate-200 border border-white/5 rounded-2xl rounded-tl-none p-3.5 flex items-center gap-2 shadow-md">
+                                    <div className="bg-white dark:bg-[#080d19]/90 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-white/5 rounded-2xl rounded-tl-none p-3.5 flex items-center gap-2 shadow-md">
                                         <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></span>
                                         <span className="w-1.5 h-1.5 bg-indigo-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></span>
                                         <span className="w-1.5 h-1.5 bg-purple-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></span>
-                                        <span className="text-[10px] font-mono text-slate-400 ml-1">Analyzing catchment telemetry...</span>
+                                        <span className="text-[10px] font-mono text-slate-500 dark:text-slate-400 ml-1">Analyzing catchment telemetry...</span>
                                     </div>
                                 </div>
                             )}
@@ -777,18 +834,18 @@ const App: React.FC = () => {
                         </div>
 
                         {/* Form Input */}
-                        <form onSubmit={(e) => { e.preventDefault(); handleSendChat(); }} className="p-2.5 sm:p-3 bg-[#040811] border-t border-white/5 flex gap-2 shrink-0">
+                        <form onSubmit={(e) => { e.preventDefault(); handleSendChat(); }} className="p-2.5 sm:p-3 bg-slate-50 dark:bg-[#040811] border-t border-slate-200 dark:border-white/5 flex gap-2 shrink-0">
                             <input
                                 type="text"
                                 value={chatQuery}
                                 onChange={(e) => setChatQuery(e.target.value)}
                                 placeholder="Ask about river discharge, Koka Dam, flash surges..."
-                                className="flex-grow min-w-0 bg-[#080d19] border border-white/10 rounded-2xl px-3.5 py-2 text-xs text-slate-200 focus:outline-none focus:border-purple-500 placeholder:text-slate-600 font-semibold"
+                                className="flex-grow min-w-0 bg-white dark:bg-[#080d19] border border-slate-300 dark:border-white/10 rounded-2xl px-3.5 py-2 text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:border-purple-500 placeholder:text-slate-400 font-semibold shadow-inner"
                             />
                             <button
                                 type="submit"
                                 disabled={!chatQuery.trim() || isTyping}
-                                className="px-4 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 disabled:from-slate-900 disabled:to-slate-900 disabled:text-slate-600 text-white rounded-2xl font-extrabold text-xs tracking-wider transition-all shadow-md flex items-center justify-center shrink-0 border border-transparent"
+                                className="px-4 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 disabled:from-slate-300 dark:disabled:from-slate-900 disabled:to-slate-300 dark:disabled:to-slate-900 disabled:text-slate-500 dark:disabled:text-slate-600 text-white rounded-2xl font-extrabold text-xs tracking-wider transition-all shadow-md flex items-center justify-center shrink-0 border border-transparent"
                             >
                                 Send
                             </button>
