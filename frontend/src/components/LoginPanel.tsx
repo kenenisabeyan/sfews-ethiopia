@@ -16,7 +16,8 @@ interface LoginPanelProps {
   onToggleTheme?: () => void;
 }
 
-export const LoginPanel: React.FC<LoginPanelProps> = ({ onLoginSuccess, theme = 'dark', onToggleTheme }) => {
+export const LoginPanel: React.FC<LoginPanelProps> = ({ onLoginSuccess, theme = 'light', onToggleTheme }) => {
+  const isDark = theme === 'dark';
   // Authentication inputs
   const [username, setUsername] = useState('astu-analyst');
   const [password, setPassword] = useState('astu-sfews-2026');
@@ -326,7 +327,7 @@ export const LoginPanel: React.FC<LoginPanelProps> = ({ onLoginSuccess, theme = 
   };
 
   return (
-    <div className={`relative w-full min-h-screen ${theme === 'light' ? 'light bg-slate-100 text-slate-800' : 'bg-[#020308] text-slate-100'} flex items-center justify-center p-3 sm:p-6 md:p-8 overflow-hidden font-sans select-none`}>
+    <div className={`relative w-full min-h-screen ${theme === 'light' ? 'bg-slate-100 text-slate-900' : 'dark bg-[#020308] text-slate-100'} flex items-center justify-center p-3 sm:p-6 md:p-8 overflow-hidden font-sans select-none`}>
       
       {/* High-Performance Particle Engine */}
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none z-0" />
@@ -337,18 +338,18 @@ export const LoginPanel: React.FC<LoginPanelProps> = ({ onLoginSuccess, theme = 
       </div>
 
       {/* Futuristic Purple & Indigo Ambient Spherical Glows */}
-      <div className="absolute top-[10%] left-[15%] w-[45vw] h-[45vw] bg-purple-900/10 rounded-full blur-[140px] pointer-events-none z-0 animate-pulse-slow"></div>
-      <div className="absolute bottom-[8%] right-[12%] w-[40vw] h-[40vw] bg-indigo-900/15 rounded-full blur-[160px] pointer-events-none z-0"></div>
-      <div className="absolute top-[45%] right-[30%] w-[30vw] h-[30vw] bg-cyan-950/10 rounded-full blur-[130px] pointer-events-none z-0"></div>
+      <div className={`absolute top-[10%] left-[15%] w-[45vw] h-[45vw] ${theme === 'light' ? 'bg-purple-200/30' : 'bg-purple-900/10'} rounded-full blur-[140px] pointer-events-none z-0 animate-pulse-slow`}></div>
+      <div className={`absolute bottom-[8%] right-[12%] w-[40vw] h-[40vw] ${theme === 'light' ? 'bg-indigo-200/30' : 'bg-indigo-900/15'} rounded-full blur-[160px] pointer-events-none z-0`}></div>
+      <div className={`absolute top-[45%] right-[30%] w-[30vw] h-[30vw] ${theme === 'light' ? 'bg-cyan-200/25' : 'bg-cyan-950/10'} rounded-full blur-[130px] pointer-events-none z-0`}></div>
 
       {/* Core Auth Panel Wrapper */}
-      <div className="relative z-10 w-full max-w-5xl bg-white/95 dark:bg-[#060814]/45 border border-slate-200 dark:border-purple-500/15 rounded-3xl sm:rounded-[36px] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.12)] dark:shadow-[0_30px_70px_-15px_rgba(0,0,0,0.85)] backdrop-blur-[24px] grid grid-cols-1 lg:grid-cols-12 overflow-hidden min-h-0 lg:min-h-[660px]">
+      <div className={`relative z-10 w-full max-w-5xl ${isDark ? 'bg-[#060814]/90 border-purple-500/15 shadow-[0_30px_70px_-15px_rgba(0,0,0,0.85)]' : 'bg-white border-slate-200 shadow-2xl'} border rounded-3xl sm:rounded-[36px] backdrop-blur-[24px] grid grid-cols-1 lg:grid-cols-12 overflow-hidden min-h-0 lg:min-h-[660px]`}>
         
         {/* Double-Panel Glowing Neon Inner Frame */}
-        <div className="absolute inset-0 rounded-3xl sm:rounded-[36px] border border-purple-500/10 pointer-events-none z-10 shadow-[inset_0_1.5px_0_rgba(255,255,255,0.06),0_0_50px_rgba(168,85,247,0.04)]"></div>
+        <div className={`absolute inset-0 rounded-3xl sm:rounded-[36px] border ${isDark ? 'border-purple-500/10' : 'border-indigo-500/5'} pointer-events-none z-10 shadow-[inset_0_1.5px_0_rgba(255,255,255,0.06),0_0_50px_rgba(168,85,247,0.04)]`}></div>
 
         {/* LEFT COLUMN: SYSTEM VITALS, ASTU BRANDING & ESP32 CONFIGS */}
-        <div className="lg:col-span-5 bg-gradient-to-b from-slate-50 to-slate-100 dark:from-[#080b1b]/85 dark:to-[#040610]/90 p-5 sm:p-8 border-b lg:border-b-0 lg:border-r border-slate-200 dark:border-purple-500/15 flex flex-col justify-between relative overflow-hidden">
+        <div className={`lg:col-span-5 ${isDark ? 'bg-gradient-to-b from-[#080b1b] to-[#040610] border-purple-500/15 text-slate-100' : 'bg-slate-50 border-slate-200 text-slate-900'} p-5 sm:p-8 border-b lg:border-b-0 lg:border-r flex flex-col justify-between relative overflow-hidden`}>
           
           {/* Subtle ESP32 Circuit Background Watermark */}
           <div className="absolute -bottom-16 -left-16 w-64 h-64 border border-purple-500/5 rounded-full opacity-30 pointer-events-none flex items-center justify-center">
@@ -361,8 +362,8 @@ export const LoginPanel: React.FC<LoginPanelProps> = ({ onLoginSuccess, theme = 
           <div className="space-y-6 relative z-10">
             <div className="flex items-center gap-3.5">
               {/* Premium customized high-fidelity glowing SVG emblem */}
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500/20 via-indigo-600/20 to-cyan-500/20 border border-purple-500/30 flex items-center justify-center shadow-[0_0_25px_rgba(168,85,247,0.2)] relative shrink-0">
-                <svg className="w-10 h-10 text-purple-300" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <div className={`w-14 h-14 rounded-2xl ${isDark ? 'bg-gradient-to-br from-purple-500/20 via-indigo-600/20 to-cyan-500/20 border-purple-500/30 shadow-[0_0_25px_rgba(168,85,247,0.2)]' : 'bg-gradient-to-br from-indigo-100 via-purple-100 to-cyan-100 border-indigo-200 shadow-md'} border flex items-center justify-center relative shrink-0`}>
+                <svg className={`w-10 h-10 ${isDark ? 'text-purple-300' : 'text-indigo-600'}`} viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <polygon points="50,10 90,30 90,70 50,90 10,70 10,30" stroke="currentColor" strokeWidth="2.5" strokeLinejoin="round" fill="rgba(168, 85, 247, 0.05)"/>
                   <circle cx="50" cy="50" r="22" stroke="currentColor" strokeWidth="2" strokeDasharray="3 3"/>
                   <path d="M35 45 L50 65 L65 45" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -373,39 +374,39 @@ export const LoginPanel: React.FC<LoginPanelProps> = ({ onLoginSuccess, theme = 
                 <span className="w-2 h-2 rounded-full bg-cyan-400 absolute top-1 right-1 animate-ping"></span>
               </div>
               <div>
-                <h1 className="text-xl font-extrabold tracking-widest text-slate-900 dark:text-slate-100 bg-gradient-to-r from-slate-900 via-purple-900 to-indigo-800 dark:from-slate-50 dark:via-purple-100 dark:to-indigo-300 bg-clip-text text-transparent">ASTU-SFEWS</h1>
-                <p className="text-[9px] font-bold text-cyan-600 dark:text-cyan-400 tracking-widest font-mono mt-0.5">Hydrology Research Lab</p>
+                <h1 className={`text-xl font-extrabold tracking-widest ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>ASTU-SFEWS</h1>
+                <p className={`text-[9px] font-bold tracking-widest font-mono mt-0.5 ${isDark ? 'text-cyan-400' : 'text-indigo-600'}`}>Hydrology Research Lab</p>
               </div>
             </div>
 
-            <div className="h-[1px] bg-gradient-to-r from-purple-500/20 via-purple-500/5 to-transparent w-full"></div>
+            <div className={`h-[1px] ${isDark ? 'bg-gradient-to-r from-purple-500/20 via-purple-500/5 to-transparent' : 'bg-slate-200'} w-full`}></div>
 
             {/* ESP32 Hardware Blueprint / Spec Matrix */}
             <div className="space-y-4">
               <div className="flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-purple-500 animate-pulse"></span>
-                <span className="text-[10px] font-black text-slate-600 dark:text-slate-400 tracking-wider font-mono">ESP32 Hardware telemetry</span>
+                <span className={`text-[10px] font-black tracking-wider font-mono ${isDark ? 'text-slate-300' : 'text-slate-800'}`}>ESP32 Hardware telemetry</span>
               </div>
 
               <div className="grid grid-cols-2 gap-3.5">
-                <div className="bg-white/80 dark:bg-[#080c1e]/60 border border-slate-200 dark:border-purple-500/10 p-3 rounded-xl flex flex-col justify-between hover:border-slate-300 dark:hover:border-purple-500/20 shadow-sm transition-all duration-300">
-                  <span className="text-[8px] text-slate-500 font-bold tracking-wider">processor node</span>
-                  <span className="text-[11px] font-mono font-bold text-slate-800 dark:text-slate-300 mt-1">Tensilica LX6 Dual-Core</span>
+                <div className={`${isDark ? 'bg-[#080c1e]/60 border-purple-500/10' : 'bg-white border-slate-200 shadow-sm'} border p-3 rounded-xl flex flex-col justify-between hover:border-indigo-400 transition-all duration-300`}>
+                  <span className={`text-[8px] ${isDark ? 'text-slate-400' : 'text-slate-600'} font-bold uppercase tracking-wider`}>processor node</span>
+                  <span className={`text-[11px] font-mono font-bold ${isDark ? 'text-slate-200' : 'text-slate-900'} mt-1`}>Tensilica LX6 Dual-Core</span>
                 </div>
-                <div className="bg-white/80 dark:bg-[#080c1e]/60 border border-slate-200 dark:border-purple-500/10 p-3 rounded-xl flex flex-col justify-between hover:border-slate-300 dark:hover:border-purple-500/20 shadow-sm transition-all duration-300">
-                  <span className="text-[8px] text-slate-500 font-bold tracking-wider">transceiver freq</span>
-                  <span className="text-[11px] font-mono font-bold text-slate-800 dark:text-slate-300 mt-1">Lora 433 MHz</span>
+                <div className={`${isDark ? 'bg-[#080c1e]/60 border-purple-500/10' : 'bg-white border-slate-200 shadow-sm'} border p-3 rounded-xl flex flex-col justify-between hover:border-indigo-400 transition-all duration-300`}>
+                  <span className={`text-[8px] ${isDark ? 'text-slate-400' : 'text-slate-600'} font-bold uppercase tracking-wider`}>transceiver freq</span>
+                  <span className={`text-[11px] font-mono font-bold ${isDark ? 'text-slate-200' : 'text-slate-900'} mt-1`}>Lora 433 MHz</span>
                 </div>
-                <div className="bg-white/80 dark:bg-[#080c1e]/60 border border-slate-200 dark:border-purple-500/10 p-3 rounded-xl flex flex-col justify-between hover:border-slate-300 dark:hover:border-purple-500/20 shadow-sm transition-all duration-300">
-                  <span className="text-[8px] text-slate-500 font-bold tracking-wider">core chip temp</span>
-                  <span className="text-[11px] font-mono font-bold text-amber-600 dark:text-amber-400 mt-1 flex items-center gap-1.5">
+                <div className={`${isDark ? 'bg-[#080c1e]/60 border-purple-500/10' : 'bg-white border-slate-200 shadow-sm'} border p-3 rounded-xl flex flex-col justify-between hover:border-indigo-400 transition-all duration-300`}>
+                  <span className={`text-[8px] ${isDark ? 'text-slate-400' : 'text-slate-600'} font-bold uppercase tracking-wider`}>core chip temp</span>
+                  <span className={`text-[11px] font-mono font-bold ${isDark ? 'text-amber-400' : 'text-amber-700'} mt-1 flex items-center gap-1.5`}>
                     <svg className="w-3.5 h-3.5 text-amber-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
                     {espTemperature}°C
                   </span>
                 </div>
-                <div className="bg-white/80 dark:bg-[#080c1e]/60 border border-slate-200 dark:border-purple-500/10 p-3 rounded-xl flex flex-col justify-between hover:border-slate-300 dark:hover:border-purple-500/20 shadow-sm transition-all duration-300">
-                  <span className="text-[8px] text-slate-500 font-bold uppercase tracking-wider">link status (rssi)</span>
-                  <span className="text-[11px] font-mono font-bold text-cyan-600 dark:text-cyan-400 mt-1 flex items-center gap-1.5">
+                <div className={`${isDark ? 'bg-[#080c1e]/60 border-purple-500/10' : 'bg-white border-slate-200 shadow-sm'} border p-3 rounded-xl flex flex-col justify-between hover:border-indigo-400 transition-all duration-300`}>
+                  <span className={`text-[8px] ${isDark ? 'text-slate-400' : 'text-slate-600'} font-bold uppercase tracking-wider`}>link status (rssi)</span>
+                  <span className={`text-[11px] font-mono font-bold ${isDark ? 'text-cyan-400' : 'text-cyan-700'} mt-1 flex items-center gap-1.5`}>
                     <svg className="w-3.5 h-3.5 text-cyan-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 002 2h2a2 2 0 002-2z" /></svg>
                     {espRssi} dBm
                   </span>
@@ -416,30 +417,30 @@ export const LoginPanel: React.FC<LoginPanelProps> = ({ onLoginSuccess, theme = 
 
           {/* IoT Telemetry Nodes Stream */}
           <div className="space-y-3.5 my-8 relative z-10">
-            <div className="flex justify-between items-center text-[9px] text-slate-600 dark:text-slate-400 font-extrabold uppercase tracking-widest font-mono">
+            <div className={`flex justify-between items-center text-[9px] ${isDark ? 'text-slate-400' : 'text-slate-700'} font-extrabold uppercase tracking-widest font-mono`}>
               <span>Awash telemetry points</span>
-              <span className="text-cyan-600 dark:text-cyan-400 animate-pulse font-bold">ONLINE</span>
+              <span className={`${isDark ? 'text-cyan-400' : 'text-emerald-600'} animate-pulse font-bold`}>ONLINE</span>
             </div>
 
             <div className="space-y-2.5">
               {[
-                { name: 'Station Alpha-1', desc: 'Awash Semera Gate', level: '142 cm', status: 'Safe', color: 'bg-emerald-500', text: 'text-emerald-700 dark:text-emerald-400' },
-                { name: 'Station Beta-2', desc: 'Adama Siphon Flow', level: '298 cm', status: 'Warning', color: 'bg-amber-500', text: 'text-amber-700 dark:text-amber-400' },
-                { name: 'Station Gamma-3', desc: 'Awash Melka Sump', level: '488 cm', status: 'Critical', color: 'bg-red-500', text: 'text-red-700 dark:text-red-400' },
+                { name: 'Station Alpha-1', desc: 'Awash Semera Gate', level: '142 cm', status: 'Safe', color: 'bg-emerald-500', text: isDark ? 'text-emerald-400' : 'text-emerald-700' },
+                { name: 'Station Beta-2', desc: 'Adama Siphon Flow', level: '298 cm', status: 'Warning', color: 'bg-amber-500', text: isDark ? 'text-amber-400' : 'text-amber-700' },
+                { name: 'Station Gamma-3', desc: 'Awash Melka Sump', level: '488 cm', status: 'Critical', color: 'bg-red-500', text: isDark ? 'text-red-400' : 'text-red-700' },
               ].map(node => (
-                <div key={node.name} className="bg-white/80 dark:bg-[#050712]/75 border border-slate-200 dark:border-purple-500/5 hover:border-slate-300 dark:hover:border-purple-500/15 p-3 rounded-xl flex items-center justify-between transition-all duration-200 group shadow-sm">
+                <div key={node.name} className={`${isDark ? 'bg-[#050712]/75 border-purple-500/10 hover:border-purple-500/20' : 'bg-white border-slate-200 hover:border-indigo-400 shadow-sm'} border p-3 rounded-xl flex items-center justify-between transition-all duration-200 group`}>
                   <div className="flex items-center gap-3">
                     <div className="w-2 h-2 rounded-full relative">
                       <span className={`absolute inset-0 rounded-full ${node.color} animate-ping opacity-60`}></span>
                       <span className={`relative block w-2 h-2 rounded-full ${node.color}`}></span>
                     </div>
                     <div>
-                      <p className="text-[11px] font-bold text-slate-800 dark:text-slate-200 group-hover:text-purple-600 dark:group-hover:text-purple-300 transition-colors">{node.name}</p>
-                      <p className="text-[8px] text-slate-500 font-bold tracking-wider">{node.desc}</p>
+                      <p className={`text-[11px] font-bold ${isDark ? 'text-slate-100 group-hover:text-purple-300' : 'text-slate-900 group-hover:text-indigo-600'} transition-colors`}>{node.name}</p>
+                      <p className={`text-[8px] ${isDark ? 'text-slate-400' : 'text-slate-500'} font-bold tracking-wider`}>{node.desc}</p>
                     </div>
                   </div>
                   <div className="text-right font-mono">
-                    <p className="text-[10px] font-black text-slate-800 dark:text-slate-300">{node.level}</p>
+                    <p className={`text-[10px] font-black ${isDark ? 'text-slate-200' : 'text-slate-900'}`}>{node.level}</p>
                     <span className={`text-[8px] font-black uppercase tracking-wider ${node.text}`}>{node.status}</span>
                   </div>
                 </div>
@@ -448,7 +449,7 @@ export const LoginPanel: React.FC<LoginPanelProps> = ({ onLoginSuccess, theme = 
           </div>
 
           {/* Left panel bottom specs */}
-          <div className="border-t border-purple-500/15 pt-4 z-10 flex items-center justify-between text-[9px] text-slate-500 font-bold uppercase tracking-wider font-mono">
+          <div className={`border-t ${isDark ? 'border-purple-500/15 text-slate-400' : 'border-slate-200 text-slate-600'} pt-4 z-10 flex items-center justify-between text-[9px] font-bold uppercase tracking-wider font-mono`}>
             <span>Uptime: {systemUptime}</span>
             <span>v4.1-Lora</span>
           </div>
@@ -456,17 +457,17 @@ export const LoginPanel: React.FC<LoginPanelProps> = ({ onLoginSuccess, theme = 
         </div>
 
         {/* RIGHT COLUMN: AUTHENTICATION PANEL */}
-        <div className="lg:col-span-7 bg-white dark:bg-transparent p-5 sm:p-8 md:p-12 flex flex-col justify-between relative">
+        <div className={`lg:col-span-7 ${isDark ? 'bg-[#060814]/90 text-slate-100' : 'bg-white text-slate-900'} p-5 sm:p-8 md:p-12 flex flex-col justify-between relative`}>
           
           {/* SECURE DECRYPTION LOOPS OVERLAY */}
           {isDecrypting && (
-            <div className="absolute inset-0 bg-slate-900/95 dark:bg-[#04060f]/95 backdrop-blur-md z-40 flex flex-col justify-between p-5 sm:p-8 md:p-12 animate-in fade-in duration-300 rounded-b-3xl sm:rounded-b-[36px] lg:rounded-r-[36px] lg:rounded-bl-none">
+            <div className="absolute inset-0 bg-white/95 dark:bg-[#04060f]/95 backdrop-blur-md z-40 flex flex-col justify-between p-5 sm:p-8 md:p-12 animate-in fade-in duration-300 rounded-b-3xl sm:rounded-b-[36px] lg:rounded-r-[36px] lg:rounded-bl-none">
               <div className="space-y-4 sm:space-y-6">
                 <div className="flex items-center gap-3">
                   <span className="animate-spin w-5 h-5 rounded-full border-2 border-purple-500/20 border-t-purple-500 shrink-0"></span>
-                  <h3 className="text-xs sm:text-sm font-extrabold tracking-widest text-purple-400 uppercase font-mono truncate">ESTABLISHING ENCRYPTED SESSION HANDSHAKE...</h3>
+                  <h3 className="text-xs sm:text-sm font-extrabold tracking-widest text-purple-700 dark:text-purple-400 uppercase font-mono truncate">ESTABLISHING ENCRYPTED SESSION HANDSHAKE...</h3>
                 </div>
-                <div className="bg-slate-950/90 dark:bg-[#020308]/90 border border-slate-800 dark:border-purple-500/15 rounded-2xl p-4 sm:p-5 max-h-[55vh] sm:h-96 overflow-y-auto space-y-2 font-mono text-[10px] sm:text-[10.5px] text-emerald-400 custom-scrollbar">
+                <div className="bg-slate-50 dark:bg-[#020308]/90 border border-slate-200 dark:border-purple-500/15 rounded-2xl p-4 sm:p-5 max-h-[55vh] sm:h-96 overflow-y-auto space-y-2 font-mono text-[10px] sm:text-[10.5px] text-emerald-700 dark:text-emerald-400 custom-scrollbar shadow-inner">
                   {decryptionLogs.map((log, index) => (
                     <p key={index} className="leading-relaxed animate-in fade-in slide-in-from-left-4 duration-200">
                       {log}
@@ -474,7 +475,7 @@ export const LoginPanel: React.FC<LoginPanelProps> = ({ onLoginSuccess, theme = 
                   ))}
                 </div>
               </div>
-              <div className="flex justify-between items-center text-[8px] sm:text-[9px] text-slate-400 font-bold tracking-widest uppercase font-mono pt-3 sm:pt-4 border-t border-purple-500/10">
+              <div className="flex justify-between items-center text-[8px] sm:text-[9px] text-slate-600 dark:text-slate-400 font-bold tracking-widest uppercase font-mono pt-3 sm:pt-4 border-t border-slate-200 dark:border-purple-500/10">
                 <span>TUNNEL SECURED: AES-GCM-256</span>
                 <span>TUNNEL_SYS_OK // ASTU</span>
               </div>
@@ -492,15 +493,15 @@ export const LoginPanel: React.FC<LoginPanelProps> = ({ onLoginSuccess, theme = 
                 <button
                   type="button"
                   onClick={onToggleTheme}
-                  className={`px-3 py-1 rounded-xl text-[10px] font-mono font-bold tracking-wider transition-all flex items-center gap-1.5 border shadow-sm ${
+                  className={`px-3 py-1.5 rounded-xl text-xs font-mono font-bold tracking-wider transition-all flex items-center gap-2 border shadow-sm ${
                     theme === 'dark'
-                      ? 'bg-[#030610] text-amber-300 border-white/5 hover:border-amber-400/40 hover:bg-amber-400/10'
-                      : 'bg-slate-100 text-indigo-700 border-slate-300 hover:border-indigo-400 hover:bg-indigo-50'
+                      ? 'bg-slate-900 text-amber-300 border-slate-700 hover:border-amber-400/40 hover:bg-slate-800'
+                      : 'bg-white text-slate-800 border-slate-300 hover:border-indigo-400 hover:bg-slate-50'
                   }`}
                   title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
                 >
-                  <span className="text-xs">{theme === 'dark' ? '☀️' : '🌙'}</span>
-                  <span className="font-bold">{theme === 'dark' ? 'Light' : 'Dark'}</span>
+                  <span className="text-sm">{theme === 'dark' ? '☀️' : '🌙'}</span>
+                  <span>{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
                 </button>
               )}
             </div>
@@ -529,8 +530,8 @@ export const LoginPanel: React.FC<LoginPanelProps> = ({ onLoginSuccess, theme = 
             <form onSubmit={handleLoginSubmit} className="space-y-5 my-6">
               
               {authError && (
-                <div className="bg-red-500/10 border border-red-500/20 text-red-300 text-xs px-4 py-3 rounded-xl font-semibold flex items-center gap-3 animate-pulse">
-                  <svg className="w-5 h-5 text-red-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                <div className="bg-red-500/10 border border-red-500/20 text-red-500 dark:text-red-300 text-xs px-4 py-3 rounded-xl font-semibold flex items-center gap-3 animate-pulse">
+                  <svg className="w-5 h-5 text-red-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
                   <span className="font-mono text-[10.5px]">{authError}</span>
                 </div>
               )}
@@ -539,7 +540,7 @@ export const LoginPanel: React.FC<LoginPanelProps> = ({ onLoginSuccess, theme = 
                 {/* Username Field */}
                 <div className="relative">
                   <div className={`absolute inset-0 bg-purple-500/5 rounded-2xl transition-all duration-300 ${activeInput === 'username' ? 'opacity-100 blur-[8px]' : 'opacity-0'}`}></div>
-                  <div className={`absolute left-4 top-1/2 -translate-y-1/2 transition-colors duration-200 ${activeInput === 'username' ? 'text-purple-400' : 'text-slate-500'}`}>
+                  <div className={`absolute left-4 top-1/2 -translate-y-1/2 transition-colors duration-200 ${activeInput === 'username' ? 'text-purple-600 dark:text-purple-400' : 'text-slate-400 dark:text-slate-500'}`}>
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
                   </div>
                   <input
@@ -548,16 +549,16 @@ export const LoginPanel: React.FC<LoginPanelProps> = ({ onLoginSuccess, theme = 
                     onChange={(e) => setUsername(e.target.value)}
                     onFocus={() => setActiveInput('username')}
                     onBlur={() => setActiveInput(null)}
-                    className={`w-full pl-12 pr-4 py-4 bg-slate-50 dark:bg-[#04060f]/80 border ${activeInput === 'username' ? 'border-purple-500/60 shadow-[0_0_15px_rgba(168,85,247,0.15)] text-slate-900 dark:text-slate-100' : 'border-slate-300 dark:border-purple-500/10 text-slate-800 dark:text-slate-300'} hover:border-purple-500/30 rounded-2xl text-sm font-semibold focus:outline-none transition-all duration-300 placeholder:text-slate-400 dark:placeholder:text-slate-600`}
+                    className={`w-full pl-12 pr-16 py-4 bg-white dark:bg-[#04060f]/80 border ${activeInput === 'username' ? 'border-purple-600 ring-2 ring-purple-500/20 text-slate-900 dark:text-slate-100' : 'border-slate-300 dark:border-purple-500/15 text-slate-900 dark:text-slate-200'} hover:border-purple-400 rounded-2xl text-sm font-semibold focus:outline-none transition-all duration-200 placeholder:text-slate-400 dark:placeholder:text-slate-500 shadow-sm`}
                     placeholder="Enter Analyst Username"
                   />
-                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[8px] font-mono font-bold tracking-widest text-slate-500">USR_ID</span>
+                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[8px] font-mono font-bold tracking-widest text-slate-400 dark:text-slate-500">USR_ID</span>
                 </div>
 
                 {/* Password / Crypto-Key Field */}
                 <div className="relative">
                   <div className={`absolute inset-0 bg-purple-500/5 rounded-2xl transition-all duration-300 ${activeInput === 'password' ? 'opacity-100 blur-[8px]' : 'opacity-0'}`}></div>
-                  <div className={`absolute left-4 top-1/2 -translate-y-1/2 transition-colors duration-200 ${activeInput === 'password' ? 'text-purple-600 dark:text-purple-400' : 'text-slate-500'}`}>
+                  <div className={`absolute left-4 top-1/2 -translate-y-1/2 transition-colors duration-200 ${activeInput === 'password' ? 'text-purple-600 dark:text-purple-400' : 'text-slate-400 dark:text-slate-500'}`}>
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
                   </div>
                   <input
@@ -566,25 +567,25 @@ export const LoginPanel: React.FC<LoginPanelProps> = ({ onLoginSuccess, theme = 
                     onChange={(e) => setPassword(e.target.value)}
                     onFocus={() => setActiveInput('password')}
                     onBlur={() => setActiveInput(null)}
-                    className={`w-full pl-12 pr-4 py-4 bg-slate-50 dark:bg-[#04060f]/80 border ${activeInput === 'password' ? 'border-purple-500/60 shadow-[0_0_15px_rgba(168,85,247,0.15)] text-slate-900 dark:text-slate-100' : 'border-slate-300 dark:border-purple-500/10 text-slate-800 dark:text-slate-300'} hover:border-purple-500/30 rounded-2xl text-sm font-semibold focus:outline-none transition-all duration-300 placeholder:text-slate-400 dark:placeholder:text-slate-600`}
+                    className={`w-full pl-12 pr-16 py-4 bg-white dark:bg-[#04060f]/80 border ${activeInput === 'password' ? 'border-purple-600 ring-2 ring-purple-500/20 text-slate-900 dark:text-slate-100' : 'border-slate-300 dark:border-purple-500/15 text-slate-900 dark:text-slate-200'} hover:border-purple-400 rounded-2xl text-sm font-semibold focus:outline-none transition-all duration-200 placeholder:text-slate-400 dark:placeholder:text-slate-500 shadow-sm`}
                     placeholder="Enter Secure Security Key"
                   />
-                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[8px] font-mono font-bold tracking-widest text-slate-500">HASH_KEY</span>
+                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[8px] font-mono font-bold tracking-widest text-slate-400 dark:text-slate-500">HASH_KEY</span>
                 </div>
               </div>
 
               {/* Demo Helper Box */}
-              <div className="bg-purple-50/80 dark:bg-[#050712]/90 border border-purple-200 dark:border-purple-500/5 p-3 rounded-2xl">
-                <p className="text-[9px] font-mono text-purple-700 dark:text-purple-400/80 leading-relaxed font-bold">
+              <div className="bg-purple-50 dark:bg-purple-950/20 border border-purple-200 dark:border-purple-500/25 p-3.5 rounded-2xl shadow-sm">
+                <p className="text-[10px] font-mono text-purple-900 dark:text-purple-300 leading-relaxed font-bold">
                   🗝️ CONFIG VITALS FOR DEMONSTRATION:<br />
-                  User ID: <span className="text-indigo-600 dark:text-cyan-400 font-extrabold">astu-analyst</span> | Hash Key: <span className="text-indigo-600 dark:text-cyan-400 font-extrabold">astu-sfews-2026</span>
+                  User ID: <span className="text-indigo-700 dark:text-cyan-300 font-extrabold underline">astu-analyst</span> | Hash Key: <span className="text-indigo-700 dark:text-cyan-300 font-extrabold underline">astu-sfews-2026</span>
                 </p>
               </div>
 
               {/* Action login button with sweeping pulse line */}
               <button
                 type="submit"
-                className="w-full relative overflow-hidden group bg-gradient-to-r from-purple-600 via-indigo-600 to-indigo-700 hover:from-purple-500 hover:to-indigo-500 text-white py-4.5 rounded-2xl font-black text-sm tracking-widest uppercase transition-all duration-300 shadow-[0_4px_25px_rgba(139,92,246,0.3)] hover:shadow-[0_0_35px_rgba(139,92,246,0.55)] active:scale-[0.98] border border-purple-400/20"
+                className="w-full relative overflow-hidden group bg-gradient-to-r from-purple-600 via-indigo-600 to-indigo-700 hover:from-purple-500 hover:to-indigo-500 text-white py-4 rounded-2xl font-black text-sm tracking-widest uppercase transition-all duration-300 shadow-lg shadow-purple-600/30 active:scale-[0.98]"
               >
                 <span className="absolute inset-x-4 top-0.5 h-[1.5px] bg-gradient-to-r from-transparent via-purple-300 to-transparent opacity-50"></span>
                 AUTHORIZE LINK PORTAL
@@ -596,14 +597,14 @@ export const LoginPanel: React.FC<LoginPanelProps> = ({ onLoginSuccess, theme = 
             <div className="space-y-5 my-6 animate-in fade-in zoom-in-95 duration-200">
               
               {authError && (
-                <div className="bg-red-500/10 border border-red-500/20 text-red-300 text-xs px-4 py-2 rounded-xl font-mono text-[10.5px]">
+                <div className="bg-red-500/10 border border-red-500/20 text-red-500 dark:text-red-300 text-xs px-4 py-2 rounded-xl font-mono text-[10.5px]">
                   {authError}
                 </div>
               )}
 
               <div className="bg-slate-50 dark:bg-[#03050c]/85 border border-slate-200 dark:border-purple-500/10 rounded-2xl p-4.5 space-y-4">
                 <div className="flex justify-between items-center border-b border-slate-200 dark:border-purple-500/10 pb-3">
-                  <span className="text-[8.5px] font-extrabold uppercase text-slate-500 tracking-widest font-mono">Biometric Token Buffer</span>
+                  <span className="text-[8.5px] font-extrabold uppercase text-slate-600 dark:text-slate-400 tracking-widest font-mono">Biometric Token Buffer</span>
                   <span className="text-xs font-mono font-bold tracking-widest text-purple-600 dark:text-purple-400">
                     {securityCode ? securityCode.split('').map(() => '●').join(' ') : 'KEYPAD OVERRIDE'}
                   </span>
@@ -643,10 +644,10 @@ export const LoginPanel: React.FC<LoginPanelProps> = ({ onLoginSuccess, theme = 
               </div>
 
               {/* PIN Code Hint for easy testing */}
-              <div className="bg-purple-50/80 dark:bg-[#050712]/90 border border-purple-200 dark:border-purple-500/5 p-3 rounded-2xl">
-                <p className="text-[9px] font-mono text-purple-700 dark:text-purple-400/80 leading-relaxed font-bold">
+              <div className="bg-purple-50 dark:bg-purple-950/20 border border-purple-200 dark:border-purple-500/25 p-3.5 rounded-2xl shadow-sm">
+                <p className="text-[10px] font-mono text-purple-900 dark:text-purple-300 leading-relaxed font-bold">
                   🔑 SECURITY PIN OVERRIDE CODE:<br />
-                  Input Override Sequence: <span className="text-indigo-600 dark:text-cyan-400 font-extrabold">202611</span>
+                  Input Override Sequence: <span className="text-indigo-700 dark:text-cyan-300 font-extrabold underline">202611</span>
                 </p>
               </div>
 
@@ -654,9 +655,9 @@ export const LoginPanel: React.FC<LoginPanelProps> = ({ onLoginSuccess, theme = 
           )}
 
           {/* Secure SSL Panel Footer */}
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-3 border-t border-purple-500/10 pt-5 text-[9px] text-slate-500 font-bold uppercase tracking-widest font-mono">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-3 border-t border-slate-200 dark:border-purple-500/10 pt-5 text-[9px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-widest font-mono">
             <span className="flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
+              <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse"></span>
               ENC-KEY: AES-SHA-256
             </span>
             <span>SYSTEM ENCRYPTED SFEWS SEC</span>

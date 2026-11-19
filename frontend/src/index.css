@@ -113,10 +113,14 @@
    LIGHT / BRIGHTNESS THEME (Universal Maximum Contrast & Zero Invisible Text)
    ========================================================================== */
 html.light,
+html.light body,
+body.light,
 .light {
   color-scheme: light;
 }
 
+html.light body,
+body.light,
 .light body {
   background-color: #f8fafc !important;
   color: #0f172a !important;
@@ -311,55 +315,115 @@ html.light,
 }
 
 /* Universal Light Mode Background Sanitization (Eliminates ALL Black Boxes) */
-.light [class*="bg-[#0"]:not(button):not([class*="bg-indigo"]):not([class*="bg-purple"]):not([class*="bg-red"]),
-.light [class*="bg-[#1"]:not(button):not([class*="bg-indigo"]):not([class*="bg-purple"]):not([class*="bg-red"]),
-.light [class*="bg-[#20"]:not(button),
-.light [class*="bg-black"]:not(button),
-.light [class*="bg-slate-950"]:not(button),
-.light [class*="bg-slate-900"]:not(button):not(.bg-gradient-to-r):not(.bg-gradient-to-b):not(.bg-gradient-to-l):not(.bg-gradient-to-t),
-.light [class*="bg-slate-800"]:not(button),
+html.light [class*="bg-[#0"]:not([class*="bg-indigo"]):not([class*="bg-purple"]):not([class*="bg-red"]),
+.light [class*="bg-[#0"]:not([class*="bg-indigo"]):not([class*="bg-purple"]):not([class*="bg-red"]),
+html.light [class*="bg-[#1"]:not([class*="bg-indigo"]):not([class*="bg-purple"]):not([class*="bg-red"]),
+.light [class*="bg-[#1"]:not([class*="bg-indigo"]):not([class*="bg-purple"]):not([class*="bg-red"]),
+html.light [class*="bg-[#20"],
+.light [class*="bg-[#20"],
+html.light [class*="bg-black"],
+.light [class*="bg-black"],
+html.light [class*="bg-slate-950"],
+.light [class*="bg-slate-950"],
+html.light [class*="bg-slate-900"]:not(.bg-gradient-to-r):not(.bg-gradient-to-b):not(.bg-gradient-to-l):not(.bg-gradient-to-t),
+.light [class*="bg-slate-900"]:not(.bg-gradient-to-r):not(.bg-gradient-to-b):not(.bg-gradient-to-l):not(.bg-gradient-to-t),
+html.light [class*="bg-slate-800"],
+.light [class*="bg-slate-800"],
+html.light .bg-\[\#020408\],
 .light .bg-\[\#020408\],
+html.light .bg-\[\#020409\],
 .light .bg-\[\#020409\],
+html.light .bg-\[\#020409\]\/95,
 .light .bg-\[\#020409\]\/95,
+html.light .bg-\[\#02050b\],
 .light .bg-\[\#02050b\],
+html.light .bg-\[\#03060c\],
 .light .bg-\[\#03060c\],
+html.light .bg-\[\#03060c\]\/90,
 .light .bg-\[\#03060c\]\/90,
+html.light .bg-\[\#03070f\],
 .light .bg-\[\#03070f\],
+html.light .bg-\[\#03070f\]\/90,
 .light .bg-\[\#03070f\]\/90,
+html.light .bg-\[\#040811\],
 .light .bg-\[\#040811\],
+html.light .bg-\[\#040811\]\/40,
 .light .bg-\[\#040811\]\/40,
+html.light .bg-\[\#02040a\],
 .light .bg-\[\#02040a\],
+html.light .bg-\[\#02040a\]\/40,
 .light .bg-\[\#02040a\]\/40,
+html.light .bg-\[\#02040a\]\/50,
 .light .bg-\[\#02040a\]\/50,
+html.light .bg-\[\#030610\],
 .light .bg-\[\#030610\],
+html.light .bg-\[\#030610\]\/40,
 .light .bg-\[\#030610\]\/40,
+html.light .bg-\[\#030610\]\/50,
 .light .bg-\[\#030610\]\/50,
+html.light .bg-\[\#030610\]\/80,
 .light .bg-\[\#030610\]\/80,
+html.light .bg-\[\#030610\]\/90,
 .light .bg-\[\#030610\]\/90,
+html.light .bg-\[\#040812\],
 .light .bg-\[\#040812\],
+html.light .bg-\[\#040813\],
 .light .bg-\[\#040813\],
+html.light .bg-\[\#040814\],
 .light .bg-\[\#040814\],
+html.light .bg-\[\#050911\],
 .light .bg-\[\#050911\],
+html.light .bg-\[\#050911\]\/80,
 .light .bg-\[\#050911\]\/80,
+html.light .bg-\[\#050913\],
 .light .bg-\[\#050913\],
+html.light .bg-\[\#050914\],
 .light .bg-\[\#050914\],
+html.light .bg-\[\#060a16\],
 .light .bg-\[\#060a16\],
+html.light .bg-\[\#080c14\],
 .light .bg-\[\#080c14\],
+html.light .bg-\[\#080d19\],
 .light .bg-\[\#080d19\],
+html.light .bg-\[\#080d19\]\/90,
 .light .bg-\[\#080d19\]\/90,
+html.light .bg-\[\#090e18\],
 .light .bg-\[\#090e18\],
+html.light .bg-\[\#0b0f19\],
 .light .bg-\[\#0b0f19\],
+html.light .bg-slate-950,
 .light .bg-slate-950,
+html.light .bg-slate-950\/40,
 .light .bg-slate-950\/40,
+html.light .bg-slate-950\/50,
 .light .bg-slate-950\/50,
+html.light .bg-slate-950\/70,
 .light .bg-slate-950\/70,
+html.light .bg-slate-950\/80,
 .light .bg-slate-950\/80,
+html.light .bg-slate-900,
 .light .bg-slate-900,
+html.light .bg-slate-900\/40,
 .light .bg-slate-900\/40,
+html.light .bg-slate-900\/50,
 .light .bg-slate-900\/50,
+html.light .bg-slate-900\/60,
 .light .bg-slate-900\/60,
+html.light .bg-slate-900\/80,
 .light .bg-slate-900\/80 {
   background-color: #f1f5f9 !important;
+  border-color: #cbd5e1 !important;
+}
+
+/* Light mode button sanitization */
+html.light button[class*="bg-[#0"],
+.light button[class*="bg-[#0"],
+html.light button[class*="bg-slate-9"],
+.light button[class*="bg-slate-9"],
+html.light button[class*="bg-black"],
+.light button[class*="bg-black"] {
+  background-color: #ffffff !important;
+  color: #1e293b !important;
   border-color: #cbd5e1 !important;
 }
 
@@ -450,6 +514,9 @@ html.light,
 }
 
 /* Radial Progress Track in Light Mode */
+html.light circle[stroke="rgba(10, 15, 30, 0.8)"],
+html.light circle[stroke="rgba(10,15,30,0.8)"],
+html.light .radial-track,
 .light circle[stroke="rgba(10, 15, 30, 0.8)"],
 .light circle[stroke="rgba(10,15,30,0.8)"],
 .light .radial-track {

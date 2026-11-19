@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { DashboardPayload } from '../types';
+import { SensorNode, DashboardPayload } from '../types';
 
 interface IoTPanelProps {
   payload: DashboardPayload | null;
@@ -31,7 +31,14 @@ export const IoTPanel: React.FC<IoTPanelProps> = ({
   activeStationId,
   setActiveStationId,
 }) => {
-  const activeStation = payload?.nodes.find((s) => s.id === activeStationId) || payload?.nodes[0];
+  const fallbackNodes: SensorNode[] = [
+    { id: 'AWASH-STN-01', name: 'Awash Melka Weir', latitude: 8.9806, longitude: 39.0569, waterLevelCm: 485.2, rainfallRateMm: 14.8, batteryLevel: 92, currentRisk: 'Critical', status: 'ACTIVE' },
+    { id: 'AWASH-STN-02', name: 'Adama Siphon Bridge', latitude: 8.5400, longitude: 39.2700, waterLevelCm: 310.5, rainfallRateMm: 8.2, batteryLevel: 88, currentRisk: 'Warning', status: 'ACTIVE' },
+    { id: 'AWASH-STN-03', name: 'Welenchiti Basin Crossing', latitude: 8.6667, longitude: 39.4333, waterLevelCm: 180.0, rainfallRateMm: 2.1, batteryLevel: 95, currentRisk: 'Safe', status: 'ACTIVE' },
+    { id: 'AWASH-STN-04', name: 'Metehara Sugar Intake', latitude: 8.9000, longitude: 39.9167, waterLevelCm: 225.4, rainfallRateMm: 4.5, batteryLevel: 79, currentRisk: 'Safe', status: 'ACTIVE' },
+  ];
+  const iotNodes = payload?.nodes && payload.nodes.length > 0 ? payload.nodes : fallbackNodes;
+  const activeStation = iotNodes.find((s) => s.id === activeStationId) || iotNodes[0];
   const activeStationName = activeStation?.name || 'NODE-ALPHA-1';
 
   // Dynamic parameters based on active station and time to simulate activity
@@ -292,7 +299,7 @@ export const IoTPanel: React.FC<IoTPanelProps> = ({
             <p className="text-[11px] sm:text-xs text-slate-500 mt-1 font-bold uppercase tracking-widest font-mono mb-3 sm:mb-4">Choose an active edge board to inspect</p>
             
             <div className="flex flex-wrap gap-2 sm:gap-2.5 mb-4 sm:mb-6">
-              {payload?.nodes.map((s) => (
+              {iotNodes.map((s) => (
                 <button
                   key={s.id}
                   onClick={() => setActiveStationId(s.id)}

@@ -174,7 +174,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
           
           <div className="flex items-baseline mt-3 gap-2 relative z-10">
             <span className="text-4xl sm:text-5xl font-black text-slate-900 dark:text-slate-100 tracking-tight font-mono">
-              {payload?.summary.totalNodes || 3}
+              {payload?.summary?.totalNodes || displayNodes.length}
             </span>
             <span className="text-[10px] text-slate-600 dark:text-slate-400 font-extrabold uppercase tracking-widest">Active Stations</span>
           </div>
@@ -199,7 +199,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
           
           <div className="flex items-baseline mt-3 gap-1.5 relative z-10">
             <span className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-slate-100 tracking-tight font-mono">
-              {Math.max(...(payload?.nodes.map(n => Math.round(0.045 * Math.pow(Math.max(0, (n.waterLevelCm || 0) - 15), 1.62))) || [450]))}
+              {Math.max(...displayNodes.map(n => Math.round(0.045 * Math.pow(Math.max(0, (n.waterLevelCm || 0) - 15), 1.62))))}
             </span>
             <span className="text-xs font-bold text-cyan-700 dark:text-cyan-300 font-mono">m³/s</span>
           </div>
@@ -225,7 +225,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
           
           <div className="flex items-baseline mt-3 gap-2 relative z-10">
             <span className="text-4xl sm:text-5xl font-black text-slate-900 dark:text-slate-100 tracking-tight font-mono">
-              {payload?.summary.activeAlerts || 0}
+              {payload?.summary?.activeAlerts ?? criticalCount}
             </span>
             <span className="text-[10px] text-slate-600 dark:text-slate-400 font-extrabold uppercase tracking-widest">Open Alerts</span>
           </div>
@@ -520,18 +520,18 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
           </div>
 
           {/* scrolling terminal log view */}
-          <div className="flex-grow w-full bg-slate-100/90 dark:bg-[#020409] border border-slate-200 dark:border-purple-500/10 rounded-2xl p-5 font-mono text-[11px] leading-relaxed text-slate-700 dark:text-slate-300 space-y-3 overflow-y-auto max-h-[220px] scrollbar-thin">
-            <p className="text-emerald-400"><span className="text-slate-600">[04:02:12]</span> ⚡ [LoRa-Mesh] Node-Alpha-1 sync successfully (Water depth: 142.2cm, precipitation: 0.0mm/h, RSSI: -64dBm)</p>
-            <p className="text-emerald-400"><span className="text-slate-600">[04:02:18]</span> ⚡ [LoRa-Mesh] Node-Beta-2 sync successfully (Water depth: 298.5cm, precipitation: 2.1mm/h, RSSI: -68dBm)</p>
-            <p className="text-purple-400"><span className="text-slate-600">[04:02:24]</span> 🧬 [ML-Predictor] Computed early neural warning vectors. Overflow risk bias at Melka Weir: 78%</p>
-            <p className="text-cyan-400"><span className="text-slate-600">[04:02:30]</span> 📡 [Sys-Sync] Hydrological database transactions successfully written to Neon postgres cluster</p>
-            <p className="text-amber-400"><span className="text-slate-600">[04:02:36]</span> 📲 [SMS-Center] Proximity Emergency SMS broadcast generated for Abebe Bikila (+251 911 234 567)</p>
-            <p className="text-slate-500"><span className="text-slate-600">[04:02:42]</span> 🔌 [ESP32-Core] Microcontroller diagnostic report nominal. Chip temperature: 38.6°C | Solar V: 3.72V</p>
-            <p className="text-emerald-400"><span className="text-slate-600">[04:02:48]</span> ⚡ [LoRa-Mesh] Node-Gamma-3 sync successfully (Water depth: 488.1cm, precipitation: 4.8mm/h, RSSI: -72dBm)</p>
-            <p className="text-purple-400"><span className="text-slate-600">[04:03:02]</span> 🧬 [ML-Predictor] Warning state confirmed. Executing dynamic warning threshold updates...</p>
+          <div className="flex-grow w-full bg-slate-100/90 dark:bg-[#020409] border border-slate-200 dark:border-purple-500/10 rounded-2xl p-5 font-mono text-[11px] leading-relaxed text-slate-800 dark:text-slate-300 space-y-3 overflow-y-auto max-h-[220px] scrollbar-thin">
+            <p className="text-emerald-700 dark:text-emerald-400"><span className="text-slate-500 dark:text-slate-600">[04:02:12]</span> ⚡ [LoRa-Mesh] Node-Alpha-1 sync successfully (Water depth: 142.2cm, precipitation: 0.0mm/h, RSSI: -64dBm)</p>
+            <p className="text-emerald-700 dark:text-emerald-400"><span className="text-slate-500 dark:text-slate-600">[04:02:18]</span> ⚡ [LoRa-Mesh] Node-Beta-2 sync successfully (Water depth: 298.5cm, precipitation: 2.1mm/h, RSSI: -68dBm)</p>
+            <p className="text-purple-700 dark:text-purple-400"><span className="text-slate-500 dark:text-slate-600">[04:02:24]</span> 🧬 [ML-Predictor] Computed early neural warning vectors. Overflow risk bias at Melka Weir: 78%</p>
+            <p className="text-cyan-700 dark:text-cyan-400"><span className="text-slate-500 dark:text-slate-600">[04:02:30]</span> 📡 [Sys-Sync] Hydrological database transactions successfully written to Neon postgres cluster</p>
+            <p className="text-amber-700 dark:text-amber-400"><span className="text-slate-500 dark:text-slate-600">[04:02:36]</span> 📲 [SMS-Center] Proximity Emergency SMS broadcast generated for Abebe Bikila (+251 911 234 567)</p>
+            <p className="text-slate-600 dark:text-slate-400"><span className="text-slate-500 dark:text-slate-600">[04:02:42]</span> 🔌 [ESP32-Core] Microcontroller diagnostic report nominal. Chip temperature: 38.6°C | Solar V: 3.72V</p>
+            <p className="text-emerald-700 dark:text-emerald-400"><span className="text-slate-500 dark:text-slate-600">[04:02:48]</span> ⚡ [LoRa-Mesh] Node-Gamma-3 sync successfully (Water depth: 488.1cm, precipitation: 4.8mm/h, RSSI: -72dBm)</p>
+            <p className="text-purple-700 dark:text-purple-400"><span className="text-slate-500 dark:text-slate-600">[04:03:02]</span> 🧬 [ML-Predictor] Warning state confirmed. Executing dynamic warning threshold updates...</p>
           </div>
 
-          <div className="border-t border-white/5 pt-4.5 text-[9px] font-mono text-purple-400 uppercase font-black tracking-widest flex items-center gap-2 justify-end">
+          <div className="border-t border-slate-200 dark:border-white/5 pt-4.5 text-[9px] font-mono text-purple-700 dark:text-purple-400 uppercase font-black tracking-widest flex items-center gap-2 justify-end">
             <span className="w-1.5 h-1.5 rounded-full bg-purple-500 animate-pulse"></span>
             Relay Server: SECURE_WS_RELAY_v1.0.8
           </div>
@@ -604,7 +604,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
             <div 
               className="absolute inset-0 bg-cover bg-center opacity-30 mix-blend-luminosity grayscale contrast-125 pointer-events-none transition-all duration-700"
               style={{ 
-                backgroundImage: `url(${CAMERA_FEED_SLIDES[(payload?.nodes.findIndex(n => n.id === activeStationId) !== -1 ? (payload?.nodes.findIndex(n => n.id === activeStationId) ?? 0) : 0) % CAMERA_FEED_SLIDES.length].url})`,
+                backgroundImage: `url(${CAMERA_FEED_SLIDES[(displayNodes.findIndex(n => n.id === activeStationId) !== -1 ? displayNodes.findIndex(n => n.id === activeStationId) : 0) % CAMERA_FEED_SLIDES.length].url})`,
                 filter: 'brightness(1.1) contrast(1.2)'
               }}
             ></div>
@@ -621,7 +621,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
 
             {/* night vision camera overlay text */}
             <div className="flex justify-between text-[8px] sm:text-[9px] font-mono text-emerald-700 dark:text-emerald-400 z-20 font-black tracking-widest uppercase">
-              <span className="truncate max-w-[60%]">{CAMERA_FEED_SLIDES[(payload?.nodes.findIndex(n => n.id === activeStationId) !== -1 ? (payload?.nodes.findIndex(n => n.id === activeStationId) ?? 0) : 0) % CAMERA_FEED_SLIDES.length].title.toUpperCase()}</span>
+              <span className="truncate max-w-[60%]">{CAMERA_FEED_SLIDES[(displayNodes.findIndex(n => n.id === activeStationId) !== -1 ? displayNodes.findIndex(n => n.id === activeStationId) : 0) % CAMERA_FEED_SLIDES.length].title.toUpperCase()}</span>
               <span>REC [●]</span>
             </div>
 
@@ -730,7 +730,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
               <path d="M 280,240 Q 320,290 380,220 T 480,260" stroke="rgba(168,85,247,0.03)" strokeWidth="1.5" fill="none" />
 
               {/* Pulsing neon dots for sensor stations */}
-              {payload?.nodes.map((node, index) => {
+              {displayNodes.map((node, index) => {
                 const coords = getMapCoordinates(node.id, index);
                 const isSelected = activeStationId === node.id;
                 

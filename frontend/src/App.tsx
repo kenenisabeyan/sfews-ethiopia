@@ -31,7 +31,7 @@ const App: React.FC = () => {
     const [theme, setTheme] = useState<'dark' | 'light'>(() => {
         const saved = sessionStorage.getItem('sfews_theme') || localStorage.getItem('sfews_theme');
         if (saved === 'dark' || saved === 'light') return saved;
-        return 'dark'; // Default to cyberpunk dark
+        return 'light'; // Default to Light Mode
     });
 
     useEffect(() => {
@@ -465,7 +465,7 @@ const App: React.FC = () => {
             {isMobileMenuOpen && (
                 <div 
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="fixed inset-0 bg-black/75 backdrop-blur-sm z-40 lg:hidden animate-in fade-in duration-200"
+                    className="fixed inset-0 bg-slate-900/40 dark:bg-black/75 backdrop-blur-sm z-40 lg:hidden animate-in fade-in duration-200"
                     aria-hidden="true"
                 />
             )}
@@ -484,7 +484,7 @@ const App: React.FC = () => {
                         </div>
                         <div>
                             <div className="flex items-center gap-1.5">
-                                <h2 className="text-lg font-black tracking-tight bg-gradient-to-r from-slate-100 via-indigo-100 to-cyan-200 bg-clip-text text-transparent">SFEWS Awash</h2>
+                                <h2 className="text-lg font-black tracking-tight text-slate-900 dark:bg-gradient-to-r dark:from-slate-100 dark:via-indigo-100 dark:to-cyan-200 dark:bg-clip-text dark:text-transparent">SFEWS Awash</h2>
                                 <span className="text-[9px] font-mono font-black text-cyan-400 bg-cyan-500/10 border border-cyan-500/20 px-1.5 py-0.2 rounded">v2.1</span>
                             </div>
                             <span className="text-[10px] font-bold text-slate-500 tracking-wider block font-mono mt-0.5">Basin Early Warning System</span>
@@ -569,7 +569,7 @@ const App: React.FC = () => {
                                 sessionStorage.removeItem('sfews_authenticated');
                                 setIsAuthenticated(false);
                             }}
-                            className="w-7 h-7 rounded-lg bg-red-950/30 hover:bg-red-950/60 border border-red-500/20 text-red-400 flex items-center justify-center transition-colors"
+                            className="w-7 h-7 rounded-lg bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 dark:bg-red-950/30 dark:hover:bg-red-950/60 dark:text-red-400 dark:border-red-500/20 flex items-center justify-center transition-colors shadow-xs"
                             title="Log Out"
                         >
                             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
@@ -802,7 +802,7 @@ const App: React.FC = () => {
                         <div className="p-3.5 sm:p-4 bg-gradient-to-r from-purple-50 via-indigo-50 to-cyan-50 dark:from-purple-950/40 dark:via-indigo-950/40 dark:to-cyan-950/40 border-b border-slate-200 dark:border-white/5 flex items-center justify-between shrink-0">
                             <div className="flex items-center gap-3">
                                 <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-purple-600 to-cyan-400 flex items-center justify-center shadow-lg relative shrink-0">
-                                    <span className="w-2 h-2 rounded-full bg-emerald-400 border border-slate-900 absolute -top-0.5 -right-0.5 animate-pulse"></span>
+                                    <span className="w-2 h-2 rounded-full bg-emerald-400 border border-white dark:border-slate-900 absolute -top-0.5 -right-0.5 animate-pulse"></span>
                                     <svg className="w-4.5 h-4.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M13 10V3L4 14h7v7l9-11h-7z" />
                                     </svg>
