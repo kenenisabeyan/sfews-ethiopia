@@ -517,46 +517,80 @@ export const MapTab: React.FC<MapTabProps> = ({
                     </div>
 
                     {/* 3. Floating HUD Analytics Cards Overlaid on bottom of Map area */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 p-3.5 sm:p-4.5 border-t border-slate-900/60 bg-[#040811]/40 rounded-b-2xl sm:rounded-b-3xl">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 p-3.5 sm:p-4.5 border-t border-slate-200 dark:border-slate-900/60 bg-slate-100/80 dark:bg-[#040811]/40">
                         
                         {/* Card A: Basin Hydration Overlays */}
-                        <div className="glass-panel p-3 sm:p-3.5 rounded-2xl flex items-center justify-between border-slate-900">
+                        <div className="glass-panel p-3 sm:p-3.5 rounded-2xl flex items-center justify-between border-slate-200 dark:border-slate-900 shadow-sm">
                             <div>
-                                <span className="text-[8px] font-bold text-slate-500 uppercase tracking-widest block">Average volume</span>
-                                <span className="text-sm font-black text-cyan-400 font-mono mt-0.5 sm:mt-1 block">
-                                    {(145 + (simulationLevel * 2.2)).toFixed(1)} <span className="text-[9px] text-slate-500 font-medium">cm</span>
+                                <span className="text-[8px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest block">Average volume</span>
+                                <span className="text-sm font-black text-cyan-600 dark:text-cyan-400 font-mono mt-0.5 sm:mt-1 block">
+                                    {(145 + (simulationLevel * 2.2)).toFixed(1)} <span className="text-[9px] text-slate-500 dark:text-slate-400 font-medium">cm</span>
                                 </span>
                             </div>
-                            <div className="w-12 h-1 bg-slate-950 border border-slate-900 rounded relative overflow-hidden">
+                            <div className="w-12 h-1.5 bg-slate-200 dark:bg-slate-950 border border-slate-300 dark:border-slate-900 rounded-full relative overflow-hidden">
                                 <div 
-                                    className="absolute left-0 top-0 h-full bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.5)] transition-all duration-300"
+                                    className="absolute left-0 top-0 h-full bg-cyan-500 transition-all duration-300"
                                     style={{ width: `${Math.min(100, 30 + simulationLevel * 0.7)}%` }}
                                 />
                             </div>
                         </div>
 
                         {/* Card B: Mesh Network Ping Oscillations */}
-                        <div className="glass-panel p-3 sm:p-3.5 rounded-2xl flex items-center justify-between border-slate-900">
+                        <div className="glass-panel p-3 sm:p-3.5 rounded-2xl flex items-center justify-between border-slate-200 dark:border-slate-900 shadow-sm">
                             <div>
-                                <span className="text-[8px] font-bold text-slate-500 uppercase tracking-widest block">Mesh Ping / Packets</span>
-                                <span className="text-sm font-black text-purple-400 font-mono mt-0.5 sm:mt-1 block">
+                                <span className="text-[8px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest block">Mesh Ping / Packets</span>
+                                <span className="text-sm font-black text-purple-600 dark:text-purple-400 font-mono mt-0.5 sm:mt-1 block">
                                     {meshPing}ms / {meshPackets} pkts
                                 </span>
                             </div>
-                            <span className="px-2 py-0.5 rounded-full text-[8px] font-black uppercase bg-purple-500/10 border border-purple-500/20 text-purple-400">
+                            <span className="px-2 py-0.5 rounded-full text-[8px] font-black uppercase bg-purple-500/10 border border-purple-500/20 text-purple-700 dark:text-purple-400">
                                 433MHZ LORA
                             </span>
                         </div>
 
                         {/* Card C: Battery Energy Matrix */}
-                        <div className="glass-panel p-3 sm:p-3.5 rounded-2xl flex items-center justify-between border-slate-900 sm:col-span-2 lg:col-span-1">
+                        <div className="glass-panel p-3 sm:p-3.5 rounded-2xl flex items-center justify-between border-slate-200 dark:border-slate-900 sm:col-span-2 lg:col-span-1 shadow-sm">
                             <div>
-                                <span className="text-[8px] font-bold text-slate-500 uppercase tracking-widest block">Solar efficiency</span>
-                                <span className="text-sm font-black text-emerald-400 font-mono mt-0.5 sm:mt-1 block">
+                                <span className="text-[8px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest block">Solar efficiency</span>
+                                <span className="text-sm font-black text-emerald-600 dark:text-emerald-400 font-mono mt-0.5 sm:mt-1 block">
                                     {meshSolarEff.toFixed(1)}%
                                 </span>
                             </div>
                             <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 border border-emerald-400 animate-pulse" />
+                        </div>
+                    </div>
+
+                    {/* 4. Awash Reach Flood Wave Routing Timeline */}
+                    <div className="border-t border-slate-200 dark:border-slate-800/60 p-3.5 sm:p-4 bg-slate-50 dark:bg-[#03060c]/70 rounded-b-2xl sm:rounded-b-3xl">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2.5">
+                            <span className="text-[10px] font-mono font-black uppercase text-indigo-700 dark:text-indigo-300 tracking-wider flex items-center gap-1.5">
+                                <span>⏱️</span> AWASH REACH WAVE PROPAGATION FORECAST:
+                            </span>
+                            <span className="text-[9px] font-mono text-slate-500 dark:text-slate-400">
+                                Celerity: ~2.3 m/s • Dynamic Hydraulic Routing
+                            </span>
+                        </div>
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-[9px] font-mono">
+                            <div className="bg-white dark:bg-slate-900/60 p-2 sm:p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                                <span className="text-slate-500 dark:text-slate-400 font-bold block">Upper Wonji Reach</span>
+                                <div className="text-xs font-black text-slate-800 dark:text-slate-200 mt-0.5">+1.8 hrs to Crest</div>
+                                <span className="text-emerald-600 dark:text-emerald-400 font-bold text-[8px]">● Stable Buffer</span>
+                            </div>
+                            <div className="bg-white dark:bg-slate-900/60 p-2 sm:p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                                <span className="text-slate-500 dark:text-slate-400 font-bold block">Awash Melka Station</span>
+                                <div className="text-xs font-black text-cyan-700 dark:text-cyan-400 mt-0.5">+5.4 hrs to Crest</div>
+                                <span className="text-cyan-600 dark:text-cyan-400 font-bold text-[8px]">▲ Stage Surging</span>
+                            </div>
+                            <div className="bg-white dark:bg-slate-900/60 p-2 sm:p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                                <span className="text-slate-500 dark:text-slate-400 font-bold block">Middle Gewane Reach</span>
+                                <div className="text-xs font-black text-amber-700 dark:text-amber-400 mt-0.5">+21.6 hrs to Crest</div>
+                                <span className="text-amber-600 dark:text-amber-400 font-bold text-[8px]">⚠️ Advisory Stage</span>
+                            </div>
+                            <div className="bg-white dark:bg-slate-900/60 p-2 sm:p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                                <span className="text-slate-500 dark:text-slate-400 font-bold block">Lower Afambo Delta</span>
+                                <div className="text-xs font-black text-purple-700 dark:text-purple-400 mt-0.5">+38.4 hrs to Crest</div>
+                                <span className="text-purple-600 dark:text-purple-400 font-bold text-[8px]">● High Retention</span>
+                            </div>
                         </div>
                     </div>
 
