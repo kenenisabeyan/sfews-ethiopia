@@ -165,7 +165,7 @@ export const MapTab: React.FC<MapTabProps> = ({
                     </div>
 
                     {/* Simulation Engine Slider bar */}
-                    <div className="mt-4 sm:mt-5 pt-3 sm:pt-4 border-t border-slate-900/60 flex flex-col md:flex-row md:items-center gap-3 sm:gap-4.5 relative z-10">
+                    <div className="mt-4 sm:mt-5 pt-3 sm:pt-4 border-t border-slate-200 dark:border-slate-800/60 flex flex-col md:flex-row md:items-center gap-3 sm:gap-4.5 relative z-10">
                         <div className="flex items-center gap-3 min-w-[200px]">
                             <button 
                                 onClick={() => setIsSimulating(!isSimulating)}
@@ -699,14 +699,14 @@ export const MapTab: React.FC<MapTabProps> = ({
                             </div>
                         </div>
                     ) : (
-                        <div className="flex-grow flex flex-col items-center justify-center text-center text-slate-600 py-16">
-                            <svg className="w-12 h-12 text-slate-800 mb-4 animate-[bounce_2s_infinite]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div className="flex-grow flex flex-col items-center justify-center text-center text-slate-500 py-16">
+                            <svg className="w-12 h-12 text-slate-400 dark:text-slate-600 mb-4 animate-[bounce_2s_infinite]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
                             </svg>
-                            <p className="font-black text-xs uppercase tracking-widest font-mono text-slate-500">
+                            <p className="font-black text-xs uppercase tracking-widest font-mono text-slate-700 dark:text-slate-400">
                                 Calibration Standby
                             </p>
-                            <p className="text-[10px] text-slate-600 mt-2 max-w-[180px] leading-relaxed">
+                            <p className="text-[10px] text-slate-600 dark:text-slate-400 mt-2 max-w-[180px] leading-relaxed">
                                 Select an active Awash transceiver node dot on the GIS map to execute diagnostic query registers.
                             </p>
                         </div>
@@ -715,7 +715,7 @@ export const MapTab: React.FC<MapTabProps> = ({
 
                 {/* Broadcast Action block at the bottom */}
                 {selectedMapNode && (
-                    <div className="relative z-10 pt-4 border-t border-slate-900/60 mt-4">
+                    <div className="relative z-10 pt-4 border-t border-slate-200 dark:border-slate-800/60 mt-4">
                         <button 
                             onClick={() => broadcastEmergencySMS(selectedMapNode)}
                             className="w-full bg-red-600/20 hover:bg-red-600/35 text-red-600 dark:text-red-400 border border-red-500/35 py-3.5 rounded-2xl font-black text-[10px] transition-all duration-300 tracking-widest uppercase shadow-[0_0_15px_rgba(239,68,68,0.15)] flex items-center justify-center gap-2 hover:scale-[1.02]"
