@@ -141,7 +141,7 @@ export const AlertsPanel: React.FC<AlertsPanelProps> = ({
               NATIONAL CIVIL DEFENSE ESCALATION MATRIX
             </span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-slate-100 mt-2 tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-slate-100 mt-2 tracking-tight">
             Emergency Alerts & Civil Protection Console
           </h1>
           <p className="text-xs sm:text-sm text-slate-400 mt-1 font-semibold">
@@ -312,7 +312,7 @@ export const AlertsPanel: React.FC<AlertsPanelProps> = ({
 
             <div>
               <div className="flex items-center justify-between">
-                <h2 className="text-base font-black text-slate-100 uppercase tracking-wide flex items-center gap-2">
+                <h2 className="text-base font-black text-slate-900 dark:text-slate-100 uppercase tracking-wide flex items-center gap-2">
                   <span className="text-purple-400">📡</span>
                   Civil Defense SMS Dispatcher
                 </h2>
@@ -423,7 +423,7 @@ export const AlertsPanel: React.FC<AlertsPanelProps> = ({
           <div className="glass-panel rounded-3xl p-5 sm:p-7 space-y-5">
             <div className="flex items-center justify-between pb-3 border-b border-white/5">
               <div>
-                <h2 className="text-base font-black text-slate-100 uppercase tracking-wide">
+                <h2 className="text-base font-black text-slate-900 dark:text-slate-100 uppercase tracking-wide">
                   Community Elder Directory
                 </h2>
                 <p className="text-[11px] font-mono text-slate-500 font-bold uppercase tracking-wider mt-0.5">

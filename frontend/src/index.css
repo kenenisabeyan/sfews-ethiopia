@@ -323,6 +323,62 @@ html.light,
   color: #475569 !important;
 }
 
+/* Light Mode High-Contrast Vibrant Telemetry Colors */
+.light .text-cyan-400,
+.light .text-cyan-300 {
+  color: #0e7490 !important; /* Deep Cyan 700 - 6.5:1 contrast on white */
+}
+
+.light .text-emerald-400,
+.light .text-emerald-300,
+.light .text-emerald-450 {
+  color: #047857 !important; /* Deep Emerald 700 - 5.5:1 contrast on white */
+}
+
+.light .text-purple-400,
+.light .text-purple-300 {
+  color: #6d28d9 !important; /* Deep Purple 700 - 7:1 contrast on white */
+}
+
+.light .text-indigo-400,
+.light .text-indigo-300 {
+  color: #4338ca !important; /* Deep Indigo 700 - 6:1 contrast on white */
+}
+
+.light .text-amber-400,
+.light .text-amber-300 {
+  color: #b45309 !important; /* Deep Amber 700 - 5:1 contrast on white */
+}
+
+.light .text-red-400,
+.light .text-red-300 {
+  color: #b91c1c !important; /* Deep Red 700 - 6:1 contrast on white */
+}
+
+.light .text-blue-400,
+.light .text-blue-300 {
+  color: #1d4ed8 !important; /* Deep Blue 700 - 6.5:1 contrast on white */
+}
+
+/* SVG Text High-Contrast Visibility in Light Mode */
+.light svg text:not([fill*="#ef"]):not([fill*="#10"]):not([fill*="#f5"]):not([fill*="#06"]):not([fill*="#3b"]):not([fill*="#22"]) {
+  fill: #0f172a !important;
+}
+
+/* Recharts Tooltips in Light Mode */
+.light .recharts-default-tooltip {
+  background-color: rgba(255, 255, 255, 0.98) !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+  box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.12) !important;
+}
+.light .recharts-tooltip-item {
+  color: #0f172a !important;
+}
+.light .recharts-tooltip-label {
+  color: #4338ca !important;
+}
+
 /* Table zebra and dividers in light mode */
 .light table {
   color: #1e293b !important;

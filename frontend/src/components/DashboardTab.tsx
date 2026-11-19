@@ -142,7 +142,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
                 <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500 animate-pulse"></span>
               )}
             </div>
-            <span className="text-[9px] sm:text-[10px] font-mono font-black tracking-widest text-slate-300 uppercase shrink-0">
+            <span className="text-[9px] sm:text-[10px] font-mono font-black tracking-widest text-slate-800 dark:text-slate-300 uppercase shrink-0">
               NODE POOL: {isSystemOnline ? 'CONNECTED' : 'STANDBY'}
             </span>
           </div>
@@ -217,7 +217,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
           </div>
           
           <div className="flex items-baseline mt-3 gap-2 relative z-10">
-            <span className="text-4xl sm:text-5xl font-black text-slate-100 tracking-tight text-glow-purple font-mono">
+            <span className="text-4xl sm:text-5xl font-black text-slate-900 dark:text-slate-100 tracking-tight text-glow-purple font-mono">
               {payload?.summary.activeAlerts || 0}
             </span>
             <span className="text-[10px] text-slate-500 font-extrabold uppercase tracking-widest">Open Alerts</span>
@@ -268,7 +268,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
           
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 sm:gap-4 mb-5 sm:mb-8">
             <div>
-              <h2 className="text-base sm:text-lg font-extrabold text-slate-100 tracking-wide uppercase">Basin Hydrological Vitals Chart</h2>
+              <h2 className="text-base sm:text-lg font-extrabold text-slate-900 dark:text-slate-100 tracking-wide uppercase">Basin Hydrological Vitals Chart</h2>
               <p className="text-[10px] sm:text-xs text-slate-500 mt-1 sm:mt-1.5 font-bold uppercase tracking-widest font-mono">River level (cm) correlated against precipitation patterns (mm/h)</p>
             </div>
             <div className="flex flex-wrap gap-2 sm:gap-2.5">
@@ -394,7 +394,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
           <div className="absolute top-0 right-1/4 w-[50%] h-[1px] bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent"></div>
           
           <div className="text-center w-full">
-            <h2 className="text-base sm:text-lg font-extrabold text-slate-100 tracking-wide uppercase">AI Basin Risk Assessment</h2>
+            <h2 className="text-base sm:text-lg font-extrabold text-slate-900 dark:text-slate-100 tracking-wide uppercase">AI Basin Risk Assessment</h2>
             <p className="text-[10px] sm:text-xs text-slate-500 mt-1 sm:mt-1.5 font-bold uppercase tracking-widest font-mono">Real-time ML early warning probability</p>
           </div>
 
@@ -538,7 +538,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
         {/* Early Warning Proximity Responders */}
         <div className="glass-panel rounded-3xl p-4 sm:p-7 space-y-4 sm:space-y-6">
           <div>
-            <h2 className="text-base sm:text-lg font-extrabold text-slate-100 tracking-wide uppercase">Early Warning Proximity Responders</h2>
+            <h2 className="text-base sm:text-lg font-extrabold text-slate-900 dark:text-slate-100 tracking-wide uppercase">Early Warning Proximity Responders</h2>
             <p className="text-[10px] sm:text-xs text-slate-500 mt-1 sm:mt-1.5 font-bold uppercase tracking-widest font-mono">Emergency broadcast dispatch centers for active mesh nodes</p>
           </div>
 
@@ -752,10 +752,9 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
                     <text 
                       y="-18" 
                       textAnchor="middle" 
-                      fill="#94a3b8" 
                       fontSize="9.5" 
                       fontWeight="bold" 
-                      className="font-sans group-hover:fill-slate-100 transition-colors duration-300 uppercase tracking-widest font-mono"
+                      className="font-sans fill-slate-800 dark:fill-slate-200 group-hover:fill-indigo-600 dark:group-hover:fill-indigo-300 transition-colors duration-300 uppercase tracking-widest font-mono"
                     >
                       {node.name.split(' ')[0]}
                     </text>
@@ -803,7 +802,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
                       <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z" /></svg>
                     )}
                   </div>
-                  <span className="font-mono text-slate-200 font-bold text-[11px] sm:text-xs">{fc.temp}</span>
+                  <span className="font-mono text-slate-800 dark:text-slate-200 font-bold text-[11px] sm:text-xs">{fc.temp}</span>
                 </div>
               ))}
             </div>
@@ -816,7 +815,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
       <div className="glass-panel rounded-3xl p-4 sm:p-7 space-y-4 sm:space-y-6">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 sm:gap-4">
           <div>
-            <h2 className="text-base sm:text-lg font-extrabold text-slate-100 tracking-wide uppercase">Command Center Activity Event log</h2>
+            <h2 className="text-base sm:text-lg font-extrabold text-slate-900 dark:text-slate-100 tracking-wide uppercase">Command Center Activity Event log</h2>
             <p className="text-[10px] sm:text-xs text-slate-500 mt-1 sm:mt-1.5 font-bold uppercase tracking-widest font-mono">Aggregated database ledger and automated early warnings dispatches</p>
           </div>
           <span className="px-3 sm:px-3.5 py-1 sm:py-1.5 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-400 font-extrabold text-[8.5px] sm:text-[9px] uppercase tracking-widest font-mono w-fit">
@@ -836,7 +835,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
                 <th className="py-3 sm:py-4.5 px-3 sm:px-6 text-right">Activity Timestamp</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/5 font-semibold text-slate-350">
+            <tbody className="divide-y divide-white/5 font-semibold text-slate-700 dark:text-slate-350">
               {payload?.nodes.map((node, i) => {
                 const eventId = `EVT-00${3045 + i}`;
                 let riskText = 'Safe';
@@ -852,14 +851,14 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
                 }
 
                 return (
-                  <tr key={node.id} className="hover:bg-white/5 transition-all">
+                  <tr key={node.id} className="hover:bg-slate-100/80 dark:hover:bg-white/5 transition-all">
                     <td className="py-3 sm:py-4.5 px-3 sm:px-6 font-mono text-slate-500 text-xs font-bold">{eventId}</td>
                     <td className="py-3 sm:py-4.5 px-3 sm:px-6">
-                      <div className="font-extrabold text-slate-100">{node.name}</div>
+                      <div className="font-extrabold text-slate-900 dark:text-slate-100">{node.name}</div>
                       <div className="text-[9px] text-slate-500 font-mono uppercase mt-0.5">{node.id}</div>
                     </td>
                     <td className="py-3 sm:py-4.5 px-3 sm:px-6">
-                      <span className="font-mono text-xs text-indigo-400 font-black">{triggerVal}</span>
+                      <span className="font-mono text-xs text-indigo-600 dark:text-indigo-400 font-black">{triggerVal}</span>
                       <span className="text-[9px] text-slate-500 font-bold block font-mono">Rainfall: {node.rainfallRateMm?.toFixed(1) || '0.0'} mm/h</span>
                     </td>
                     <td className="py-3 sm:py-4.5 px-3 sm:px-6">

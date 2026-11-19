@@ -414,7 +414,7 @@ export const IoTPanel: React.FC<IoTPanelProps> = ({
         {/* Left column: Selected PIN registers */}
         <div className="xl:col-span-1 glass-panel rounded-3xl p-7 flex flex-col justify-between min-h-[440px]">
           <div>
-            <h2 className="text-lg font-extrabold text-slate-100 tracking-wide uppercase">GPIO Debug Matrix</h2>
+            <h2 className="text-lg font-extrabold text-slate-900 dark:text-slate-100 tracking-wide uppercase">GPIO Debug Matrix</h2>
             <p className="text-xs text-slate-500 mt-1.5 font-bold uppercase tracking-widest font-mono mb-6">Select a pin on the board layout to examine registers</p>
           </div>
 
@@ -478,7 +478,7 @@ export const IoTPanel: React.FC<IoTPanelProps> = ({
           <div className="absolute top-0 right-1/4 w-[50%] h-[1px] bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent"></div>
           
           <div className="text-center w-full">
-            <h2 className="text-base sm:text-lg font-extrabold text-slate-100 tracking-wide uppercase">Physical GPIO Pin Breakout</h2>
+            <h2 className="text-base sm:text-lg font-extrabold text-slate-900 dark:text-slate-100 tracking-wide uppercase">Physical GPIO Pin Breakout</h2>
             <p className="text-[11px] sm:text-xs text-slate-500 mt-1 font-bold uppercase tracking-widest font-mono">ESP32 DevKitC 38-Pin Layout Microchip Mockup</p>
           </div>
 
@@ -514,7 +514,7 @@ export const IoTPanel: React.FC<IoTPanelProps> = ({
               <div className="flex-grow flex flex-col justify-center items-center relative py-4 sm:py-6 px-2 sm:px-4">
                 
                 {/* SVG vector chip background */}
-                <div className="w-full max-w-[180px] sm:max-w-[200px] aspect-[4/5] bg-gradient-to-br from-slate-900 to-slate-950 dark:from-[#0c1224] dark:to-[#04060c] border border-slate-700 dark:border-slate-800 rounded-2xl flex flex-col justify-between p-3 sm:p-4 relative shadow-2xl z-10">
+                <div className="w-full max-w-[180px] sm:max-w-[200px] aspect-[4/5] bg-gradient-to-br from-slate-100 to-slate-200 dark:from-[#0c1224] dark:to-[#04060c] border border-slate-300 dark:border-slate-800 rounded-2xl flex flex-col justify-between p-3 sm:p-4 relative shadow-md dark:shadow-2xl z-10">
                   <div className="absolute inset-0 bg-cyan-500/5 rounded-2xl blur-lg pointer-events-none"></div>
                   
                   {/* Metallic shine detail line */}
@@ -522,7 +522,7 @@ export const IoTPanel: React.FC<IoTPanelProps> = ({
                   <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
 
                   <div className="flex justify-between items-start">
-                    <span className="text-[7.5px] font-black font-mono text-purple-400 uppercase tracking-widest">ASTU LAB</span>
+                    <span className="text-[7.5px] font-black font-mono text-purple-600 dark:text-purple-400 uppercase tracking-widest">ASTU LAB</span>
                     <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_5px_#22d3ee] animate-pulse"></span>
                   </div>
 
@@ -530,8 +530,8 @@ export const IoTPanel: React.FC<IoTPanelProps> = ({
                     <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-gradient-to-br from-purple-600 to-indigo-600 flex items-center justify-center text-white font-extrabold text-[11px] shadow-lg shadow-purple-600/30 mb-1.5 sm:mb-2 relative">
                       <svg className="w-4 h-4 sm:w-5 sm:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 5h10a2 2 0 012 2v10a2 2 0 01-2 2H7a2 2 0 01-2-2V7a2 2 0 012-2z" /></svg>
                     </div>
-                    <h4 className="text-[11px] sm:text-xs font-black text-slate-100 tracking-wider font-mono">ESP32-WROOM</h4>
-                    <span className="text-[7.5px] sm:text-[8px] text-slate-400 font-bold uppercase tracking-widest font-mono mt-0.5">D0WDQ6 Core</span>
+                    <h4 className="text-[11px] sm:text-xs font-black text-slate-900 dark:text-slate-100 tracking-wider font-mono">ESP32-WROOM</h4>
+                    <span className="text-[7.5px] sm:text-[8px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-widest font-mono mt-0.5">D0WDQ6 Core</span>
                   </div>
 
                   <div className="flex justify-between items-end border-t border-slate-700/60 pt-1.5 sm:pt-2 text-[6.5px] font-mono text-slate-400">
@@ -587,7 +587,7 @@ export const IoTPanel: React.FC<IoTPanelProps> = ({
           <div>
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 mb-4">
               <div>
-                <h2 className="text-base sm:text-lg font-extrabold text-slate-100 tracking-wide uppercase">SAR ADC 12-Bit Channel Breakout</h2>
+                <h2 className="text-base sm:text-lg font-extrabold text-slate-900 dark:text-slate-100 tracking-wide uppercase">SAR ADC 12-Bit Channel Breakout</h2>
                 <p className="text-[11px] sm:text-xs text-slate-500 mt-1 font-bold uppercase tracking-widest font-mono">Analog-to-Digital Converter calibration and reference voltage</p>
               </div>
               
@@ -700,7 +700,7 @@ export const IoTPanel: React.FC<IoTPanelProps> = ({
         {/* Real-time LoRa signal dashboard graphs */}
         <div className="lg:col-span-1 glass-panel rounded-2xl sm:rounded-3xl p-4 sm:p-7 flex flex-col justify-between min-h-0 sm:min-h-[460px]">
           <div>
-            <h2 className="text-base sm:text-lg font-extrabold text-slate-100 tracking-wide uppercase">LoRa RF Signal Quality</h2>
+            <h2 className="text-base sm:text-lg font-extrabold text-slate-900 dark:text-slate-100 tracking-wide uppercase">LoRa RF Signal Quality</h2>
             <p className="text-[11px] sm:text-xs text-slate-500 mt-1 font-bold uppercase tracking-widest font-mono mb-3 sm:mb-4">Signal-to-noise floor and RSSI signal level indicators</p>
           </div>
 
@@ -735,7 +735,7 @@ export const IoTPanel: React.FC<IoTPanelProps> = ({
             </div>
             <div>
               <span className="text-[8.5px] sm:text-[9px] text-slate-500 uppercase block font-sans font-bold">Spread Factor</span>
-              <span className="font-black text-slate-200 text-xs sm:text-sm">SF7</span>
+              <span className="font-black text-slate-800 dark:text-slate-200 text-xs sm:text-sm">SF7</span>
             </div>
             <div>
               <span className="text-[8.5px] sm:text-[9px] text-slate-500 uppercase block font-sans font-bold">SNR Value</span>
@@ -748,7 +748,7 @@ export const IoTPanel: React.FC<IoTPanelProps> = ({
         <div className="lg:col-span-2 glass-panel rounded-2xl sm:rounded-3xl p-4 sm:p-7 flex flex-col justify-between min-h-0 sm:min-h-[460px]">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4 mb-3 sm:mb-4">
             <div>
-              <h2 className="text-base sm:text-lg font-extrabold text-slate-100 tracking-wide uppercase">Live Hardware Serial Shell</h2>
+              <h2 className="text-base sm:text-lg font-extrabold text-slate-900 dark:text-slate-100 tracking-wide uppercase">Live Hardware Serial Shell</h2>
               <p className="text-[11px] sm:text-xs text-slate-500 mt-0.5 sm:mt-1.5 font-bold uppercase tracking-widest font-mono">Raw asynchronous microcontroller serial output registers</p>
             </div>
             <div className="flex items-center gap-2 self-start sm:self-auto">

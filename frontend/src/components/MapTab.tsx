@@ -104,7 +104,7 @@ export const MapTab: React.FC<MapTabProps> = ({
                                 <span className="w-2 h-2 rounded-full bg-purple-500 border border-purple-400 animate-pulse" />
                                 GIS Control Console
                             </h2>
-                            <p className="text-base sm:text-lg font-black text-slate-100 mt-0.5 sm:mt-1 uppercase tracking-wide">
+                            <p className="text-base sm:text-lg font-black text-slate-900 dark:text-slate-100 mt-0.5 sm:mt-1 uppercase tracking-wide">
                                 Awash River Basin Satellite Command
                             </p>
                         </div>
@@ -184,7 +184,7 @@ export const MapTab: React.FC<MapTabProps> = ({
                             </button>
                             <div>
                                 <span className="text-[9px] font-bold text-slate-500 uppercase tracking-widest block leading-tight">Simulation horizon</span>
-                                <span className="text-xs font-black text-slate-200 uppercase tracking-wide">
+                                <span className="text-xs font-black text-slate-800 dark:text-slate-200 uppercase tracking-wide">
                                     {simulationLevel === 0 ? 'Live Telemetry' : `Inundation Predict: +${(simulationLevel * 3.5).toFixed(0)}cm`}
                                 </span>
                             </div>
@@ -202,7 +202,7 @@ export const MapTab: React.FC<MapTabProps> = ({
                                 }}
                                 className="flex-grow accent-purple-500 h-1 bg-slate-200 dark:bg-slate-950 border border-slate-300 dark:border-slate-900 rounded-lg cursor-pointer appearance-none"
                             />
-                            <span className="text-xs font-mono font-bold text-purple-400 w-10 text-right">
+                            <span className="text-xs font-mono font-bold text-purple-600 dark:text-purple-400 w-10 text-right">
                                 {simulationLevel}%
                             </span>
                         </div>
@@ -484,10 +484,9 @@ export const MapTab: React.FC<MapTabProps> = ({
                                         <text 
                                             y="-16" 
                                             textAnchor="middle" 
-                                            fill="#e2e8f0" 
                                             fontSize="9" 
                                             fontWeight="black" 
-                                            className={`font-mono transition-all duration-300 group-hover:fill-cyan-300 uppercase tracking-widest ${isSelected ? 'fill-purple-400 font-bold scale-105' : 'opacity-70'} ${textClass}`}
+                                            className={`font-mono transition-all duration-300 fill-slate-900 dark:fill-slate-100 group-hover:fill-cyan-600 dark:group-hover:fill-cyan-300 uppercase tracking-widest ${isSelected ? 'fill-purple-600 dark:fill-purple-400 font-bold scale-105' : 'opacity-90'} ${textClass}`}
                                             style={{ textShadow: isSelected ? '0 0 8px rgba(168,85,247,0.8)' : 'none' }}
                                         >
                                             {node.name.split(' ')[0]}
@@ -495,8 +494,8 @@ export const MapTab: React.FC<MapTabProps> = ({
                                         
                                         {/* Active micro badge with reading display on hover */}
                                         <g className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" transform="translate(0, 22)">
-                                            <rect x="-35" y="-10" width="70" height="16" rx="4" fill="#03060c" stroke={pinColor} strokeWidth="1" />
-                                            <text y="1" textAnchor="middle" fill="#94a3b8" fontSize="8" fontWeight="bold" className="font-mono">
+                                            <rect x="-35" y="-10" width="70" height="16" rx="4" fill="#ffffff" className="dark:fill-[#03060c]" stroke={pinColor} strokeWidth="1" />
+                                            <text y="1" textAnchor="middle" fill="#0f172a" className="dark:fill-[#94a3b8]" fontSize="8" fontWeight="bold" className="font-mono">
                                                 {getSimulatedWaterLevel(node).toFixed(0)}cm
                                             </text>
                                         </g>
@@ -506,11 +505,11 @@ export const MapTab: React.FC<MapTabProps> = ({
                         </svg>
 
                         {/* Interactive floating text HUD instructions */}
-                        <div className="absolute bottom-6 left-6 max-w-[240px] glass-panel-premium border border-slate-900/80 rounded-2xl p-4.5 shadow-2xl backdrop-blur-md">
-                            <span className="text-[10px] font-black text-purple-400 uppercase tracking-widest block mb-1">
+                        <div className="absolute bottom-6 left-6 max-w-[240px] glass-panel-premium border border-slate-300 dark:border-slate-900/80 rounded-2xl p-4.5 shadow-xl backdrop-blur-md">
+                            <span className="text-[10px] font-black text-purple-600 dark:text-purple-400 uppercase tracking-widest block mb-1">
                                 Operational guidelines
                             </span>
-                            <p className="text-slate-400 text-[10px] font-bold leading-relaxed">
+                            <p className="text-slate-600 dark:text-slate-400 text-[10px] font-bold leading-relaxed">
                                 Click any active transceiver dot along the Awash River channel to sync diagnostic vitals to the Night-Vision terminal panel.
                             </p>
                         </div>
@@ -719,7 +718,7 @@ export const MapTab: React.FC<MapTabProps> = ({
                     <div className="relative z-10 pt-4 border-t border-slate-900/60 mt-4">
                         <button 
                             onClick={() => broadcastEmergencySMS(selectedMapNode)}
-                            className="w-full bg-red-600/20 hover:bg-red-600/35 text-red-400 border border-red-500/35 py-3.5 rounded-2xl font-black text-[10px] transition-all duration-300 tracking-widest uppercase shadow-[0_0_15px_rgba(239,68,68,0.15)] flex items-center justify-center gap-2 hover:scale-[1.02]"
+                            className="w-full bg-red-600/20 hover:bg-red-600/35 text-red-600 dark:text-red-400 border border-red-500/35 py-3.5 rounded-2xl font-black text-[10px] transition-all duration-300 tracking-widest uppercase shadow-[0_0_15px_rgba(239,68,68,0.15)] flex items-center justify-center gap-2 hover:scale-[1.02]"
                         >
                             <span className="w-2 h-2 rounded-full bg-red-500 animate-ping" />
                             Broadcast Proximity SMS
