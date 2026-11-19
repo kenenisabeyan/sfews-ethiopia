@@ -19,6 +19,30 @@ const App: React.FC = () => {
         return sessionStorage.getItem('sfews_authenticated') === 'true';
     });
 
+    // Theme / Brightness Mode state (Dark / Light)
+    const [theme, setTheme] = useState<'dark' | 'light'>(() => {
+        const saved = sessionStorage.getItem('sfews_theme') || localStorage.getItem('sfews_theme');
+        if (saved === 'dark' || saved === 'light') return saved;
+        return 'dark'; // Default to cyberpunk dark
+    });
+
+    useEffect(() => {
+        const root = document.documentElement;
+        if (theme === 'light') {
+            root.classList.add('light');
+            root.classList.remove('dark');
+        } else {
+            root.classList.add('dark');
+            root.classList.remove('light');
+        }
+        localStorage.setItem('sfews_theme', theme);
+        sessionStorage.setItem('sfews_theme', theme);
+    }, [theme]);
+
+    const toggleTheme = () => {
+        setTheme(prev => prev === 'dark' ? 'light' : 'dark');
+    };
+
     // Core states (integrated with API & WebSockets)
     const [payload, setPayload] = useState<DashboardPayload | null>(null);
     const [health, setHealth] = useState<SystemHealth | null>(null);
@@ -364,12 +388,12 @@ const App: React.FC = () => {
     }
 
     return (
-        <div className="flex h-screen bg-[#02040a] text-slate-200 overflow-hidden font-sans relative">
+        <div className={`flex h-screen ${theme === 'light' ? 'light bg-slate-50 text-slate-800' : 'bg-[#02040a] text-slate-200'} overflow-hidden font-sans relative`}>
             
             {/* Ambient Background Glowing Blobs */}
-            <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-indigo-500/10 rounded-full blur-[160px] pointer-events-none"></div>
-            <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-purple-500/10 rounded-full blur-[160px] pointer-events-none"></div>
-            <div className="absolute top-[30%] right-[20%] w-[35%] h-[35%] bg-cyan-500/5 rounded-full blur-[140px] pointer-events-none"></div>
+            <div className={`absolute top-[-10%] left-[-10%] w-[50%] h-[50%] ${theme === 'light' ? 'ambient-blob-1 bg-indigo-300/20' : 'bg-indigo-500/10'} rounded-full blur-[160px] pointer-events-none`}></div>
+            <div className={`absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] ${theme === 'light' ? 'ambient-blob-2 bg-purple-300/20' : 'bg-purple-500/10'} rounded-full blur-[160px] pointer-events-none`}></div>
+            <div className={`absolute top-[30%] right-[20%] w-[35%] h-[35%] ${theme === 'light' ? 'ambient-blob-3 bg-cyan-300/15' : 'bg-cyan-500/5'} rounded-full blur-[140px] pointer-events-none`}></div>
 
             {/* BACKDROP OVERLAY FOR MOBILE SIDEBAR */}
             {isMobileMenuOpen && (
@@ -531,6 +555,21 @@ const App: React.FC = () => {
                                 {health?.database_driver ? health.database_driver.split(' ')[0] : 'RESILIENT'}
                             </span>
                         </div>
+
+                        {/* Light / Dark Mode Brightness Toggle */}
+                        <button
+                            onClick={toggleTheme}
+                            className={`px-2.5 sm:px-3 py-1 rounded-xl text-[10px] font-mono font-bold tracking-wider transition-all flex items-center gap-1.5 border shadow-sm ${
+                                theme === 'dark'
+                                    ? 'bg-[#030610] text-amber-300 border-white/5 hover:border-amber-400/40 hover:bg-amber-400/10'
+                                    : 'bg-white text-indigo-700 border-slate-200 hover:border-indigo-400 hover:bg-indigo-50'
+                            }`}
+                            title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
+                            aria-label="Toggle Brightness Theme"
+                        >
+                            <span className="text-xs">{theme === 'dark' ? '☀️' : '🌙'}</span>
+                            <span className="hidden sm:inline font-bold">{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
+                        </button>
 
                         {/* Quick 1-Click Broadcast Action */}
                         <button
