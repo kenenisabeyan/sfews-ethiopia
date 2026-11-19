@@ -130,7 +130,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
             <span className="text-cyan-400 font-extrabold text-xs text-glow-cyan mt-0.5">22 ms (STABLE)</span>
           </div>
           
-          <div className="flex items-center gap-2.5 sm:gap-3 bg-[#060a16] border border-purple-500/20 px-3.5 sm:px-5 py-2 sm:py-3.5 rounded-2xl shadow-[0_4px_30px_rgba(0,0,0,0.5)] backdrop-blur-md relative overflow-hidden group">
+          <div className="flex items-center gap-2.5 sm:gap-3 bg-white/80 dark:bg-[#060a16] border border-slate-200 dark:border-purple-500/20 px-3.5 sm:px-5 py-2 sm:py-3.5 rounded-2xl shadow-sm dark:shadow-[0_4px_30px_rgba(0,0,0,0.5)] backdrop-blur-md relative overflow-hidden group">
             <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 to-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
             <div className="relative flex h-2.5 w-2.5 shrink-0">
               {isSystemOnline ? (
@@ -166,7 +166,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
           </div>
           
           <div className="flex items-baseline mt-3 gap-2 relative z-10">
-            <span className="text-4xl sm:text-5xl font-black text-slate-50 tracking-tight text-glow-purple font-mono">
+            <span className="text-4xl sm:text-5xl font-black text-slate-900 dark:text-slate-50 tracking-tight text-glow-purple font-mono">
               {payload?.summary.totalNodes || 3}
             </span>
             <span className="text-[10px] text-slate-500 font-extrabold uppercase tracking-widest">Active Stations</span>

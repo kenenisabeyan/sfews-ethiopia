@@ -176,6 +176,7 @@ html.light,
   color: #0f172a !important;
 }
 
+.light .text-slate-50,
 .light .text-slate-100,
 .light .text-slate-200 {
   color: #0f172a !important;
@@ -185,12 +186,14 @@ html.light,
   color: #1e293b !important;
 }
 
+.light .text-slate-350,
 .light .text-slate-400 {
-  color: #475569 !important;
+  color: #334155 !important;
 }
 
-.light .text-slate-500 {
-  color: #64748b !important;
+.light .text-slate-500,
+.light .text-slate-550 {
+  color: #475569 !important;
 }
 
 /* Light mode Header and Sidebar */
@@ -220,7 +223,13 @@ html.light,
   color: #94a3b8 !important;
 }
 
-/* In-panel subtle sub-containers & dark backgrounds mapped to executive light */
+/* Universal Light Mode Background Sanitization (Matches ANY hex or dark token) */
+.light [class*="bg-[#0"],
+.light [class*="bg-[#1"],
+.light [class*="bg-[#20"],
+.light [class*="bg-black"],
+.light [class*="bg-slate-950"],
+.light [class*="bg-slate-900"]:not(.bg-gradient-to-r):not(.bg-gradient-to-b):not(.bg-gradient-to-l):not(.bg-gradient-to-t),
 .light .bg-\[\#020408\],
 .light .bg-\[\#020409\],
 .light .bg-\[\#020409\]\/95,
@@ -266,7 +275,18 @@ html.light,
   border-color: #e2e8f0 !important;
 }
 
-/* Hardcoded dark border overrides in light mode */
+/* Universal Hardcoded Dark Border & Dark Shadow Overrides in light mode */
+.light [class*="border-[#0"],
+.light [class*="border-slate-950"],
+.light [class*="border-slate-900"],
+.light [class*="border-slate-800"],
+.light [class*="border-white/5"],
+.light [class*="border-white/10"],
+.light [class*="border-white/15"],
+.light [class*="border-white/20"],
+.light [class*="border-purple-500/10"],
+.light [class*="border-purple-500/15"],
+.light [class*="border-purple-500/20"],
 .light .border-slate-950,
 .light .border-slate-900,
 .light .border-slate-900\/40,
@@ -283,6 +303,11 @@ html.light,
 .light .border-purple-500\/10,
 .light .border-purple-500\/15 {
   border-color: #e2e8f0 !important;
+}
+
+.light [class*="shadow-[inset_0_"],
+.light [class*="shadow-[0_4px_30px_rgba(0,0,0"] {
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04) !important;
 }
 
 /* Light mode text glow sanitization */
