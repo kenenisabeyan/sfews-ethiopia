@@ -769,25 +769,25 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
         {/* Modern Meteorology Weather Outlook */}
         <div className="glass-panel rounded-3xl p-4 sm:p-7 flex flex-col justify-between min-h-0 sm:min-h-[490px]">
           <div className="text-center w-full">
-            <h2 className="text-base sm:text-lg font-extrabold text-slate-100 tracking-wide uppercase">Meteorological Outlook</h2>
+            <h2 className="text-base sm:text-lg font-extrabold text-slate-900 dark:text-slate-100 tracking-wide uppercase">Meteorological Outlook</h2>
             <p className="text-[10px] sm:text-xs text-slate-500 mt-1 sm:mt-1.5 font-bold uppercase tracking-widest font-mono">Semera Region Weather Station</p>
           </div>
 
           <div className="flex flex-col items-center justify-center my-4 sm:my-6 space-y-1.5 sm:space-y-2">
-            <span className="text-glow-purple text-4xl sm:text-6xl font-black text-slate-50 font-mono tracking-tight flex items-start">
-              24<span className="text-2xl sm:text-2.5xl text-purple-400 font-medium font-sans mt-1">°C</span>
+            <span className="text-glow-purple text-4xl sm:text-6xl font-black text-slate-900 dark:text-slate-50 font-mono tracking-tight flex items-start">
+              24<span className="text-2xl sm:text-2.5xl text-purple-600 dark:text-purple-400 font-medium font-sans mt-1">°C</span>
             </span>
             <div className="text-center">
-              <p className="text-xs sm:text-sm font-black text-slate-100 uppercase tracking-wider">Heavy Rain Watch</p>
+              <p className="text-xs sm:text-sm font-black text-slate-800 dark:text-slate-100 uppercase tracking-wider">Heavy Rain Watch</p>
               <span className="text-[9px] sm:text-[9.5px] text-slate-500 font-bold uppercase tracking-widest font-mono">humidity: 89% | wind: 12km/h</span>
             </div>
           </div>
 
           <div className="space-y-3 sm:space-y-4">
-            <div className="text-[9px] sm:text-[10px] text-slate-500 font-black uppercase tracking-widest border-b border-white/5 pb-2 font-mono">3-Day Forecast Grid</div>
+            <div className="text-[9px] sm:text-[10px] text-slate-500 font-black uppercase tracking-widest border-b border-slate-200 dark:border-white/5 pb-2 font-mono">3-Day Forecast Grid</div>
             <div className="grid grid-cols-3 gap-2 sm:gap-3">
               {weatherForecast.slice(0, 3).map((fc, i) => (
-                <div key={i} className="bg-[#030610] border border-purple-500/10 p-2.5 sm:p-3.5 rounded-2xl flex flex-col items-center justify-center text-center hover:border-purple-500/20 transition-all hover:scale-102">
+                <div key={i} className="bg-slate-100/90 dark:bg-[#030610] border border-slate-200 dark:border-purple-500/10 p-2.5 sm:p-3.5 rounded-2xl flex flex-col items-center justify-center text-center hover:border-purple-500/30 transition-all hover:scale-102">
                   <span className="text-slate-500 font-extrabold text-[8px] sm:text-[8.5px] uppercase tracking-widest font-mono">{fc.day}</span>
                   <div className="w-5 h-5 sm:w-7 sm:h-7 my-1.5 sm:my-2 text-indigo-400">
                     {fc.icon === 'cloud' && (
