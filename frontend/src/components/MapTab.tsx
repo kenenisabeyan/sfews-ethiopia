@@ -221,8 +221,8 @@ export const MapTab: React.FC<MapTabProps> = ({
                 {/* 2. Interactive SVG Map View Grid */}
                 <div className="bg-slate-100/90 dark:bg-[#03060c] border border-slate-300 dark:border-slate-900 rounded-2xl sm:rounded-3xl relative overflow-hidden flex flex-col min-h-[340px] sm:min-h-[520px] shadow-sm dark:shadow-2xl p-2 sm:p-2.5">
                     
-                    {/* Futuristic Grid Layer */}
-                    <div className="absolute inset-0 grid-bg opacity-[0.25] pointer-events-none" />
+                    {/* Futuristic Background Layer */}
+                    <div className="absolute inset-0 pointer-events-none" />
                     
                     {/* Satellite Terrain Gradient Masks */}
                     <div className="absolute inset-0 pointer-events-none opacity-40 bg-radial-gradient">

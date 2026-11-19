@@ -614,12 +614,6 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
               }}
             ></div>
             <div className="absolute inset-0 bg-gradient-to-t from-emerald-950/20 via-transparent to-transparent opacity-60 z-10 pointer-events-none"></div>
-            
-            {/* Grid lines night vision effect */}
-            <div className="absolute inset-0 opacity-[0.08] pointer-events-none z-10" style={{
-              backgroundImage: 'linear-gradient(rgba(16, 185, 129, 0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(16, 185, 129, 0.4) 1px, transparent 1px)',
-              backgroundSize: '20px 20px'
-            }}></div>
 
             {/* Scanning laser visual lines */}
             <div className="absolute inset-x-0 h-0.5 bg-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.7)] opacity-40 z-10 animate-scanline pointer-events-none"></div>

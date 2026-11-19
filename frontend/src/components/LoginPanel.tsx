@@ -201,23 +201,6 @@ export const LoginPanel: React.FC<LoginPanelProps> = ({ onLoginSuccess, theme = 
     const render = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Render grid matrix cells overlay
-      ctx.strokeStyle = 'rgba(139, 92, 246, 0.015)';
-      ctx.lineWidth = 1;
-      const step = 50;
-      for (let x = 0; x < canvas.width; x += step) {
-        ctx.beginPath();
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, canvas.height);
-        ctx.stroke();
-      }
-      for (let y = 0; y < canvas.height; y += step) {
-        ctx.beginPath();
-        ctx.moveTo(0, y);
-        ctx.lineTo(canvas.width, y);
-        ctx.stroke();
-      }
-
       particles.forEach(p => {
         p.update();
         p.draw(ctx);
