@@ -760,14 +760,14 @@ export const IoTPanel: React.FC<IoTPanelProps> = ({
           {/* Styled monospaced console view */}
           <div className="flex-grow w-full bg-slate-100/90 dark:bg-[#020409]/95 border border-slate-200 dark:border-purple-500/10 rounded-xl sm:rounded-2xl p-3.5 sm:p-5 font-mono text-[10px] sm:text-[11px] leading-relaxed text-slate-800 dark:text-slate-350 space-y-1.5 sm:space-y-2 overflow-y-auto h-[200px] sm:h-[240px] max-h-[250px] shadow-inner dark:shadow-[inset_0_4px_30px_rgba(0,0,0,0.95)] scrollbar-thin">
             {serialLogs.map((log, index) => {
-              let logColorClass = 'text-slate-300';
-              if (log.includes('🖥️')) logColorClass = 'text-slate-400';
-              else if (log.includes('📊')) logColorClass = 'text-amber-400';
-              else if (log.includes('🔌')) logColorClass = 'text-cyan-300';
-              else if (log.includes('🧠')) logColorClass = 'text-purple-300';
-              else if (log.includes('📶')) logColorClass = 'text-indigo-400';
-              else if (log.includes('📡')) logColorClass = 'text-emerald-450';
-              else if (log.includes('😴') || log.includes('💤')) logColorClass = 'text-slate-500';
+              let logColorClass = 'text-slate-800 dark:text-slate-300';
+              if (log.includes('🖥️')) logColorClass = 'text-slate-700 dark:text-slate-400 font-bold';
+              else if (log.includes('📊')) logColorClass = 'text-amber-700 dark:text-amber-400 font-bold';
+              else if (log.includes('🔌')) logColorClass = 'text-cyan-700 dark:text-cyan-300 font-bold';
+              else if (log.includes('🧠')) logColorClass = 'text-purple-700 dark:text-purple-300 font-bold';
+              else if (log.includes('📶')) logColorClass = 'text-indigo-700 dark:text-indigo-400 font-bold';
+              else if (log.includes('📡')) logColorClass = 'text-emerald-700 dark:text-emerald-450 font-bold';
+              else if (log.includes('😴') || log.includes('💤')) logColorClass = 'text-slate-600 dark:text-slate-500 font-semibold';
               
               return (
                 <p key={index} className={logColorClass}>

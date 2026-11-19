@@ -147,20 +147,20 @@ export const SimpleSimPanel: React.FC = () => {
     return (
         <div className="space-y-6 sm:space-y-8 animate-in fade-in duration-300">
             {/* Page Header */}
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-slate-900/60 pb-4 sm:pb-6">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-slate-200 dark:border-slate-900/60 pb-4 sm:pb-6">
                 <div>
-                    <h1 className="text-xl sm:text-2xl font-extrabold text-slate-100 flex items-center gap-2.5 sm:gap-3">
-                        <span className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-indigo-600/20 text-indigo-400 flex items-center justify-center border border-indigo-500/30 text-base">🌊</span>
+                    <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-slate-100 flex items-center gap-2.5 sm:gap-3">
+                        <span className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-indigo-600/20 text-indigo-700 dark:text-indigo-400 flex items-center justify-center border border-indigo-500/30 text-base">🌊</span>
                         SFEWS Core Simulation Console
                     </h1>
-                    <p className="text-slate-400 text-[11px] sm:text-xs font-semibold mt-1">
+                    <p className="text-slate-600 dark:text-slate-400 text-[11px] sm:text-xs font-semibold mt-1">
                         High-fidelity software-only simulation of water level telemetry, decision logic thresholds, and real-time alerts.
                     </p>
                 </div>
                 <div className="flex items-center gap-3 bg-slate-100 dark:bg-slate-900/30 px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-xl sm:rounded-2xl border border-slate-200 dark:border-slate-800/40 select-none self-start md:self-auto">
-                    <span className="text-[10px] font-extrabold tracking-widest text-slate-500 block leading-none">Simulation Server:</span>
-                    <span className={`flex items-center gap-2 text-xs font-bold font-mono px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-lg ${backendStatus === 'Online' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-red-500/10 text-red-400'}`}>
-                        <span className={`w-2 h-2 rounded-full ${backendStatus === 'Online' ? 'bg-emerald-400 animate-pulse' : 'bg-red-400'}`}></span>
+                    <span className="text-[10px] font-extrabold tracking-widest text-slate-700 dark:text-slate-500 block leading-none">Simulation Server:</span>
+                    <span className={`flex items-center gap-2 text-xs font-bold font-mono px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-lg ${backendStatus === 'Online' ? 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400' : 'bg-red-500/10 text-red-700 dark:text-red-400'}`}>
+                        <span className={`w-2 h-2 rounded-full ${backendStatus === 'Online' ? 'bg-emerald-500 animate-pulse' : 'bg-red-500'}`}></span>
                         {backendStatus}
                     </span>
                 </div>

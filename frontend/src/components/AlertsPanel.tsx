@@ -401,7 +401,7 @@ export const AlertsPanel: React.FC<AlertsPanelProps> = ({
               </div>
 
               {broadcastResult && (
-                <div className="p-3 bg-purple-950/30 border border-purple-500/30 rounded-xl text-[11px] text-purple-200 leading-snug">
+                <div className="p-3 bg-purple-100 dark:bg-purple-950/30 border border-purple-300 dark:border-purple-500/30 rounded-xl text-[11px] text-purple-900 dark:text-purple-200 font-bold leading-snug">
                   {broadcastResult}
                 </div>
               )}

@@ -676,17 +676,17 @@ const App: React.FC = () => {
 
                 {/* GLOBAL ERROR HEADER */}
                 {error && (
-                    <div className="bg-red-950/30 border-b border-red-500/25 px-4 sm:px-8 py-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 backdrop-blur-md relative z-25">
+                    <div className="bg-red-50 dark:bg-red-950/30 border-b border-red-200 dark:border-red-500/25 px-4 sm:px-8 py-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 backdrop-blur-md relative z-25">
                         <div className="flex items-center gap-3">
                             <span className="flex h-2.5 w-2.5 relative shrink-0">
                                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
                                 <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
                             </span>
-                            <p className="text-red-400 font-semibold tracking-wide text-xs md:text-sm">Network Vitals Degraded: {error}</p>
+                            <p className="text-red-700 dark:text-red-400 font-bold tracking-wide text-xs md:text-sm">Network Vitals Degraded: {error}</p>
                         </div>
                         <button 
                             onClick={handleReconnect} 
-                            className="px-3.5 py-1.5 bg-red-500/10 hover:bg-red-500/20 text-red-300 border border-red-500/20 rounded-xl text-xs font-extrabold tracking-widest transition-all uppercase shrink-0"
+                            className="px-3.5 py-1.5 bg-red-100 hover:bg-red-200 dark:bg-red-500/10 dark:hover:bg-red-500/20 text-red-800 dark:text-red-300 border border-red-300 dark:border-red-500/20 rounded-xl text-xs font-black tracking-widest transition-all uppercase shrink-0"
                         >
                             Reconnect
                         </button>
