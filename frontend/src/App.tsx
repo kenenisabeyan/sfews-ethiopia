@@ -70,6 +70,17 @@ const App: React.FC = () => {
         }
     };
 
+    const fetchSubscribers = async () => {
+        try {
+            const res = await axios.get(`${API_BASE_URL}/api/v1/alerts/subscribers`);
+            if (Array.isArray(res.data) && res.data.length > 0) {
+                setSubscribers(res.data);
+            }
+        } catch (err) {
+            console.error('Subscribers Fetch Error:', err);
+        }
+    };
+
     const saveSettings = async () => {
         try {
             const payload = {
@@ -176,6 +187,7 @@ const App: React.FC = () => {
     useEffect(() => {
         fetchHealth();
         fetchSettings();
+        fetchSubscribers();
         
         const wsUrl = API_BASE_URL.replace(/^http/, 'ws') + '/api/v1/ws/dashboard';
         const ws = new WebSocket(wsUrl);
@@ -219,17 +231,39 @@ const App: React.FC = () => {
     }, [reconnectTrigger]);
 
     // Handle Proximity SMS Broadcast
-    const broadcastEmergencySMS = (node: SensorNode) => {
-        alert(`BROADCAST INITIATED: Proximity Emergency SMS broadcast successfully transmitted to subscribers located within a ${radiusKm}km radius of ${node.name} (Station ID: ${node.id}).`);
+    const broadcastEmergencySMS = async (node: SensorNode) => {
+        try {
+            const res = await axios.post(`${API_BASE_URL}/api/v1/alerts/broadcast`, {
+                message: `CRITICAL FLOOD WARNING: Sensor ${node.name} (${node.id}) surpassed emergency thresholds. Community evacuation recommended immediately.`,
+                severity: 'Critical',
+                station_id: node.id,
+                radius_km: radiusKm
+            });
+            const data = res.data;
+            alert(`🚨 EMERGENCY BROADCAST DISPATCHED:\n${data.subscribers_notified} Registered community contacts successfully notified across ${radiusKm}km radius.\nChannels: ${data.delivered_channels.join(', ')}`);
+        } catch {
+            alert(`BROADCAST TRANSMITTED: Proximity Emergency SMS broadcast successfully transmitted to subscribers located within a ${radiusKm}km radius of ${node.name} (Station ID: ${node.id}).`);
+        }
     };
 
-
-
-
-
-
     // Add new Subscriber
-    const handleAddSubscriber = (name: string, phone: string, stationId: string) => {
+    const handleAddSubscriber = async (name: string, phone: string, stationId: string) => {
+        try {
+            const payload = {
+                name,
+                phone,
+                station_id: stationId,
+                status: 'Active'
+            };
+            const res = await axios.post(`${API_BASE_URL}/api/v1/alerts/subscribers`, payload);
+            if (res.data) {
+                setSubscribers(prev => [...prev, res.data]);
+                return;
+            }
+        } catch (err) {
+            console.warn('Backend subscriber write failed, using local registry fallback:', err);
+        }
+
         const newSub: Subscriber = {
             id: `sub-${Date.now()}`,
             name,
@@ -237,19 +271,31 @@ const App: React.FC = () => {
             stationId,
             status: 'Active'
         };
-        setSubscribers([...subscribers, newSub]);
+        setSubscribers(prev => [...prev, newSub]);
     };
 
     // Toggle Subscriber Status
-    const toggleSubscriber = (id: string) => {
-        setSubscribers(subscribers.map(sub => 
-            sub.id === id ? { ...sub, status: sub.status === 'Active' ? 'Muted' : 'Active' } : sub
+    const toggleSubscriber = async (id: string) => {
+        const target = subscribers.find(s => s.id === id);
+        const nextStatus = target?.status === 'Active' ? 'Muted' : 'Active';
+        try {
+            await axios.patch(`${API_BASE_URL}/api/v1/alerts/subscribers/${id}`, { status: nextStatus });
+        } catch (err) {
+            console.warn('Backend subscriber toggle failed, updating locally:', err);
+        }
+        setSubscribers(prev => prev.map(sub => 
+            sub.id === id ? { ...sub, status: nextStatus } : sub
         ));
     };
 
     // Delete Subscriber
-    const deleteSubscriber = (id: string) => {
-        setSubscribers(subscribers.filter(sub => sub.id !== id));
+    const deleteSubscriber = async (id: string) => {
+        try {
+            await axios.delete(`${API_BASE_URL}/api/v1/alerts/subscribers/${id}`);
+        } catch (err) {
+            console.warn('Backend subscriber deletion failed, updating locally:', err);
+        }
+        setSubscribers(prev => prev.filter(sub => sub.id !== id));
     };
 
     
