@@ -123,13 +123,13 @@ export const WaterLevelsPanel: React.FC<WaterLevelsPanelProps> = ({
                     </div>
                   </td>
                   <td className="py-3.5 sm:py-5 px-3 sm:px-6 font-mono text-slate-600 dark:text-slate-400 text-[11px] sm:text-xs">
-                    {node.latitude.toFixed(4)}, {node.longitude.toFixed(4)}
+                    {node.latitude != null ? Number(node.latitude).toFixed(4) : '0.0000'}, {node.longitude != null ? Number(node.longitude).toFixed(4) : '0.0000'}
                   </td>
                   <td className="py-3.5 sm:py-5 px-3 sm:px-6 font-mono text-indigo-600 dark:text-indigo-400 font-black text-xs sm:text-sm">
-                    {node.waterLevelCm?.toFixed(1) || '0.0'} cm
+                    {node.waterLevelCm != null ? Number(node.waterLevelCm).toFixed(1) : '0.0'} cm
                   </td>
                   <td className="py-3.5 sm:py-5 px-3 sm:px-6 font-mono text-cyan-600 dark:text-cyan-400 font-black text-xs sm:text-sm">
-                    {node.rainfallRateMm?.toFixed(1) || '0.0'} mm/h
+                    {node.rainfallRateMm != null ? Number(node.rainfallRateMm).toFixed(1) : '0.0'} mm/h
                   </td>
                   <td className="py-3.5 sm:py-5 px-3 sm:px-6">
                     <div className="flex items-center gap-2 sm:gap-3">

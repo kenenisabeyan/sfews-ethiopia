@@ -269,9 +269,9 @@ export const AlertsPanel: React.FC<AlertsPanelProps> = ({
                               {alert.node_id}
                             </span>
                           )}
-                          {alert.water_level_cm && (
+                          {alert.water_level_cm != null && (
                             <span className="text-[10px] font-mono font-black text-cyan-700 dark:text-cyan-400">
-                              {alert.water_level_cm.toFixed(1)} cm
+                              {Number(alert.water_level_cm).toFixed(1)} cm
                             </span>
                           )}
                         </div>

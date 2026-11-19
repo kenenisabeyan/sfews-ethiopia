@@ -663,7 +663,7 @@ export const MapTab: React.FC<MapTabProps> = ({
                                     </div>
                                 </div>
                                 <span className="text-xl font-black text-slate-900 dark:text-slate-100 font-mono mt-3">
-                                    {getSimulatedWaterLevel(selectedMapNode).toFixed(1)} <span className="text-xs text-slate-500 dark:text-slate-400 font-bold">cm</span>
+                                    {(getSimulatedWaterLevel(selectedMapNode) ?? 180).toFixed(1)} <span className="text-xs text-slate-500 dark:text-slate-400 font-bold">cm</span>
                                 </span>
                             </div>
 
@@ -672,7 +672,7 @@ export const MapTab: React.FC<MapTabProps> = ({
                                 <div className="bg-white dark:bg-[#02050b] border border-slate-200 dark:border-slate-900/60 p-3 rounded-xl shadow-sm">
                                     <span className="text-[8px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-widest block mb-0.5">Precipitation</span>
                                     <p className="text-base font-black text-cyan-600 dark:text-cyan-400 font-mono">
-                                        {selectedMapNode.rainfallRateMm?.toFixed(1) || '0.0'} <span className="text-[10px] text-slate-500 dark:text-slate-400 font-normal">mm/h</span>
+                                        {selectedMapNode.rainfallRateMm != null ? Number(selectedMapNode.rainfallRateMm).toFixed(1) : '0.0'} <span className="text-[10px] text-slate-500 dark:text-slate-400 font-normal">mm/h</span>
                                     </p>
                                 </div>
                                 <div className="bg-white dark:bg-[#02050b] border border-slate-200 dark:border-slate-900/60 p-3 rounded-xl shadow-sm">
@@ -699,11 +699,11 @@ export const MapTab: React.FC<MapTabProps> = ({
                             <div className="bg-slate-100/90 dark:bg-[#02050b]/80 border border-slate-200 dark:border-slate-900 p-3.5 rounded-2xl text-[9px] font-mono text-slate-500 space-y-1">
                                 <div className="flex justify-between">
                                     <span>COORD LAT:</span>
-                                    <span className="text-slate-800 dark:text-slate-300 font-bold">{selectedMapNode.latitude.toFixed(6)}</span>
+                                    <span className="text-slate-800 dark:text-slate-300 font-bold">{selectedMapNode.latitude != null ? Number(selectedMapNode.latitude).toFixed(6) : '8.980600'}</span>
                                 </div>
                                 <div className="flex justify-between">
                                     <span>COORD LNG:</span>
-                                    <span className="text-slate-800 dark:text-slate-300 font-bold">{selectedMapNode.longitude.toFixed(6)}</span>
+                                    <span className="text-slate-800 dark:text-slate-300 font-bold">{selectedMapNode.longitude != null ? Number(selectedMapNode.longitude).toFixed(6) : '39.056900'}</span>
                                 </div>
                             </div>
                         </div>

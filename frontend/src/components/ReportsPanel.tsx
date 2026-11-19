@@ -20,7 +20,7 @@ export const ReportsPanel: React.FC<ReportsPanelProps> = ({ activeStationName, p
   const summaryChartData = payload?.history && payload.history.length > 0
     ? payload.history.slice(-7).map((h, i) => ({
         name: h.timestamp ? new Date(h.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : `T-${7 - i}`,
-        level: +(h.waterLevelCm / 100.0).toFixed(2),
+        level: +((h.waterLevelCm ?? 0) / 100.0).toFixed(2),
       }))
     : [
         { name: 'May 10', level: 5.2 },
@@ -49,7 +49,7 @@ export const ReportsPanel: React.FC<ReportsPanelProps> = ({ activeStationName, p
 
     const headers = "Log ID,Node ID,Water Level (cm),Rainfall (mm/h),Flood Probability,Risk Tier,Timestamp\n";
     const rows = payload.history.map(h => 
-      `${h.logId},${h.nodeId},${h.waterLevelCm},${h.rainfallRateMm},${(h.floodProbability * 100).toFixed(1)}%,${h.riskLevel},${h.timestamp}`
+      `${h.logId},${h.nodeId},${h.waterLevelCm},${h.rainfallRateMm},${((h.floodProbability ?? 0) * 100).toFixed(1)}%,${h.riskLevel},${h.timestamp}`
     ).join("\n");
 
     const blob = new Blob([headers + rows], { type: 'text/csv;charset=utf-8;' });
