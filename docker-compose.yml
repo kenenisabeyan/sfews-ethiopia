@@ -1,0 +1,96 @@
+version: '3.8'
+
+# ========================================================
+# SFEWS (Smart Flood Early Warning System) - Production Stack
+# Complete Multi-Container Orchestration
+# ========================================================
+
+networks:
+  sfews-network:
+    driver: bridge
+
+volumes:
+  sfews-data:
+    driver: local
+  postgres-data:
+    driver: local
+
+services:
+  # ------------------------------------------------------
+  # Backend API: FastAPI + Gunicorn Worker Cluster
+  # ------------------------------------------------------
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: sfews-backend
+    restart: unless-stopped
+    networks:
+      - sfews-network
+    ports:
+      - "${BACKEND_PORT:-8000}:8000"
+    environment:
+      - DATABASE_URL=${DATABASE_URL:-postgresql://neondb_owner:npg_3byu8HaVjmOY@ep-gentle-flower-ap24l0dv.c-7.us-east-1.aws.neon.tech/neondb?sslmode=require}
+      - SECRET_KEY=${SECRET_KEY:-sfews-command-center-super-secure-production-jwt-token-2026}
+      - ENVIRONMENT=${ENVIRONMENT:-production}
+      - WEB_CONCURRENCY=${WEB_CONCURRENCY:-4}
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - SQLITE_FALLBACK_URL=sqlite:////app/data/sfews_local.db
+    volumes:
+      - sfews-data:/app/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8000/ || exit 1"]
+      interval: 20s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+  # ------------------------------------------------------
+  # Frontend SPA: React 18 + Vite + High-Throughput Nginx
+  # ------------------------------------------------------
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        - VITE_API_URL=${VITE_API_URL:-}
+    container_name: sfews-frontend
+    restart: unless-stopped
+    networks:
+      - sfews-network
+    ports:
+      - "${FRONTEND_PORT:-80}:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost/healthz || exit 1"]
+      interval: 20s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  # ------------------------------------------------------
+  # Optional: Local PostgreSQL (Enabled with --profile local-db)
+  # For 100% On-Premise Air-Gapped Deployments (ASTU / EMI)
+  # ------------------------------------------------------
+  postgres:
+    image: postgres:16-alpine
+    container_name: sfews-postgres
+    profiles: ["local-db"]
+    restart: unless-stopped
+    networks:
+      - sfews-network
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB:-sfews_db}
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres123}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-sfews_db}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
