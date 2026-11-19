@@ -1,22 +1,23 @@
 import json
 import asyncio
 from .llm_client import execute_prompt_with_fallback
-from .tools import TOOLS_SCHEMA, get_current_water_level
+from .tools import TOOLS_SCHEMA, get_current_water_level, get_basin_flood_summary
 from ..external.weather_service import get_weather_forecast
 from ..external.geocode_service import get_coordinates
 
 # Tool execution mapper
 AVAILABLE_TOOLS = {
     "get_current_water_level": get_current_water_level,
+    "get_basin_flood_summary": get_basin_flood_summary,
     "get_weather_forecast": get_weather_forecast,
     "get_coordinates": get_coordinates
 }
 
 SYSTEM_PROMPT = """You are the SFEWS Command Center AI Assistant. 
-You provide real-time situational awareness regarding flood risks.
+You provide real-time situational awareness regarding flood risks in Ethiopia (specifically the Awash River Basin).
 You are strictly READ-ONLY. You cannot change database values.
-If the user asks about a location, use your tools to find coordinates, weather, and sensor data.
-Provide concise, professional emergency reports."""
+Use your tools to find coordinates, weather forecasts, sensor water levels, and basin summaries.
+Provide concise, professional civil defense reports."""
 
 async def run_agent(query: str) -> str:
     messages = [
@@ -43,8 +44,7 @@ async def run_agent(query: str) -> str:
                 
                 if function_to_call:
                     try:
-                        function_args = json.loads(tool_call.function.arguments)
-                        print(f"Agent executing tool: {function_name} with args: {function_args}")
+                        function_args = json.loads(tool_call.function.arguments) if tool_call.function.arguments else {}
                         
                         if function_name == "get_weather_forecast":
                             function_response = await function_to_call(
@@ -59,6 +59,11 @@ async def run_agent(query: str) -> str:
                             function_response = await asyncio.to_thread(
                                 function_to_call, 
                                 location_name=function_args.get("location_name")
+                            )
+                        elif function_name == "get_basin_flood_summary":
+                            function_response = await asyncio.to_thread(
+                                function_to_call,
+                                basin_name=function_args.get("basin_name", "Awash")
                             )
                         else:
                             function_response = {"error": "Unknown function"}
