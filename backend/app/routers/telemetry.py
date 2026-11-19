@@ -5,7 +5,13 @@ from sqlalchemy.orm import Session
 from sqlalchemy import func
 from .. import models, schemas
 from ..database import get_db
-from ..services.ml import predict_flood_probability
+from ..services.ml import (
+    predict_flood_probability,
+    calculate_rate_of_rise,
+    calculate_estimated_discharge,
+    evaluate_surge_dynamics,
+    evaluate_risk_tier
+)
 from ..services.websocket import manager
 from ..services.dashboard import build_dashboard_payload
 from ..services.alert_service import evaluate_and_create_alert
@@ -22,7 +28,8 @@ async def ingest_telemetry(
 ):
     """
     Ingests live telemetry from an edge IoT sensor node or LoRa gateway.
-    Executes automated ML inference, risk tier assessment, threshold evaluation,
+    Executes automated hydrological rate-of-rise calculation, stage-discharge
+    power curve estimation, ML flood probability inference, dynamic threshold evaluation,
     and publishes an asynchronous domain event to decoupled system listeners.
     """
     # 1. Validate node existence
@@ -32,28 +39,57 @@ async def ingest_telemetry(
             status_code=status.HTTP_404_NOT_FOUND, 
             detail=f"Sensor node '{payload.node_id}' is not registered. Please register node first."
         )
+
+    # 2. Retrieve previous reading to compute rate of rise (delta h / delta t)
+    previous_log = (
+        db.query(models.HydroLog)
+        .filter(models.HydroLog.node_id == node.id)
+        .order_by(models.HydroLog.timestamp.desc())
+        .first()
+    )
+
+    now_utc = datetime.now(timezone.utc)
+    if previous_log and previous_log.timestamp:
+        prev_ts = previous_log.timestamp
+        if prev_ts.tzinfo is None:
+            prev_ts = prev_ts.replace(tzinfo=timezone.utc)
+        elapsed_seconds = (now_utc - prev_ts).total_seconds()
+        prev_water = previous_log.water_level_cm
+    else:
+        elapsed_seconds = 0.0
+        prev_water = None
+
+    # 3. Hydrological computations
+    rate_of_rise = calculate_rate_of_rise(payload.water_level_cm, prev_water, elapsed_seconds)
+    estimated_discharge = calculate_estimated_discharge(payload.water_level_cm)
+    surge_info = evaluate_surge_dynamics(rate_of_rise)
+
+    # 4. Run ML Pipeline for Risk Prediction
+    probability = predict_flood_probability(
+        water_level_cm=payload.water_level_cm,
+        rainfall_rate_mm=payload.rainfall_rate_mm,
+        rate_of_rise_cm_per_hr=rate_of_rise
+    )
     
-    # 2. Run ML Pipeline for Risk Prediction
-    probability = predict_flood_probability(payload.water_level_cm, payload.rainfall_rate_mm)
-    
-    # 3. Dynamic Threshold Evaluation
+    # 5. Dynamic Threshold Evaluation
     warn_setting = db.query(models.SystemSetting).filter(models.SystemSetting.key == "warning_threshold").first()
     crit_setting = db.query(models.SystemSetting).filter(models.SystemSetting.key == "critical_threshold").first()
     warning_val = warn_setting.value if warn_setting else 300.0
     critical_val = crit_setting.value if crit_setting else 450.0
-    
-    if payload.water_level_cm >= critical_val:
-        risk_level = "Critical"
-    elif payload.water_level_cm >= warning_val:
-        risk_level = "Warning"
-    else:
-        risk_level = "Safe"
 
-    # 4. Update Node Status & Hardware Vitals
+    risk_level = evaluate_risk_tier(
+        probability=probability,
+        rate_of_rise_cm_per_hr=rate_of_rise,
+        water_level_cm=payload.water_level_cm,
+        warning_threshold=warning_val,
+        critical_threshold=critical_val
+    )
+
+    # 6. Update Node Status & Hardware Vitals
     node.battery_level = payload.battery_level
     node.status = "Active"
     
-    # 5. Insert Hydrological Log Record
+    # 7. Insert Hydrological Log Record
     log = models.HydroLog(
         node_id=node.id,
         water_level_cm=payload.water_level_cm,
@@ -65,31 +101,34 @@ async def ingest_telemetry(
     db.commit()
     db.refresh(log)
 
-    # 6. Evaluate & Dispatch Alerts Independently
+    # 8. Evaluate & Dispatch Alerts Independently
     alert = evaluate_and_create_alert(
         db=db,
         node_id=node.id,
         water_level_cm=payload.water_level_cm,
-        rainfall_rate_mm=payload.rainfall_rate_mm
+        rainfall_rate_mm=payload.rainfall_rate_mm,
+        rate_of_rise_cm_per_hr=rate_of_rise
     )
 
-    # 7. Invalidate Caches
+    # 9. Invalidate Caches
     cache.invalidate("dashboard_full_payload")
 
-    # 8. Dispatch Domain Event to EventBus
+    # 10. Dispatch Domain Event to EventBus
     await event_bus.publish(
         EventType.TELEMETRY_INGESTED,
         {
             "node_id": node.id,
             "water_level_cm": payload.water_level_cm,
             "rainfall_rate_mm": payload.rainfall_rate_mm,
+            "rate_of_rise_cm_per_hr": rate_of_rise,
+            "estimated_discharge_m3s": estimated_discharge,
             "risk_level": risk_level,
             "flood_probability": probability,
             "alert_created": alert is not None
         }
     )
 
-    # 9. Asynchronously stream updated Dashboard Snapshot to active WebSocket subscribers
+    # 11. Asynchronously stream updated Dashboard Snapshot to active WebSocket subscribers
     dashboard_payload = build_dashboard_payload(db, force_refresh=True)
     json_data = dashboard_payload.model_dump_json(by_alias=True)
     background_tasks.add_task(manager.broadcast_dashboard_json, json_data)
@@ -98,6 +137,9 @@ async def ingest_telemetry(
         "status": "success",
         "risk_level": risk_level,
         "flood_probability": probability,
+        "rate_of_rise_cm_per_hr": rate_of_rise,
+        "estimated_discharge_m3s": estimated_discharge,
+        "surge_status": surge_info["status"],
         "log_id": log.id,
         "alert_triggered": alert is not None
     }
@@ -110,6 +152,7 @@ async def ingest_batch_telemetry(
 ):
     """
     High-throughput batch ingestion for LoRaWAN gateways aggregating multi-node packets.
+    Computes per-node hydrological dynamics and updates basin-wide alert states.
     """
     processed = 0
     warn_setting = db.query(models.SystemSetting).filter(models.SystemSetting.key == "warning_threshold").first()
@@ -117,13 +160,31 @@ async def ingest_batch_telemetry(
     warning_val = warn_setting.value if warn_setting else 300.0
     critical_val = crit_setting.value if crit_setting else 450.0
 
+    now_utc = datetime.now(timezone.utc)
+
     for item in batch.readings:
         node = db.query(models.SensorNode).filter(models.SensorNode.id == item.node_id).first()
         if not node:
             continue
 
-        probability = predict_flood_probability(item.water_level_cm, item.rainfall_rate_mm)
-        risk = "Critical" if item.water_level_cm >= critical_val else ("Warning" if item.water_level_cm >= warning_val else "Safe")
+        previous_log = (
+            db.query(models.HydroLog)
+            .filter(models.HydroLog.node_id == node.id)
+            .order_by(models.HydroLog.timestamp.desc())
+            .first()
+        )
+
+        if previous_log and previous_log.timestamp:
+            prev_ts = previous_log.timestamp.replace(tzinfo=timezone.utc) if previous_log.timestamp.tzinfo is None else previous_log.timestamp
+            elapsed = (now_utc - prev_ts).total_seconds()
+            prev_water = previous_log.water_level_cm
+        else:
+            elapsed = 0.0
+            prev_water = None
+
+        rate_of_rise = calculate_rate_of_rise(item.water_level_cm, prev_water, elapsed)
+        probability = predict_flood_probability(item.water_level_cm, item.rainfall_rate_mm, rate_of_rise)
+        risk = evaluate_risk_tier(probability, rate_of_rise, item.water_level_cm, warning_val, critical_val)
 
         node.battery_level = item.battery_level
         node.status = "Active"
@@ -136,7 +197,7 @@ async def ingest_batch_telemetry(
             risk_level=risk
         )
         db.add(log)
-        evaluate_and_create_alert(db, node.id, item.water_level_cm, item.rainfall_rate_mm)
+        evaluate_and_create_alert(db, node.id, item.water_level_cm, item.rainfall_rate_mm, rate_of_rise)
         processed += 1
 
     db.commit()
