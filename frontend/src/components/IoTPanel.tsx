@@ -225,13 +225,13 @@ export const IoTPanel: React.FC<IoTPanelProps> = ({
   // Help style pins color code
   const getPinColor = (type: string) => {
     switch (type) {
-      case 'POWER': return 'bg-red-500/10 text-red-400 border-red-500/30 shadow-[0_0_8px_rgba(239,68,68,0.15)]';
-      case 'GND': return 'bg-slate-800 text-slate-400 border-slate-700';
-      case 'ADC': return 'bg-amber-500/10 text-amber-400 border-amber-500/30 shadow-[0_0_8px_rgba(245,158,11,0.15)]';
-      case 'GPIO': return 'bg-purple-500/10 text-purple-400 border-purple-500/30 shadow-[0_0_8px_rgba(168,85,247,0.15)]';
-      case 'SPI': return 'bg-cyan-500/10 text-cyan-400 border-cyan-500/30 shadow-[0_0_8px_rgba(34,211,238,0.15)]';
-      case 'I2C': return 'bg-indigo-500/10 text-indigo-400 border-indigo-500/30 shadow-[0_0_8px_rgba(99,102,241,0.15)]';
-      case 'UART': return 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30 shadow-[0_0_8px_rgba(16,185,129,0.15)]';
+      case 'POWER': return 'bg-red-500/10 text-red-600 dark:text-red-400 border-red-500/30 shadow-[0_0_8px_rgba(239,68,68,0.15)]';
+      case 'GND': return 'bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-400 border-slate-300 dark:border-slate-700';
+      case 'ADC': return 'bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/30 shadow-[0_0_8px_rgba(245,158,11,0.15)]';
+      case 'GPIO': return 'bg-purple-500/10 text-purple-700 dark:text-purple-400 border-purple-500/30 shadow-[0_0_8px_rgba(168,85,247,0.15)]';
+      case 'SPI': return 'bg-cyan-500/10 text-cyan-700 dark:text-cyan-400 border-cyan-500/30 shadow-[0_0_8px_rgba(34,211,238,0.15)]';
+      case 'I2C': return 'bg-indigo-500/10 text-indigo-700 dark:text-indigo-400 border-indigo-500/30 shadow-[0_0_8px_rgba(99,102,241,0.15)]';
+      case 'UART': return 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/30 shadow-[0_0_8px_rgba(16,185,129,0.15)]';
       default: return 'bg-slate-200 dark:bg-slate-900 text-slate-600 dark:text-slate-500 border-slate-300 dark:border-slate-800';
     }
   };

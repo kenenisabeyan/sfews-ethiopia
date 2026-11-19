@@ -66,10 +66,10 @@ export const MapTab: React.FC<MapTabProps> = ({
 
     const getAlertColors = (risk?: string) => {
         switch (risk) {
-            case 'Safe': return 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20';
-            case 'Warning': return 'text-amber-400 bg-amber-500/10 border-amber-500/20';
-            case 'Critical': return 'text-red-400 bg-red-500/10 border-red-500/20 shadow-[0_0_15px_rgba(239,68,68,0.2)]';
-            default: return 'text-slate-400 bg-slate-800/50 border-slate-700/50';
+            case 'Safe': return 'text-emerald-700 dark:text-emerald-400 bg-emerald-500/10 border-emerald-500/20';
+            case 'Warning': return 'text-amber-700 dark:text-amber-400 bg-amber-500/10 border-amber-500/20';
+            case 'Critical': return 'text-red-700 dark:text-red-400 bg-red-500/10 border-red-500/20 shadow-[0_0_15px_rgba(239,68,68,0.2)]';
+            default: return 'text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-slate-800/50 border-slate-300 dark:border-slate-700/50';
         }
     };
 

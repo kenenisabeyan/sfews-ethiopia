@@ -171,8 +171,8 @@ export const SimpleSimPanel: React.FC = () => {
                             <div className="flex items-center gap-3">
                                 <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center border border-purple-500/20 font-bold font-mono text-xs sm:text-sm">1</div>
                                 <div>
-                                    <h3 className="text-xs sm:text-sm font-extrabold tracking-wide uppercase text-slate-200">Phase 1: Data Generation</h3>
-                                    <span className="text-[9px] sm:text-[10px] text-purple-400 font-bold block uppercase tracking-wider">IoT Sensor Telemetry</span>
+                                    <h3 className="text-xs sm:text-sm font-extrabold tracking-wide uppercase text-slate-800 dark:text-slate-200">Phase 1: Data Generation</h3>
+                                    <span className="text-[9px] sm:text-[10px] text-purple-600 dark:text-purple-400 font-bold block uppercase tracking-wider">IoT Sensor Telemetry</span>
                                 </div>
                             </div>
                             
@@ -245,8 +245,8 @@ export const SimpleSimPanel: React.FC = () => {
                         <div className="flex items-center gap-3 mb-4 sm:mb-5">
                             <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center border border-cyan-500/20 font-bold font-mono text-xs sm:text-sm">2</div>
                             <div>
-                                <h3 className="text-xs sm:text-sm font-extrabold tracking-wide uppercase text-slate-200">Phase 2: Decision Logic</h3>
-                                <span className="text-[9px] sm:text-[10px] text-cyan-400 font-bold block uppercase tracking-wider">Edge-Processing Criteria</span>
+                                <h3 className="text-xs sm:text-sm font-extrabold tracking-wide uppercase text-slate-800 dark:text-slate-200">Phase 2: Decision Logic</h3>
+                                <span className="text-[9px] sm:text-[10px] text-cyan-600 dark:text-cyan-400 font-bold block uppercase tracking-wider">Edge-Processing Criteria</span>
                             </div>
                         </div>
 
@@ -301,8 +301,8 @@ export const SimpleSimPanel: React.FC = () => {
                     <div className="flex items-center gap-3 mb-4 sm:mb-6">
                         <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center border border-purple-500/20 font-bold font-mono text-xs sm:text-sm">5</div>
                         <div>
-                            <h3 className="text-xs sm:text-sm font-extrabold tracking-wide uppercase text-slate-200">Phase 5: Visualization</h3>
-                            <span className="text-[9px] sm:text-[10px] text-purple-400 font-bold block uppercase tracking-wider">HUD Presentation Panel</span>
+                            <h3 className="text-xs sm:text-sm font-extrabold tracking-wide uppercase text-slate-800 dark:text-slate-200">Phase 5: Visualization</h3>
+                            <span className="text-[9px] sm:text-[10px] text-purple-600 dark:text-purple-400 font-bold block uppercase tracking-wider">HUD Presentation Panel</span>
                         </div>
                     </div>
 
@@ -358,26 +358,26 @@ export const SimpleSimPanel: React.FC = () => {
 
                     {/* Flashing Normal / Alert Banners */}
                     <div className="space-y-3 sm:space-y-4">
-                        <div className="border-t border-slate-900/60 pt-3.5 sm:pt-5">
+                        <div className="border-t border-slate-200 dark:border-slate-800/60 pt-3.5 sm:pt-5">
                             <span className="text-[9px] sm:text-[10px] text-slate-500 font-bold uppercase tracking-wider block mb-2 text-center">Current Warning Status</span>
                             
                             {isAlert ? (
-                                <div className="bg-red-950/20 border border-red-500/25 px-4 sm:px-5 py-3.5 sm:py-4.5 rounded-xl sm:rounded-2xl text-center shadow-lg shadow-red-950/20 animate-pulse relative overflow-hidden">
+                                <div className="bg-red-500/10 dark:bg-red-950/20 border border-red-500/30 px-4 sm:px-5 py-3.5 sm:py-4.5 rounded-xl sm:rounded-2xl text-center shadow-lg shadow-red-950/10 animate-pulse relative overflow-hidden">
                                     <span className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-red-500 to-transparent"></span>
-                                    <p className="text-red-400 text-sm sm:text-base font-black tracking-wide text-glow-red">
+                                    <p className="text-red-600 dark:text-red-400 text-sm sm:text-base font-black tracking-wide">
                                         ⚠️ Flood Alert!
                                     </p>
-                                    <p className="text-red-500 text-[9px] sm:text-[10px] font-bold uppercase tracking-wider mt-1 sm:mt-1.5 font-mono">
+                                    <p className="text-red-700 dark:text-red-400 text-[9px] sm:text-[10px] font-bold uppercase tracking-wider mt-1 sm:mt-1.5 font-mono">
                                         Water level ({waterLevel}) exceeded threshold 500
                                     </p>
                                 </div>
                             ) : (
-                                <div className="bg-emerald-950/15 border border-emerald-500/20 px-4 sm:px-5 py-3.5 sm:py-4.5 rounded-xl sm:rounded-2xl text-center shadow-md shadow-emerald-950/5 relative overflow-hidden">
+                                <div className="bg-emerald-500/10 dark:bg-emerald-950/15 border border-emerald-500/30 px-4 sm:px-5 py-3.5 sm:py-4.5 rounded-xl sm:rounded-2xl text-center shadow-md relative overflow-hidden">
                                     <span className="absolute top-0 left-0 w-full h-[1.5px] bg-gradient-to-r from-transparent via-emerald-500 to-transparent"></span>
-                                    <p className="text-emerald-400 text-xs sm:text-sm font-extrabold tracking-wide text-glow-emerald">
+                                    <p className="text-emerald-700 dark:text-emerald-400 text-xs sm:text-sm font-extrabold tracking-wide">
                                         Water Level Normal
                                     </p>
-                                    <p className="text-emerald-500 text-[8.5px] sm:text-[9px] font-bold uppercase tracking-wider mt-1 sm:mt-1.5 font-mono">
+                                    <p className="text-emerald-800 dark:text-emerald-400 text-[8.5px] sm:text-[9px] font-bold uppercase tracking-wider mt-1 sm:mt-1.5 font-mono">
                                         System state stable • within safe tolerances
                                     </p>
                                 </div>
@@ -396,10 +396,10 @@ export const SimpleSimPanel: React.FC = () => {
                 <div className="lg:col-span-2 glass-panel rounded-2xl sm:rounded-3xl p-4 sm:p-6.5">
                     <div className="flex items-center justify-between mb-4 sm:mb-5">
                         <div className="flex items-center gap-3">
-                            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center border border-purple-500/20 font-bold font-mono text-xs sm:text-sm">3</div>
+                            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400 flex items-center justify-center border border-purple-500/20 font-bold font-mono text-xs sm:text-sm">3</div>
                             <div>
-                                <h3 className="text-xs sm:text-sm font-extrabold tracking-wide uppercase text-slate-200">Phase 3: Data Transmission</h3>
-                                <span className="text-[9px] sm:text-[10px] text-purple-400 font-bold block uppercase tracking-wider">HTTP POST Transmission Logs</span>
+                                <h3 className="text-xs sm:text-sm font-extrabold tracking-wide uppercase text-slate-800 dark:text-slate-200">Phase 3: Data Transmission</h3>
+                                <span className="text-[9px] sm:text-[10px] text-purple-600 dark:text-purple-400 font-bold block uppercase tracking-wider">HTTP POST Transmission Logs</span>
                             </div>
                         </div>
                         {logs.length > 0 && (
@@ -459,17 +459,17 @@ export const SimpleSimPanel: React.FC = () => {
                             <span className="font-mono text-[9px] sm:text-[10px] text-indigo-400 font-semibold">GET /flood</span>
                         </div>
 
-                        <div className="border-t border-slate-900/60 pt-2.5 sm:pt-3 flex items-center justify-between">
-                            <span className="text-xs text-slate-400 font-bold">Stored Water Level:</span>
-                            <span className="font-mono text-sm sm:text-base font-black text-slate-200">
+                        <div className="border-t border-slate-200 dark:border-slate-800/60 pt-2.5 sm:pt-3 flex items-center justify-between">
+                            <span className="text-xs text-slate-600 dark:text-slate-400 font-bold">Stored Water Level:</span>
+                            <span className="font-mono text-sm sm:text-base font-black text-slate-900 dark:text-slate-100">
                                 {backendLevel !== null ? backendLevel : '—'}
                             </span>
                         </div>
 
                         <div className="flex items-center justify-between pt-1">
-                            <span className="text-xs text-slate-400 font-bold">In-Memory Sync:</span>
+                            <span className="text-xs text-slate-600 dark:text-slate-400 font-bold">In-Memory Sync:</span>
                             <span className={`text-[9px] sm:text-[10px] font-extrabold px-2 sm:px-2.5 py-0.5 rounded-md ${
-                                backendStatus === 'Online' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-red-500/10 text-red-400'
+                                backendStatus === 'Online' ? 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400' : 'bg-red-500/10 text-red-600 dark:text-red-400'
                             }`}>
                                 {backendStatus === 'Online' ? 'SYNCHRONIZED' : 'DISCONNECTED'}
                             </span>
@@ -477,23 +477,23 @@ export const SimpleSimPanel: React.FC = () => {
                     </div>
 
                     {/* Backend State Indicator banner */}
-                    <div className="mt-3.5 sm:mt-4 border-t border-slate-900/60 pt-3.5 sm:pt-4.5">
+                    <div className="mt-3.5 sm:mt-4 border-t border-slate-200 dark:border-slate-800/60 pt-3.5 sm:pt-4.5">
                         {backendLevel !== null ? (
                             isBackendAlert ? (
-                                <div className="bg-red-950/20 border border-red-500/15 p-3 sm:p-3.5 rounded-xl text-center">
-                                    <p className="text-red-400 text-xs font-black uppercase tracking-wider">
+                                <div className="bg-red-500/10 dark:bg-red-950/20 border border-red-500/25 p-3 sm:p-3.5 rounded-xl text-center">
+                                    <p className="text-red-600 dark:text-red-400 text-xs font-black uppercase tracking-wider">
                                         ⚠️ Backend State: Flood Alert!
                                     </p>
-                                    <p className="text-slate-400 text-[9px] font-bold mt-0.5 sm:mt-1">
+                                    <p className="text-slate-700 dark:text-slate-400 text-[9px] font-bold mt-0.5 sm:mt-1">
                                         FastAPI global level is active warning level ({backendLevel})
                                     </p>
                                 </div>
                             ) : (
-                                <div className="bg-emerald-950/10 border border-emerald-500/10 p-3 sm:p-3.5 rounded-xl text-center">
-                                    <p className="text-emerald-400 text-xs font-extrabold uppercase tracking-wider">
+                                <div className="bg-emerald-500/10 dark:bg-emerald-950/15 border border-emerald-500/20 p-3 sm:p-3.5 rounded-xl text-center">
+                                    <p className="text-emerald-700 dark:text-emerald-400 text-xs font-extrabold uppercase tracking-wider">
                                         🟢 Backend State: Normal
                                     </p>
-                                    <p className="text-slate-400 text-[9px] font-bold mt-0.5 sm:mt-1">
+                                    <p className="text-slate-700 dark:text-slate-400 text-[9px] font-bold mt-0.5 sm:mt-1">
                                         FastAPI global level is safe zone level ({backendLevel})
                                     </p>
                                 </div>
