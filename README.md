@@ -723,18 +723,40 @@ Create a `.env` file in the `backend/` directory with the following configuratio
 
 ## 🐳 Production Deployment & Docker
 
-SFEWS includes containerization for production deployments on Kubernetes, AWS ECS, or Render:
+SFEWS is fully containerized and production-ready with multi-worker Gunicorn ASGI clustering, optimized Nginx reverse proxying, and automated deployment scripts.
+
+### 1. One-Click Multi-Container Stack (Docker Compose)
 
 ```bash
-# Build the production Docker image
-docker build -t sfews-backend:latest -f backend/Dockerfile backend
+# 1. Copy production environment template
+cp .env.production.example .env.production
 
-# Run the container with environment variables
-docker run -d \
-  -p 8000:8000 \
-  --name sfews-api \
-  --env-file backend/.env \
-  sfews-backend:latest
+# 2. Automated launch with health validation
+# On Linux / macOS:
+chmod +x scripts/deploy.sh && ./scripts/deploy.sh
+
+# On Windows:
+.\scripts\deploy.ps1
+
+# Or run directly via Docker Compose:
+docker compose --env-file .env.production up -d --build
+```
+
+### 2. Available Production Services & Endpoints
+
+| Service | Port | Description |
+| :--- | :--- | :--- |
+| **Frontend Command Center** | `http://localhost:80` | High-performance Nginx SPA with asset caching & WebSocket tunneling |
+| **Backend API Cluster** | `http://localhost:8000` | FastAPI multi-process Gunicorn cluster (`uvicorn.workers.UvicornWorker`) |
+| **Interactive API Docs** | `http://localhost:8000/docs` | OpenAPI / Swagger specification |
+| **Live System Diagnostics** | `http://localhost:8000/api/v1/system/diagnostics` | Uptime, WebSocket subscribers, event bus telemetry & DB health |
+| **Real-Time WebSocket Stream** | `ws://localhost:8000/api/v1/ws/dashboard` | 24/7 hydrological telemetry & alert broadcast tunnel |
+
+### 3. Fully Offline / Air-Gapped Mode (ASTU On-Premise)
+
+If deploying in a secure facility without cloud internet access, run the local database profile:
+```bash
+docker compose --profile local-db up -d --build
 ```
 
 ---

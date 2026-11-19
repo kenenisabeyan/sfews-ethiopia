@@ -1,4 +1,4 @@
-﻿# ========================================================
+# ========================================================
 # SFEWS Production Automated Deployment Script (Windows)
 # Zero-Downtime Multi-Container Build & Health Validation
 # ========================================================
