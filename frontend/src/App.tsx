@@ -594,7 +594,7 @@ const App: React.FC = () => {
 
                     {/* TAB F: COMPLIANCE REPORTS VIEWER */}
                     {activeTab === 'reports' && (
-                        <ReportsPanel activeStationName={activeStationName} />
+                        <ReportsPanel activeStationName={activeStationName} payload={payload} />
                     )}
 
                     {/* TAB G: PARAMETER CONFIGS SETTINGS VIEW */}
