@@ -382,117 +382,102 @@ const App: React.FC = () => {
         return () => clearInterval(timer);
     }, []);
 
-        // Professional Advanced ERP Categorized Navigation
-    const navSections = [
-        {
-            title: 'MAIN COMMAND',
-            items: [
-                { 
-                    id: 'dashboard', 
-                    label: 'Dashboard', 
-                    shortcut: '1',
-                    icon: (
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <rect x="3" y="3" width="7" height="7" rx="1.5" strokeWidth="1.8"/>
-                            <rect x="14" y="3" width="7" height="7" rx="1.5" strokeWidth="1.8"/>
-                            <rect x="14" y="14" width="7" height="7" rx="1.5" strokeWidth="1.8"/>
-                            <rect x="3" y="14" width="7" height="7" rx="1.5" strokeWidth="1.8"/>
-                        </svg>
-                    )
-                },
-                { 
-                    id: 'map', 
-                    label: 'GIS Topology', 
-                    shortcut: '2',
-                    icon: (
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
-                        </svg>
-                    )
-                },
-                { 
-                    id: 'levels', 
-                    label: 'River Stages', 
-                    shortcut: '3',
-                    icon: (
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-                        </svg>
-                    )
-                },
-            ]
+    // Clean Modern Navigation List (ClientFlow / Admin ERP Design)
+    const navItems = [
+        { 
+            id: 'dashboard', 
+            label: 'Dashboard', 
+            shortcut: '1',
+            icon: (
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <rect x="3" y="3" width="7" height="7" rx="1.5" strokeWidth="1.8"/>
+                    <rect x="14" y="3" width="7" height="7" rx="1.5" strokeWidth="1.8"/>
+                    <rect x="14" y="14" width="7" height="7" rx="1.5" strokeWidth="1.8"/>
+                    <rect x="3" y="14" width="7" height="7" rx="1.5" strokeWidth="1.8"/>
+                </svg>
+            )
         },
-        {
-            title: 'INCIDENTS & DEFENSE',
-            items: [
-                { 
-                    id: 'alerts', 
-                    label: 'Emergency Alerts', 
-                    shortcut: '4',
-                    badge: payload?.summary?.activeAlerts || 0, 
-                    icon: (
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                        </svg>
-                    )
-                },
-                { 
-                    id: 'weather', 
-                    label: 'Weather Radar', 
-                    shortcut: '5',
-                    icon: (
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
-                        </svg>
-                    )
-                },
-            ]
+        { 
+            id: 'map', 
+            label: 'GIS Topology', 
+            shortcut: '2',
+            icon: (
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                </svg>
+            )
         },
-        {
-            title: 'DATA & SYSTEM',
-            items: [
-                { 
-                    id: 'reports', 
-                    label: 'Audit & Reports', 
-                    shortcut: '6',
-                    icon: (
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                        </svg>
-                    )
-                },
-                { 
-                    id: 'iot', 
-                    label: 'IoT & LoRa Mesh', 
-                    shortcut: '7',
-                    icon: (
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 5h10a2 2 0 012 2v10a2 2 0 01-2 2H7a2 2 0 01-2-2V7a2 2 0 012-2z" />
-                        </svg>
-                    )
-                },
-                { 
-                    id: 'simplesim', 
-                    label: 'Physical Rig Sim', 
-                    shortcut: '8',
-                    icon: (
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
-                        </svg>
-                    )
-                },
-                { 
-                    id: 'settings', 
-                    label: 'Warning Configs', 
-                    shortcut: '9',
-                    icon: (
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                            <circle cx="12" cy="12" r="3" strokeWidth="1.8" />
-                        </svg>
-                    )
-                }
-            ]
+        { 
+            id: 'levels', 
+            label: 'River Stages', 
+            shortcut: '3',
+            icon: (
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                </svg>
+            )
+        },
+        { 
+            id: 'alerts', 
+            label: 'Emergency Alerts', 
+            shortcut: '4',
+            badge: payload?.summary?.activeAlerts || 0, 
+            icon: (
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                </svg>
+            )
+        },
+        { 
+            id: 'weather', 
+            label: 'Weather Radar', 
+            shortcut: '5',
+            icon: (
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
+                </svg>
+            )
+        },
+        { 
+            id: 'reports', 
+            label: 'Audit & Reports', 
+            shortcut: '6',
+            icon: (
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+            )
+        },
+        { 
+            id: 'iot', 
+            label: 'IoT & LoRa Mesh', 
+            shortcut: '7',
+            icon: (
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 5h10a2 2 0 012 2v10a2 2 0 01-2 2H7a2 2 0 01-2-2V7a2 2 0 012-2z" />
+                </svg>
+            )
+        },
+        { 
+            id: 'simplesim', 
+            label: 'Physical Rig Sim', 
+            shortcut: '8',
+            icon: (
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                </svg>
+            )
+        },
+        { 
+            id: 'settings', 
+            label: 'Warning Configs', 
+            shortcut: '9',
+            icon: (
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                    <circle cx="12" cy="12" r="3" strokeWidth="1.8" />
+                </svg>
+            )
         }
     ];
 
@@ -538,17 +523,18 @@ const App: React.FC = () => {
                 />
             )}
 
-                        {/* SIDEBAR NAVIGATION (Ultra-Professional Admin ERP Design) */}
-            <aside className={`fixed inset-y-0 left-0 z-50 w-60 border-r border-slate-200/80 dark:border-slate-800 bg-white/95 dark:bg-[#060a14] backdrop-blur-xl flex flex-col shrink-0 select-none transition-transform duration-300 ease-in-out lg:static lg:translate-x-0 ${
+                        {/* SIDEBAR NAVIGATION (ClientFlow / Ultra-Professional Admin ERP Design) */}
+            <aside className={`fixed inset-y-0 left-0 z-50 w-64 border-r border-slate-200/90 dark:border-slate-800 bg-white dark:bg-[#060a14] flex flex-col shrink-0 select-none transition-transform duration-300 ease-in-out lg:static lg:translate-x-0 ${
                 isMobileMenuOpen ? 'translate-x-0 shadow-2xl dark:shadow-[0_0_50px_rgba(0,0,0,0.95)]' : '-translate-x-full'
             }`}>
                 
-                {/* Organization / Header Section (ClientFlow / Admin ERP Design) */}
-                <div className="p-3.5 border-b border-slate-100 dark:border-slate-800/80">
-                    <div className="flex items-center justify-between p-1.5 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-900/60 transition-colors group cursor-pointer border border-transparent hover:border-slate-200/60 dark:hover:border-slate-800">
-                        <div className="flex items-center gap-3 min-w-0">
-                            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 via-indigo-600 to-blue-700 flex items-center justify-center shadow-md shadow-blue-500/20 relative shrink-0">
-                                <svg className="w-5.5 h-5.5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                {/* Organization / Header Section (Exact ClientFlow Layout) */}
+                <div className="px-5 py-5 border-b border-slate-100 dark:border-slate-800/80">
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3.5 min-w-0">
+                            {/* 3D Folded Isometric Blue Cube Logo */}
+                            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-700 via-blue-600 to-indigo-500 flex items-center justify-center shadow-lg shadow-blue-500/25 relative shrink-0">
+                                <svg className="w-6 h-6 text-white drop-shadow-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                                     <polygon points="12 2 2 7 12 12 22 7 12 2" />
                                     <polyline points="2 17 12 22 22 17" />
                                     <polyline points="2 12 12 17 22 12" />
@@ -556,15 +542,13 @@ const App: React.FC = () => {
                                 <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 absolute -bottom-0.5 -right-0.5 ring-2 ring-white dark:ring-[#060a14]"></span>
                             </div>
                             <div className="min-w-0 flex-1">
-                                <div className="flex items-center gap-1.5">
-                                    <h2 className="text-[14px] font-black tracking-tight text-slate-900 dark:text-white uppercase leading-none truncate">
-                                        SFEWS AWASH
-                                    </h2>
-                                </div>
-                                <p className="text-[9.5px] font-bold tracking-wider text-blue-600 dark:text-blue-400 uppercase font-mono mt-1 flex items-center gap-1 truncate">
+                                <h1 className="text-[17px] font-extrabold tracking-tight text-slate-900 dark:text-white uppercase leading-tight truncate">
+                                    SFEWS AWASH
+                                </h1>
+                                <p className="text-[11px] font-bold tracking-wider text-blue-600 dark:text-blue-400 uppercase font-mono mt-0.5 flex items-center gap-1.5">
                                     <span>ADMIN ERP</span>
                                     <span className="text-slate-300 dark:text-slate-600">•</span>
-                                    <span className="text-slate-500">v2.4</span>
+                                    <span className="text-slate-400 dark:text-slate-500 text-[10px]">v2.4</span>
                                 </p>
                             </div>
                         </div>
@@ -575,7 +559,7 @@ const App: React.FC = () => {
                                 e.stopPropagation();
                                 setIsMobileMenuOpen(false);
                             }}
-                            className="lg:hidden w-7 h-7 rounded-lg bg-slate-100 dark:bg-slate-900 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-colors shrink-0"
+                            className="lg:hidden w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-900 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-colors shrink-0"
                             aria-label="Close navigation drawer"
                         >
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
@@ -583,56 +567,47 @@ const App: React.FC = () => {
                     </div>
                 </div>
 
-                {/* Navigation Items Organized by Sections */}
-                <nav className="flex-1 min-h-0 py-3 pr-2 space-y-4 overflow-y-auto custom-scrollbar">
-                    {navSections.map((section, sIdx) => (
-                        <div key={sIdx} className="space-y-1">
-                            <div className="px-4 py-1 text-[9.5px] font-mono font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">
-                                {section.title}
-                            </div>
-                            <div className="space-y-0.5">
-                                {section.items.map(item => {
-                                    const isActive = activeTab === item.id;
-                                    return (
-                                        <button
-                                            key={item.id}
-                                            onClick={() => {
-                                                setActiveTab(item.id);
-                                                setIsMobileMenuOpen(false);
-                                            }}
-                                            className={`w-full flex items-center gap-3 pl-4 pr-3 py-2.5 text-[13px] transition-all duration-150 group relative text-left ${
-                                                isActive 
-                                                    ? 'active-nav-item bg-[#edf5ff] text-blue-600 border-l-[3.5px] border-blue-600 font-bold shadow-xs dark:bg-blue-950/40 dark:text-blue-400 dark:border-blue-500' 
-                                                    : 'inactive-nav-item text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-white hover:bg-blue-50/50 dark:hover:bg-slate-800/40 font-semibold ml-1'}`}
-                                        >
-                                            <span className={`w-5 h-5 shrink-0 flex items-center justify-center transition-colors ${
-                                                isActive ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400 dark:text-slate-500 group-hover:text-blue-600 dark:group-hover:text-slate-200'
-                                            }`}>
-                                                {item.icon}
-                                            </span>
-                                            <span className="truncate flex-1">{item.label}</span>
-                                            
-                                            {/* Dynamic Badge Counter */}
-                                            {item.badge !== undefined && item.badge > 0 ? (
-                                                <span className="ml-auto px-2 py-0.5 rounded-full bg-red-100 text-red-600 text-[10px] font-extrabold dark:bg-red-950/60 dark:text-red-400 shrink-0 animate-pulse">
-                                                    {item.badge}
-                                                </span>
-                                            ) : (
-                                                <span className="ml-auto text-[9px] font-mono text-slate-500 dark:text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
-                                                    ⌘{item.shortcut}
-                                                </span>
-                                            )}
-                                        </button>
-                                    );
-                                })}
-                            </div>
-                        </div>
-                    ))}
+                {/* Clean Single List Navigation (ClientFlow Standard) */}
+                <nav className="flex-1 min-h-0 px-3 py-4 space-y-1.5 overflow-y-auto custom-scrollbar">
+                    {navItems.map(item => {
+                        const isActive = activeTab === item.id;
+                        return (
+                            <button
+                                key={item.id}
+                                onClick={() => {
+                                    setActiveTab(item.id);
+                                    setIsMobileMenuOpen(false);
+                                }}
+                                className={`w-full flex items-center gap-3.5 px-3.5 py-2.5 text-[14px] transition-all duration-150 group relative text-left rounded-lg ${
+                                    isActive 
+                                        ? 'active-nav-item bg-[#eff6ff] text-blue-600 border-l-[3.5px] border-blue-600 font-semibold shadow-xs dark:bg-blue-950/40 dark:text-blue-400 dark:border-blue-500' 
+                                        : 'inactive-nav-item text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/40 font-medium'}`}
+                            >
+                                <span className={`w-5 h-5 shrink-0 flex items-center justify-center transition-colors ${
+                                    isActive ? 'text-blue-600 dark:text-blue-400' : 'text-slate-500 dark:text-slate-400 group-hover:text-blue-600 dark:group-hover:text-slate-200'
+                                }`}>
+                                    {item.icon}
+                                </span>
+                                <span className="truncate flex-1">{item.label}</span>
+                                
+                                {/* Dynamic Badge Counter */}
+                                {item.badge !== undefined && item.badge > 0 ? (
+                                    <span className="ml-auto px-2 py-0.5 rounded-full bg-red-100 text-red-600 text-[10px] font-bold dark:bg-red-950/60 dark:text-red-400 shrink-0">
+                                        {item.badge}
+                                    </span>
+                                ) : (
+                                    <span className="ml-auto text-[10px] font-mono text-slate-400 dark:text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
+                                        ⌘{item.shortcut}
+                                    </span>
+                                )}
+                            </button>
+                        );
+                    })}
                 </nav>
 
                 {/* Sidebar Footer User & Status */}
-                <div className="p-3 border-t border-slate-100 dark:border-slate-800/80 sidebar-footer bg-white dark:bg-[#040810]/70 space-y-2.5 shrink-0">
-                    <div className="flex items-center justify-between text-[10px] font-mono text-slate-500 dark:text-slate-400">
+                <div className="p-3.5 border-t border-slate-100 dark:border-slate-800/80 sidebar-footer bg-white dark:bg-[#060a14] space-y-2.5 shrink-0">
+                    <div className="flex items-center justify-between text-[11px] font-mono text-slate-500 dark:text-slate-400">
                         <span className="flex items-center gap-1.5 font-bold">
                             <span className={`w-2 h-2 rounded-full ${isSystemOnline ? 'bg-emerald-500 shadow-[0_0_6px_#10b981]' : 'bg-red-500'}`}></span>
                             MESH SYNC

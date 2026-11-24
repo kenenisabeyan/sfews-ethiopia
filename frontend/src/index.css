@@ -284,9 +284,12 @@ body.light,
 }
 
 .light aside {
-  background: rgba(255, 255, 255, 0.96) !important;
-  border-color: #e2e8f0 !important;
-  box-shadow: 2px 0 15px rgba(15, 23, 42, 0.05) !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  border-color: #f1f5f9 !important;
+  box-shadow: 1px 0 12px rgba(15, 23, 42, 0.03) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
 }
 
 /* Form controls in light mode */
@@ -484,61 +487,66 @@ html.light button[class*="bg-black"],
 }
 
 /* =========================================================================
-   CLIENTFLOW ADMIN ERP SIDEBAR - PURE CLEAN LIGHT MODE
-   Eliminates all dark/gray backgrounds, black text, and murky borders
+   CLIENTFLOW ADMIN ERP SIDEBAR - PURE CRISP LIGHT MODE
+   100% Faithful to ClientFlow UI Reference:
+   - Pure Solid #ffffff Background
+   - No Gradients, No Murky Blurs, No Gray Boxes
+   - Unselected Items: Pure Transparent, Crisp Slate-600 Text, Soft Slate Icons
+   - Active Item: Delicate Sky Pastel (#eff6ff), Royal Blue (#2563eb) Text & Left Accent Bar
    ========================================================================= */
 .light aside {
   background-color: #ffffff !important;
-  border-right-color: #e2e8f0 !important;
-  box-shadow: 2px 0 16px rgba(15, 23, 42, 0.03) !important;
+  background-image: none !important;
+  border-right-color: #eef2f6 !important;
+  box-shadow: 2px 0 16px rgba(15, 23, 42, 0.02) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
 }
 
 .light aside nav {
-  background-color: transparent !important;
+  background-color: #ffffff !important;
 }
 
 /* Inactive aside navigation buttons in light mode - pure clean transparent with soft slate text */
 .light aside nav button.inactive-nav-item,
-.light aside nav button:not(.active-nav-item):not([class*="border-blue-600"]):not([class*="bg-[#edf5ff]"]) {
+.light aside nav button:not(.active-nav-item) {
   background-color: transparent !important;
   color: #475569 !important;
-  border-color: transparent !important;
+  border: none !important;
+  font-weight: 500 !important;
 }
 
 .light aside nav button.inactive-nav-item:hover,
-.light aside nav button:not(.active-nav-item):not([class*="border-blue-600"]):not([class*="bg-[#edf5ff]"]):hover {
+.light aside nav button:not(.active-nav-item):hover {
   background-color: #f8fafc !important;
   color: #2563eb !important;
 }
 
 .light aside nav button.inactive-nav-item svg,
-.light aside nav button:not(.active-nav-item):not([class*="border-blue-600"]):not([class*="bg-[#edf5ff]"]) svg {
+.light aside nav button:not(.active-nav-item) svg {
   color: #64748b !important;
 }
 
 .light aside nav button.inactive-nav-item:hover svg,
-.light aside nav button:not(.active-nav-item):not([class*="border-blue-600"]):not([class*="bg-[#edf5ff]"]):hover svg {
+.light aside nav button:not(.active-nav-item):hover svg {
   color: #2563eb !important;
 }
 
 /* Active aside navigation button in light mode - ClientFlow Pastel Blue + Royal Blue */
 .light aside nav button.active-nav-item,
-.light aside nav button[class*="active-nav-item"],
-.light aside nav button[class*="border-blue-600"],
-.light aside nav button[class*="bg-[#edf5ff]"] {
-  background-color: #edf5ff !important;
+.light aside nav button[class*="active-nav-item"] {
+  background-color: #eff6ff !important;
   color: #2563eb !important;
   border-left: 3.5px solid #2563eb !important;
-  border-top-color: transparent !important;
-  border-right-color: transparent !important;
-  border-bottom-color: transparent !important;
-  font-weight: 700 !important;
+  border-top: none !important;
+  border-right: none !important;
+  border-bottom: none !important;
+  border-radius: 8px !important;
+  font-weight: 600 !important;
 }
 
 .light aside nav button.active-nav-item *,
-.light aside nav button[class*="active-nav-item"] *,
-.light aside nav button[class*="border-blue-600"] *,
-.light aside nav button[class*="bg-[#edf5ff]"] * {
+.light aside nav button[class*="active-nav-item"] * {
   color: #2563eb !important;
 }
 
