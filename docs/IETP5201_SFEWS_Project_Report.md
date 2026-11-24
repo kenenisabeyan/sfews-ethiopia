@@ -588,116 +588,136 @@ void loop() {
 }
 ```
 
-#### 5.5.2 Backend API & Hydrological Computation Engine (Python Flask)
-The Flask server ingests telemetry, validates payloads, calculates river discharge using physical power laws, and exposes structured dashboard APIs:
+#### 5.5.2 Enterprise Modular Backend Architecture (Python Flask Core)
+To meet real-world production standards while strictly adhering to the approved **Python Flask** framework, the backend was refactored into a **fully decoupled, blueprint-driven modular architecture** backed by SQLAlchemy relational persistence and JWT security.
 
+##### Architectural Blueprint Directory Structure
+```text
+flask_backend/
+├── app/
+│   ├── __init__.py           # Application Factory, CORS, Error Envelopes & Request Tracing
+│   ├── database.py           # SQLAlchemy Engine, Scoped Session & Health Check
+│   ├── models.py             # Relational Schemas (Nodes, Telemetry, Alerts, Users, Subscribers)
+│   ├── security.py           # PBKDF2 Password Hashing & JWT Token Verification Decorators
+│   ├── hydrology.py          # Stage-Discharge Rating Curve Engine (Q = C(H-H0)^P) & Risk Classifier
+│   ├── seed.py               # Idempotent Database Seeding for Ethiopia Awash Stations & Admin
+│   └── blueprints/
+│       ├── auth.py           # /api/v1/auth: JWT Login, /me, /users, and Admin Seeding
+│       ├── telemetry.py      # /api/v1/telemetry: Single/Batch Ingestion & Rate-of-Rise Tracking
+│       ├── nodes.py          # /api/v1/nodes: Station Fleet Management & Heartbeat Watchdog
+│       ├── alerts.py         # /api/v1/alerts: Alert Acknowledgment & Geofenced SMS Broadcast
+│       ├── dashboard.py      # /api/v1/dashboard: Real-Time Summary, Trends, and Basin Health
+│       ├── simulation.py     # /flood: Hardware Rig Interoperability & Surge Injector
+│       ├── chat.py           # /api/v1/chat: AI Situational Analyst Co-Pilot with Hydrological Heuristics
+│       └── system.py         # /api/v1/system: Diagnostics, Connection Health & Settings
+├── run.py                    # Production WSGI / Development Runner
+└── test_flask.py             # Automated 9-Suite End-to-End Integration Verification
+```
+
+##### Core Application Factory (`flask_backend/app/__init__.py`)
 ```python
-"""
-===============================================================================
-SFEWS - Smart Flood Early Warning System
-Backend REST API & Hydrological Rating Engine (Python Flask)
-Author: ASTU CSE & SWE Engineering Team (IETP5201)
-===============================================================================
-"""
-
-from flask import Flask, request, jsonify, render_template
-import math
 import time
-from datetime import datetime
+from flask import Flask, jsonify, request
+from flask_cors import CORS
+from .database import Base, engine, SessionLocal, check_db_health
+from .seed import seed_database
+from .blueprints.auth import auth_bp
+from .blueprints.telemetry import telemetry_bp
+from .blueprints.nodes import nodes_bp
+from .blueprints.alerts import alerts_bp
+from .blueprints.dashboard import dashboard_bp
+from .blueprints.simulation import simulation_bp
+from .blueprints.chat import chat_bp
+from .blueprints.system import system_bp
 
-app = Flask(__name__)
+def create_app():
+    app = Flask(__name__)
+    CORS(app, resources={r"/*": {"origins": "*"}}, expose_headers=["X-Process-Time-Ms"])
 
-# Hydrological Rating Curve Empirical Coefficients for Awash River Transect
-# Equation: Q = C * (H - H0)^P (in cubic meters per second)
+    with app.app_context():
+        Base.metadata.create_all(bind=engine)
+        db = SessionLocal()
+        try:
+            seed_database(db)
+        finally:
+            db.close()
+
+    @app.before_request
+    def start_timer():
+        request._start_time = time.time()
+
+    @app.after_request
+    def record_elapsed(response):
+        if hasattr(request, "_start_time"):
+            response.headers["X-Process-Time-Ms"] = str(round((time.time() - request._start_time) * 1000, 2))
+        return response
+
+    # Standardized Error Envelopes
+    @app.errorhandler(400)
+    def bad_request(e):
+        return jsonify({"detail": getattr(e, "description", "Bad Request")}), 400
+
+    @app.errorhandler(404)
+    def not_found(e):
+        return jsonify({"detail": "Resource not found"}), 404
+
+    # Register Domain Blueprints
+    app.register_blueprint(auth_bp)
+    app.register_blueprint(telemetry_bp)
+    app.register_blueprint(nodes_bp)
+    app.register_blueprint(alerts_bp)
+    app.register_blueprint(dashboard_bp)
+    app.register_blueprint(simulation_bp)
+    app.register_blueprint(chat_bp)
+    app.register_blueprint(system_bp)
+
+    @app.route("/", methods=["GET"])
+    def root():
+        return jsonify({
+            "service": "SFEWS Awash Early Warning API",
+            "framework": "Flask Core",
+            "status": "OPERATIONAL"
+        }), 200
+
+    return app
+```
+
+##### Hydrological Rating & Surge Classification Engine (`flask_backend/app/hydrology.py`)
+```python
+import math
+from typing import Tuple
+
 RATING_C = 14.85      # Hydraulic conveyance coefficient
 RATING_H0 = 0.50      # Gauge datum zero-flow stage offset (meters)
 RATING_P = 1.68       # Hydraulic channel exponent
 
-# In-Memory Active Basin State Store (Simulating Relational Database Table)
-basin_state = {
-    "station_id": "AWASH-01",
-    "location": "Awash River Lower Valley, Ethiopia",
-    "last_updated": None,
-    "stage_cm": 0.0,
-    "discharge_m3s": 0.0,
-    "rate_of_rise_cm_min": 0.0,
-    "risk_level": "NORMAL",
-    "siren_armed": False,
-    "telemetry_history": []
-}
-
 def calculate_discharge(stage_cm: float) -> float:
-    """Calculates volumetric river discharge using standard stage-discharge rating law."""
+    """Calculates volumetric river discharge using standard stage-discharge rating law: Q = C * (H - H0)^P"""
     stage_m = stage_cm / 100.0
     if stage_m <= RATING_H0:
         return 0.0
     effective_head = stage_m - RATING_H0
-    discharge = RATING_C * math.pow(effective_head, RATING_P)
-    return round(discharge, 2)
+    return round(RATING_C * math.pow(effective_head, RATING_P), 2)
 
-def evaluate_risk(stage_cm: float, rate_of_rise: float) -> tuple[str, bool]:
-    """Evaluates multi-tier flood danger and siren armed state."""
-    if stage_cm >= 450.0 or rate_of_rise >= 30.0:
-        return ("CRITICAL EVACUATION", True)
-    elif stage_cm >= 350.0:
-        return ("WARNING", True)
-    elif stage_cm >= 250.0:
-        return ("ADVISORY", False)
+def evaluate_flood_risk(water_level_cm: float, rainfall_rate_mm: float) -> Tuple[float, str]:
+    """Evaluates multi-tier flood danger and calibrated hazard probabilities."""
+    level_norm = min(max(water_level_cm / 600.0, 0.0), 1.0)
+    rain_norm = min(max(rainfall_rate_mm / 100.0, 0.0), 1.0)
+    raw_probability = (level_norm * 0.70) + (rain_norm * 0.30)
+
+    if water_level_cm >= 450.0:
+        raw_probability = max(raw_probability, 0.85)
+        risk_level = "Critical"
+    elif water_level_cm >= 350.0:
+        raw_probability = max(raw_probability, 0.60)
+        risk_level = "Warning"
+    elif water_level_cm >= 250.0:
+        raw_probability = max(raw_probability, 0.35)
+        risk_level = "Advisory"
     else:
-        return ("NORMAL", False)
+        risk_level = "Normal"
 
-@app.route('/api/telemetry', methods=['POST'])
-def receive_telemetry():
-    """Endpoint ingesting JSON packets from Arduino edge gauge nodes."""
-    payload = request.get_json(silent=True)
-    if not payload or 'stage_cm' not in payload:
-        return jsonify({"error": "Invalid telemetry payload"}), 400
-
-    stage_cm = float(payload.get('stage_cm', 0.0))
-    station_id = payload.get('station_id', 'AWASH-01')
-    now_iso = datetime.utcnow().isoformat() + "Z"
-
-    # Compute rate of rise (delta H / delta t)
-    previous_stage = basin_state["stage_cm"]
-    delta_cm = stage_cm - previous_stage
-    rate_of_rise = round(delta_cm * 30.0, 2) # Extrapolated to cm/minute from 2s interval
-
-    discharge = calculate_discharge(stage_cm)
-    risk_level, siren_armed = evaluate_risk(stage_cm, rate_of_rise)
-
-    # Update active state
-    basin_state["station_id"] = station_id
-    basin_state["last_updated"] = now_iso
-    basin_state["stage_cm"] = stage_cm
-    basin_state["discharge_m3s"] = discharge
-    basin_state["rate_of_rise_cm_min"] = rate_of_rise
-    basin_state["risk_level"] = risk_level
-    basin_state["siren_armed"] = siren_armed
-
-    # Append to sliding history buffer (capped at 60 entries)
-    basin_state["telemetry_history"].append({
-        "timestamp": now_iso,
-        "stage_cm": stage_cm,
-        "discharge_m3s": discharge
-    })
-    if len(basin_state["telemetry_history"]) > 60:
-        basin_state["telemetry_history"].pop(0)
-
-    return jsonify({
-        "status": "PROCESSED",
-        "station_id": station_id,
-        "risk_level": risk_level,
-        "siren_active": siren_armed
-    }), 201
-
-@app.route('/api/dashboard/live', methods=['GET'])
-def get_live_dashboard():
-    """Serves real-time basin state to client web command console."""
-    return jsonify(basin_state), 200
-
-if __name__ == '__main__':
-    # Production WSGI server bind
-    app.run(host='0.0.0.0', port=5000, debug=False)
+    return round(raw_probability, 4), risk_level
 ```
 
 #### 5.5.3 Real-Time Hydrometric Command Dashboard (HTML5 / CSS3 / JavaScript)
