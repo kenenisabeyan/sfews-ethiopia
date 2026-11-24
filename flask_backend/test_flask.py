@@ -175,6 +175,47 @@ class TestFlaskProductionBackend(unittest.TestCase):
         self.assertTrue(res_wd.get_json()["total_fleet"] >= 4)
         print("  [PASS] System diagnostics & Fleet Liveness Watchdog verified.")
 
+    def test_10_ml_crest_forecast(self):
+        res = self.client.get("/api/v1/telemetry/forecast/NODE-ALPHA-1")
+        self.assertEqual(res.status_code, 200)
+        data = res.get_json()
+        self.assertEqual(data["station_id"], "NODE-ALPHA-1")
+        self.assertIn("peak_forecast_stage_cm", data)
+        self.assertIn("projections", data)
+        self.assertEqual(len(data["projections"]), 4) # +1h, +3h, +6h, +12h
+        print(f"  [PASS] ML Predictive Hydrology Forecast verified (Peak projected: {data['peak_forecast_stage_cm']}cm, Threat: {data['threat_severity']}).")
+
+    def test_11_gis_topology_and_buffers(self):
+        # 1. Topology GeoJSON
+        res_top = self.client.get("/api/v1/gis/topology")
+        self.assertEqual(res_top.status_code, 200)
+        data = res_top.get_json()
+        self.assertEqual(data["type"], "FeatureCollection")
+        self.assertTrue(len(data["features"]) >= 5) # River + stations + shelters
+
+        # 2. Dynamic Inundation Zone Buffer
+        res_zone = self.client.get("/api/v1/gis/zones/NODE-ALPHA-1")
+        self.assertEqual(res_zone.status_code, 200)
+        zone_data = res_zone.get_json()
+        self.assertIn("inundation_buffer_meters", zone_data)
+        self.assertTrue(zone_data["inundation_buffer_meters"] > 0)
+        print(f"  [PASS] GIS GeoJSON Basin Topology & Inundation Buffer verified ({zone_data['inundation_buffer_meters']}m radius).")
+
+    def test_12_autonomous_telemetry_worker(self):
+        # Start
+        res_start = self.client.post("/api/v1/simulation/worker/start")
+        self.assertEqual(res_start.status_code, 200)
+        
+        # Status
+        res_status = self.client.get("/api/v1/simulation/worker/status")
+        self.assertEqual(res_status.status_code, 200)
+        self.assertTrue(res_status.get_json()["active"])
+
+        # Stop
+        res_stop = self.client.post("/api/v1/simulation/worker/stop")
+        self.assertEqual(res_stop.status_code, 200)
+        print("  [PASS] Autonomous Telemetry Background Worker Start/Status/Stop verified.")
+
 if __name__ == "__main__":
     print("\n=== STARTING FLASK PRODUCTION BACKEND FULL TEST ===")
     unittest.main()
