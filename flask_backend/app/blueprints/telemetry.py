@@ -4,7 +4,14 @@ from datetime import datetime, timezone
 from flask import Blueprint, request, jsonify, Response
 from ..database import SessionLocal
 from ..models import SensorNode, HydroLog, AlertLog
-from ..hydrology import evaluate_flood_risk, calculate_discharge, classify_surge_dynamics
+from ..hydrology import (
+    evaluate_flood_risk,
+    calculate_discharge,
+    classify_surge_dynamics,
+    compensate_ultrasonic_temperature,
+    calculate_mannings_hydraulics,
+    calibrate_rating_curve_least_squares
+)
 from ..services.alert_dispatcher import alert_dispatcher
 
 telemetry_bp = Blueprint("telemetry", __name__, url_prefix="/api/v1/telemetry")
