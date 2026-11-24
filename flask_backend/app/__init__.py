@@ -13,6 +13,7 @@ from .blueprints.simulation import simulation_bp
 from .blueprints.chat import chat_bp
 from .blueprints.system import system_bp
 from .blueprints.gis import gis_bp
+from .blueprints.weather import weather_bp
 
 logging.basicConfig(
     level=logging.INFO,
@@ -72,6 +73,7 @@ def create_app():
     app.register_blueprint(chat_bp)
     app.register_blueprint(system_bp)
     app.register_blueprint(gis_bp)
+    app.register_blueprint(weather_bp)
 
     # Root Health Check
     @app.route("/", methods=["GET"])

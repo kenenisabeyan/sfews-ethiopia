@@ -216,6 +216,121 @@ class TestFlaskProductionBackend(unittest.TestCase):
         self.assertEqual(res_stop.status_code, 200)
         print("  [PASS] Autonomous Telemetry Background Worker Start/Status/Stop verified.")
 
+    def test_13_weather_endpoints(self):
+        # Current weather
+        res_cur = self.client.get("/api/v1/weather/current")
+        self.assertEqual(res_cur.status_code, 200)
+        self.assertIn("stations", res_cur.get_json())
+
+        # Radar reflectivity grid
+        res_rad = self.client.get("/api/v1/weather/radar")
+        self.assertEqual(res_rad.status_code, 200)
+        self.assertIn("grid", res_rad.get_json())
+        self.assertTrue(len(res_rad.get_json()["grid"]) >= 4)
+
+        # 3-Day Forecast
+        res_fc = self.client.get("/api/v1/weather/forecast")
+        self.assertEqual(res_fc.status_code, 200)
+        self.assertIn("3_day_forecast", res_fc.get_json())
+        print("  [PASS] Weather & Meteorological Radar Endpoints verified.")
+
+    def test_14_telemetry_aggregations_and_comparison(self):
+        # Aggregate
+        res_agg = self.client.get("/api/v1/telemetry/aggregate?node_id=NODE-ALPHA-1")
+        self.assertEqual(res_agg.status_code, 200)
+        agg_data = res_agg.get_json()
+        self.assertIn("stage_max_cm", agg_data)
+        self.assertIn("stage_std_dev_cm", agg_data)
+
+        # Multi-station compare
+        res_comp = self.client.get("/api/v1/telemetry/compare")
+        self.assertEqual(res_comp.status_code, 200)
+        self.assertTrue(len(res_comp.get_json()["comparison"]) >= 4)
+
+        # Exceedances
+        res_exc = self.client.get("/api/v1/telemetry/exceedances")
+        self.assertEqual(res_exc.status_code, 200)
+        self.assertTrue(isinstance(res_exc.get_json(), list))
+        print("  [PASS] Telemetry statistical aggregations & station comparison verified.")
+
+    def test_15_node_calibration_and_vitals(self):
+        # 1. Login for token
+        res_login = self.client.post("/api/v1/auth/login", json={
+            "email": "admin@sfews.gov.et",
+            "password": "admin123"
+        })
+        token = res_login.get_json()["access_token"]
+
+        # 2. Calibrate node
+        res_cal = self.client.put("/api/v1/nodes/NODE-AWASH-01/calibration", headers={"Authorization": f"Bearer {token}"}, json={
+            "mount_height_cm": 650.0,
+            "zero_flow_datum_m": 0.45,
+            "sensor_type": "Ultrasonic Dual-Echo JSN-SR04T"
+        })
+        self.assertEqual(res_cal.status_code, 200)
+        self.assertEqual(res_cal.get_json()["status"], "CALIBRATED")
+
+        # 3. Get vitals
+        res_vitals = self.client.get("/api/v1/nodes/NODE-AWASH-01/vitals")
+        self.assertEqual(res_vitals.status_code, 200)
+        self.assertIn("battery_percent", res_vitals.get_json())
+        self.assertIn("solar_panel_voltage", res_vitals.get_json())
+
+        # 4. Get history
+        res_hist = self.client.get("/api/v1/nodes/NODE-AWASH-01/history")
+        self.assertEqual(res_hist.status_code, 200)
+        print("  [PASS] Node calibration, hardware vitals, and station history verified.")
+
+    def test_16_alert_resolution_analytics_and_subscribers(self):
+        res_login = self.client.post("/api/v1/auth/login", json={
+            "email": "admin@sfews.gov.et",
+            "password": "admin123"
+        })
+        token = res_login.get_json()["access_token"]
+
+        # 1. Resolve alert
+        res_alerts = self.client.get("/api/v1/alerts/")
+        if res_alerts.get_json():
+            aid = res_alerts.get_json()[0]["id"]
+            res_res = self.client.post(f"/api/v1/alerts/{aid}/resolve", headers={"Authorization": f"Bearer {token}"}, json={
+                "notes": "Emergency sandbag dikes deployed. River crest receded."
+            })
+            self.assertEqual(res_res.status_code, 200)
+            self.assertEqual(res_res.get_json()["status"], "RESOLVED")
+
+        # 2. Alert Analytics
+        res_ana = self.client.get("/api/v1/alerts/analytics")
+        self.assertEqual(res_ana.status_code, 200)
+        self.assertIn("mean_time_to_acknowledge_sec", res_ana.get_json())
+
+        # 3. Add subscriber
+        res_sub_add = self.client.post("/api/v1/alerts/subscribers", headers={"Authorization": f"Bearer {token}"}, json={
+            "id": "SUB-TEST-99",
+            "name": "Awash Basin Disaster Unit",
+            "phone": "+251911998877",
+            "station_id": "NODE-AWASH-01"
+        })
+        self.assertEqual(res_sub_add.status_code, 201)
+
+        # 4. Delete subscriber
+        res_sub_del = self.client.delete("/api/v1/alerts/subscribers/SUB-TEST-99", headers={"Authorization": f"Bearer {token}"})
+        self.assertEqual(res_sub_del.status_code, 200)
+        print("  [PASS] Alert incident resolution, analytics, and subscriber management verified.")
+
+    def test_17_gis_nearest_and_evacuation_routes(self):
+        # 1. Nearest station query
+        res_near = self.client.get("/api/v1/gis/nearest?lat=8.55&lng=39.27")
+        self.assertEqual(res_near.status_code, 200)
+        near_data = res_near.get_json()
+        self.assertIn("nearest_station_id", near_data)
+        self.assertIn("distance_km", near_data)
+
+        # 2. Safe evacuation routes
+        res_routes = self.client.get("/api/v1/gis/routes")
+        self.assertEqual(res_routes.status_code, 200)
+        self.assertTrue(len(res_routes.get_json()["routes"]) >= 2)
+        print(f"  [PASS] GIS proximity query ({near_data['nearest_station_id']}, {near_data['distance_km']}km) & evacuation corridors verified.")
+
 if __name__ == "__main__":
     print("\n=== STARTING FLASK PRODUCTION BACKEND FULL TEST ===")
     unittest.main()

@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 from ..database import SessionLocal
 from ..models import SensorNode, HydroLog
 
@@ -108,3 +108,66 @@ def get_inundation_zone(station_id: str):
         }), 200
     finally:
         db.close()
+
+@gis_bp.route("/nearest", methods=["GET"])
+def find_nearest_station():
+    """Finds the closest hydrometric monitoring anchor to a given GPS latitude/longitude."""
+    try:
+        lat = float(request.args.get("lat", 8.5412))
+        lng = float(request.args.get("lng", 39.2689))
+    except ValueError:
+        return jsonify({"detail": "Parameters 'lat' and 'lng' must be valid floats"}), 400
+
+    db = SessionLocal()
+    try:
+        nodes = db.query(SensorNode).all()
+        nearest = None
+        min_dist_km = float("inf")
+
+        for n in nodes:
+            if n.latitude and n.longitude:
+                # Euclidean distance approximation in kilometers for small regions
+                d_lat = (n.latitude - lat) * 111.0
+                d_lng = (n.longitude - lng) * 111.0 * 0.98
+                dist_km = (d_lat**2 + d_lng**2) ** 0.5
+                if dist_km < min_dist_km:
+                    min_dist_km = dist_km
+                    nearest = n
+
+        if not nearest:
+            return jsonify({"detail": "No stations available"}), 404
+
+        return jsonify({
+            "nearest_station_id": nearest.id,
+            "station_name": nearest.name,
+            "distance_km": round(min_dist_km, 2),
+            "coordinates": {"lat": nearest.latitude, "lng": nearest.longitude}
+        }), 200
+    finally:
+        db.close()
+
+@gis_bp.route("/routes", methods=["GET"])
+def get_evacuation_routes():
+    """Returns safe transit corridors connecting flood hazard zones to emergency relief shelters."""
+    corridors = [
+        {
+            "route_id": "EVAC-WONJI-01",
+            "from_zone": "Wonji Sugar Estate Lowlands",
+            "to_shelter": "Wonji Secondary School Safe Zone",
+            "elevation_gain_meters": 35.0,
+            "path_type": "Primary Elevated Asphalt Highway",
+            "clearance_status": "OPEN",
+            "waypoints": [[39.2812, 8.4419], [39.2850, 8.4480], [39.2890, 8.4550]]
+        },
+        {
+            "route_id": "EVAC-MOJO-02",
+            "from_zone": "Mojo River Confluence Plain",
+            "to_shelter": "Mojo Stadium Civil Defense Camp",
+            "elevation_gain_meters": 48.0,
+            "path_type": "All-Weather Elevated Bypass",
+            "clearance_status": "OPEN",
+            "waypoints": [[39.1245, 8.5921], [39.1270, 8.5950], [39.1310, 8.5990]]
+        }
+    ]
+    return jsonify({"routes": corridors, "total_routes": len(corridors)}), 200
+

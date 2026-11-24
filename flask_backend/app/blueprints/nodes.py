@@ -1,5 +1,5 @@
 from datetime import datetime, timezone
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, g
 from ..database import SessionLocal
 from ..models import SensorNode, HydroLog
 from ..security import token_required
