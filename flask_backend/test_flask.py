@@ -55,8 +55,8 @@ class TestFlaskProductionBackend(unittest.TestCase):
         self.assertEqual(res_hb.get_json()["status"], "ACK")
         print("  [PASS] Nodes fleet management & Heartbeat verified.")
 
-    def test_04_telemetry_hydrology(self):
-        # Ingest elevated stage (380cm) -> Should calculate discharge & classify Warning
+    def test_04_telemetry_hydrology_and_export(self):
+        # Ingest elevated stage (380cm)
         res = self.client.post("/api/v1/telemetry/", json={
             "node_id": "NODE-ALPHA-1",
             "water_level_cm": 380.0,
@@ -79,10 +79,16 @@ class TestFlaskProductionBackend(unittest.TestCase):
         })
         self.assertEqual(res_batch.status_code, 201)
         self.assertEqual(res_batch.get_json()["ingested_count"], 2)
-        print("  [PASS] Batch telemetry verified.")
 
-    def test_05_alerts_broadcast(self):
-        # 1. Login to get token
+        # Export CSV
+        res_csv = self.client.get("/api/v1/telemetry/export")
+        self.assertEqual(res_csv.status_code, 200)
+        self.assertEqual(res_csv.mimetype, "text/csv")
+        self.assertIn("node_id", res_csv.get_data(as_text=True))
+        print("  [PASS] Telemetry batch ingestion & CSV Export verified.")
+
+    def test_05_alerts_broadcast_and_siren(self):
+        # 1. Login
         res_login = self.client.post("/api/v1/auth/login", json={
             "email": "admin@sfews.gov.et",
             "password": "admin123"
@@ -101,7 +107,7 @@ class TestFlaskProductionBackend(unittest.TestCase):
         self.assertEqual(res_ack.status_code, 200)
         self.assertEqual(res_ack.get_json()["status"], "ACKNOWLEDGED")
 
-        # 4. Emergency Broadcast dispatch
+        # 4. Emergency Broadcast dispatch with SMS Gateway simulation
         res_bc = self.client.post("/api/v1/alerts/broadcast", headers={"Authorization": f"Bearer {token}"}, json={
             "station_id": "NODE-ALPHA-1",
             "message": "EVACUATE IMMEDIATELY: Flood crest expected within 45 minutes.",
@@ -109,7 +115,17 @@ class TestFlaskProductionBackend(unittest.TestCase):
         })
         self.assertEqual(res_bc.status_code, 200)
         self.assertEqual(res_bc.get_json()["status"], "DISPATCHED")
-        print("  [PASS] Alerts listing, Acknowledgment, and Geofenced Broadcast verified.")
+
+        # 5. Silence siren
+        res_silence = self.client.post("/api/v1/alerts/siren/silence", headers={"Authorization": f"Bearer {token}"})
+        self.assertEqual(res_silence.status_code, 200)
+        self.assertEqual(res_silence.get_json()["status"], "SILENCED_STANDBY")
+
+        # 6. Export Alerts CSV
+        res_alert_csv = self.client.get("/api/v1/alerts/export")
+        self.assertEqual(res_alert_csv.status_code, 200)
+        self.assertEqual(res_alert_csv.mimetype, "text/csv")
+        print("  [PASS] Alerts listing, SMS broadcast, Siren silence, and Incident CSV export verified.")
 
     def test_06_dashboard_trends(self):
         res_summary = self.client.get("/api/v1/dashboard/summary")
@@ -137,22 +153,28 @@ class TestFlaskProductionBackend(unittest.TestCase):
         self.assertEqual(res_get.get_json()["water_level"], 490.0)
         print("  [PASS] /flood simulator interoperability verified.")
 
-    def test_08_situational_analyst_chat(self):
-        res_chat = self.client.post("/api/v1/chat/ask", json={
-            "query": "What is the critical risk status in the basin right now?"
+    def test_08_situational_analyst_wave_prediction(self):
+        # Query wave travel time
+        res_wave = self.client.post("/api/v1/chat/ask", json={
+            "query": "When will the flood wave reach Wonji Plains from the headwaters?"
         })
-        self.assertEqual(res_chat.status_code, 200)
-        data = res_chat.get_json()
-        self.assertIn("response", data)
-        print(f"  [PASS] AI Situational Analyst verified: {data['response'][:60]}...")
+        self.assertEqual(res_wave.status_code, 200)
+        data = res_wave.get_json()
+        self.assertIn("HYDRODYNAMIC WAVE TRAVEL ESTIMATE", data["response"])
+        print(f"  [PASS] Hydrodynamic wave arrival reasoning verified: {data['response'][:75]}...")
 
-    def test_09_system_diagnostics(self):
+    def test_09_system_diagnostics_and_watchdog(self):
         res_diag = self.client.get("/api/v1/system/diagnostics")
         self.assertEqual(res_diag.status_code, 200)
         data = res_diag.get_json()
         self.assertEqual(data["engine_status"], "OPTIMAL")
-        print("  [PASS] System diagnostics & database pooling verified.")
+
+        # Run watchdog audit
+        res_wd = self.client.get("/api/v1/system/watchdog")
+        self.assertEqual(res_wd.status_code, 200)
+        self.assertTrue(res_wd.get_json()["total_fleet"] >= 4)
+        print("  [PASS] System diagnostics & Fleet Liveness Watchdog verified.")
 
 if __name__ == "__main__":
-    print("\n=== STARTING FLASK PRODUCTION BACKEND INTEGRATION TEST ===")
+    print("\n=== STARTING FLASK PRODUCTION BACKEND FULL TEST ===")
     unittest.main()

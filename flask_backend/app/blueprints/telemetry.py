@@ -1,8 +1,11 @@
+import io
+import csv
 from datetime import datetime, timezone
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, Response
 from ..database import SessionLocal
 from ..models import SensorNode, HydroLog, AlertLog
 from ..hydrology import evaluate_flood_risk, calculate_discharge, classify_surge_dynamics
+from ..services.alert_dispatcher import alert_dispatcher
 
 telemetry_bp = Blueprint("telemetry", __name__, url_prefix="/api/v1/telemetry")
 
@@ -27,7 +30,6 @@ def ingest_telemetry():
     try:
         node = db.query(SensorNode).filter(SensorNode.id == node_id).first()
         if not node:
-            # Auto-register new node on first telemetry packet
             node = SensorNode(id=node_id, name=f"Station {node_id}", status="Active", battery_level=battery or 95.0)
             db.add(node)
             db.flush()
@@ -37,16 +39,13 @@ def ingest_telemetry():
             node.status = "Active"
             node.last_updated = datetime.now(timezone.utc)
 
-        # Hydrological calculations
         prob, risk_level = evaluate_flood_risk(water_level, rainfall)
         discharge = calculate_discharge(water_level)
 
-        # Retrieve previous sample for surge dynamics
         prev_log = db.query(HydroLog).filter(HydroLog.node_id == node_id).order_by(HydroLog.id.desc()).first()
         prev_stage = prev_log.water_level_cm if prev_log else water_level
         surge_state = classify_surge_dynamics(water_level, prev_stage)
 
-        # Create persistent log
         log_entry = HydroLog(
             node_id=node_id,
             water_level_cm=water_level,
@@ -56,8 +55,9 @@ def ingest_telemetry():
         )
         db.add(log_entry)
 
-        # Automatic Incident Warning Trigger on Critical/Warning stage
+        # Trigger acoustic siren and alert record on Critical / Warning
         if risk_level in ["Warning", "Critical"]:
+            alert_dispatcher.arm_acoustic_siren(node_id)
             existing_unack = db.query(AlertLog).filter(
                 AlertLog.node_id == node_id,
                 AlertLog.is_acknowledged == False
@@ -82,6 +82,7 @@ def ingest_telemetry():
             "risk_level": risk_level,
             "flood_probability": prob,
             "surge_state": surge_state,
+            "siren_armed": alert_dispatcher.siren_armed,
             "timestamp": log_entry.timestamp.isoformat() if log_entry.timestamp else datetime.now(timezone.utc).isoformat()
         }), 201
     finally:
@@ -128,7 +129,31 @@ def get_telemetry_stats():
             "total_telemetry_records": total_logs,
             "critical_events": critical_count,
             "warning_events": warning_count,
+            "siren_active": alert_dispatcher.siren_armed,
             "status": "OPERATIONAL"
         }), 200
+    finally:
+        db.close()
+
+@telemetry_bp.route("/export", methods=["GET"])
+def export_telemetry_csv():
+    """Generates official CSV export of historical hydrological records."""
+    db = SessionLocal()
+    try:
+        records = db.query(HydroLog).order_by(HydroLog.id.desc()).limit(500).all()
+        output = io.StringIO()
+        writer = csv.writer(output)
+        writer.writerow(["id", "node_id", "water_level_cm", "rainfall_rate_mm", "discharge_m3s", "flood_probability", "risk_level", "timestamp"])
+
+        for r in records:
+            q = calculate_discharge(r.water_level_cm)
+            writer.writerow([r.id, r.node_id, r.water_level_cm, r.rainfall_rate_mm, q, r.flood_probability, r.risk_level, r.timestamp.isoformat() if r.timestamp else ""])
+
+        output.seek(0)
+        return Response(
+            output.getvalue(),
+            mimetype="text/csv",
+            headers={"Content-Disposition": "attachment;filename=sfews_telemetry_export.csv"}
+        )
     finally:
         db.close()

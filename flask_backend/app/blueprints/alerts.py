@@ -1,8 +1,11 @@
+import io
+import csv
 from datetime import datetime, timezone
-from flask import Blueprint, request, jsonify, g
+from flask import Blueprint, request, jsonify, g, Response
 from ..database import SessionLocal
 from ..models import AlertLog, Subscriber, SensorNode
 from ..security import token_required
+from ..services.alert_dispatcher import alert_dispatcher
 
 alerts_bp = Blueprint("alerts", __name__, url_prefix="/api/v1/alerts")
 
@@ -46,6 +49,13 @@ def acknowledge_alert(alert_id: int):
     finally:
         db.close()
 
+@alerts_bp.route("/siren/silence", methods=["POST"])
+@token_required
+def silence_siren():
+    operator_name = g.current_user.get("name", "Command Operator")
+    res = alert_dispatcher.silence_acoustic_siren("ALL_STATIONS", operator_name)
+    return jsonify(res), 200
+
 @alerts_bp.route("/subscribers", methods=["GET"])
 def list_subscribers():
     db = SessionLocal()
@@ -76,7 +86,14 @@ def broadcast_emergency():
         if not targeted_recipients:
             targeted_recipients = [s.phone for s in subscribers]
 
-        # Log an emergency alert
+        # Real-world SMS Gateway Simulation Dispatch
+        dispatch_report = alert_dispatcher.dispatch_civil_defense_sms(
+            recipients=targeted_recipients,
+            station_name=station_id,
+            stage_cm=450.0,
+            risk_level="Critical Evacuation"
+        )
+
         emergency_alert = AlertLog(
             node_id=station_id,
             title="CIVIL DEFENSE EMERGENCY BROADCAST DISPATCHED",
@@ -92,10 +109,33 @@ def broadcast_emergency():
             "status": "DISPATCHED",
             "station_id": station_id,
             "geofence_radius_km": radius_km,
-            "recipients_contacted": len(targeted_recipients),
+            "recipients_contacted": dispatch_report["delivered_count"],
             "sample_recipient": targeted_recipients[0] if targeted_recipients else "None",
+            "sms_gateway_receipt": dispatch_report["provider"],
             "alert_id": emergency_alert.id,
             "timestamp": datetime.now(timezone.utc).isoformat()
         }), 200
+    finally:
+        db.close()
+
+@alerts_bp.route("/export", methods=["GET"])
+def export_alerts_csv():
+    """Generates official CSV incident report for emergency management audits."""
+    db = SessionLocal()
+    try:
+        records = db.query(AlertLog).order_by(AlertLog.id.desc()).all()
+        output = io.StringIO()
+        writer = csv.writer(output)
+        writer.writerow(["id", "node_id", "severity", "title", "message", "water_level_cm", "is_acknowledged", "acknowledged_by", "timestamp"])
+
+        for a in records:
+            writer.writerow([a.id, a.node_id, a.severity, a.title, a.message, a.water_level_cm, a.is_acknowledged, a.acknowledged_by, a.timestamp.isoformat() if a.timestamp else ""])
+
+        output.seek(0)
+        return Response(
+            output.getvalue(),
+            mimetype="text/csv",
+            headers={"Content-Disposition": "attachment;filename=sfews_alert_incident_log.csv"}
+        )
     finally:
         db.close()

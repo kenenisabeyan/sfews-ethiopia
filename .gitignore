@@ -37,4 +37,7 @@ Thumbs.db
 
 # General
 *.log
+*.db
+*.sqlite
+*.sqlite3
 coverage/
