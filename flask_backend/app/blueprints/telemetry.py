@@ -157,3 +157,25 @@ def export_telemetry_csv():
         )
     finally:
         db.close()
+
+@telemetry_bp.route("/forecast/<string:node_id>", methods=["GET"])
+def get_node_forecast(node_id: str):
+    """Provides 6-hour & 12-hour predictive hydrological forecast for a station."""
+    from ..services.ml_engine import ml_engine
+    db = SessionLocal()
+    try:
+        logs = db.query(HydroLog).filter(HydroLog.node_id == node_id).order_by(HydroLog.id.desc()).limit(10).all()
+        current_stage = logs[0].water_level_cm if logs else 180.0
+        current_rain = logs[0].rainfall_rate_mm if logs else 0.0
+        history_stages = [l.water_level_cm for l in reversed(logs)] if logs else [180.0]
+
+        forecast_res = ml_engine.forecast_crest(
+            node_id=node_id,
+            current_stage_cm=current_stage,
+            current_rain_mm=current_rain,
+            history_stages=history_stages
+        )
+        return jsonify(forecast_res), 200
+    finally:
+        db.close()
+

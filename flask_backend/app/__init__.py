@@ -12,6 +12,7 @@ from .blueprints.dashboard import dashboard_bp
 from .blueprints.simulation import simulation_bp
 from .blueprints.chat import chat_bp
 from .blueprints.system import system_bp
+from .blueprints.gis import gis_bp
 
 logging.basicConfig(
     level=logging.INFO,

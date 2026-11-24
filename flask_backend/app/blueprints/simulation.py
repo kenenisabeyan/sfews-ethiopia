@@ -98,3 +98,21 @@ def inject_surge():
         }), 200
     finally:
         db.close()
+
+@simulation_bp.route("/api/v1/simulation/worker/start", methods=["POST"])
+def start_autonomous_worker():
+    from ..services.background_worker import telemetry_worker
+    res = telemetry_worker.start()
+    return jsonify(res), 200
+
+@simulation_bp.route("/api/v1/simulation/worker/stop", methods=["POST"])
+def stop_autonomous_worker():
+    from ..services.background_worker import telemetry_worker
+    res = telemetry_worker.stop()
+    return jsonify(res), 200
+
+@simulation_bp.route("/api/v1/simulation/worker/status", methods=["GET"])
+def get_autonomous_worker_status():
+    from ..services.background_worker import telemetry_worker
+    return jsonify(telemetry_worker.get_status()), 200
+
