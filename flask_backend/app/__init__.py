@@ -71,6 +71,7 @@ def create_app():
     app.register_blueprint(simulation_bp)
     app.register_blueprint(chat_bp)
     app.register_blueprint(system_bp)
+    app.register_blueprint(gis_bp)
 
     # Root Health Check
     @app.route("/", methods=["GET"])
