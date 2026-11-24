@@ -179,3 +179,85 @@ def get_node_forecast(node_id: str):
     finally:
         db.close()
 
+@telemetry_bp.route("/aggregate", methods=["GET"])
+def get_telemetry_aggregate():
+    """Calculates statistical hydrological summary (min, max, avg, std_dev) over specified sample window."""
+    node_id = request.args.get("node_id", "NODE-ALPHA-1")
+    limit = int(request.args.get("limit", 60))
+    
+    db = SessionLocal()
+    try:
+        logs = db.query(HydroLog).filter(HydroLog.node_id == node_id).order_by(HydroLog.id.desc()).limit(limit).all()
+        if not logs:
+            return jsonify({"detail": f"No telemetry history found for node '{node_id}'"}), 404
+        
+        stages = [l.water_level_cm for l in logs]
+        rains = [l.rainfall_rate_mm for l in logs]
+        
+        min_stage = min(stages)
+        max_stage = max(stages)
+        avg_stage = sum(stages) / len(stages)
+        variance = sum((x - avg_stage) ** 2 for x in stages) / len(stages)
+        std_dev = variance ** 0.5
+        
+        return jsonify({
+            "node_id": node_id,
+            "sample_count": len(stages),
+            "stage_min_cm": round(min_stage, 1),
+            "stage_max_cm": round(max_stage, 1),
+            "stage_avg_cm": round(avg_stage, 1),
+            "stage_std_dev_cm": round(std_dev, 2),
+            "cumulative_rainfall_mm": round(sum(rains), 1),
+            "peak_discharge_m3s": calculate_discharge(max_stage),
+            "window_duration_samples": len(logs)
+        }), 200
+    finally:
+        db.close()
+
+@telemetry_bp.route("/compare", methods=["GET"])
+def compare_stations():
+    """Compares instantaneous hydrometric stages, discharges, and risk tiers side-by-side."""
+    stations_param = request.args.get("stations", "NODE-ALPHA-1,NODE-GAMMA-3,NODE-BETA-2,NODE-AWASH-01")
+    station_ids = [s.strip() for s in stations_param.split(",") if s.strip()]
+    
+    db = SessionLocal()
+    try:
+        comparison = []
+        for sid in station_ids:
+            node = db.query(SensorNode).filter(SensorNode.id == sid).first()
+            log = db.query(HydroLog).filter(HydroLog.node_id == sid).order_by(HydroLog.id.desc()).first()
+            if node:
+                stage = log.water_level_cm if log else 0.0
+                comparison.append({
+                    "station_id": sid,
+                    "name": node.name,
+                    "stage_cm": stage,
+                    "discharge_m3s": calculate_discharge(stage),
+                    "rainfall_rate_mm": log.rainfall_rate_mm if log else 0.0,
+                    "risk_level": log.risk_level if log else "Normal",
+                    "battery_level": node.battery_level,
+                    "status": node.status
+                })
+        return jsonify({"comparison": comparison, "count": len(comparison)}), 200
+    finally:
+        db.close()
+
+@telemetry_bp.route("/exceedances", methods=["GET"])
+def get_threshold_exceedances():
+    """Lists all historical readings where stage breached Warning (350cm) or Critical (450cm) levels."""
+    db = SessionLocal()
+    try:
+        exceedances = db.query(HydroLog).filter(HydroLog.water_level_cm >= 350.0).order_by(HydroLog.id.desc()).limit(50).all()
+        return jsonify([{
+            "id": e.id,
+            "node_id": e.node_id,
+            "stage_cm": e.water_level_cm,
+            "rainfall_rate_mm": e.rainfall_rate_mm,
+            "discharge_m3s": calculate_discharge(e.water_level_cm),
+            "risk_level": e.risk_level,
+            "timestamp": e.timestamp.isoformat() if e.timestamp else None
+        } for e in exceedances]), 200
+    finally:
+        db.close()
+
+
