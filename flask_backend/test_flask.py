@@ -1,5 +1,12 @@
+import sys
+import os
 import unittest
 import json
+
+ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+if ROOT_DIR not in sys.path:
+    sys.path.insert(0, ROOT_DIR)
+
 from app import create_app
 
 class TestFlaskProductionBackend(unittest.TestCase):
@@ -330,6 +337,77 @@ class TestFlaskProductionBackend(unittest.TestCase):
         self.assertEqual(res_routes.status_code, 200)
         self.assertTrue(len(res_routes.get_json()["routes"]) >= 2)
         print(f"  [PASS] GIS proximity query ({near_data['nearest_station_id']}, {near_data['distance_km']}km) & evacuation corridors verified.")
+
+    def test_18_acoustic_temperature_compensation(self):
+        # High-temperature test (38.0°C in Afar / Middle Awash valley)
+        res = self.client.post("/api/v1/telemetry/compensate-temperature", json={
+            "raw_distance_cm": 250.0,
+            "ambient_temp_c": 38.0,
+            "calibration_temp_c": 20.0,
+            "sensor_offset_height_cm": 600.0
+        })
+        self.assertEqual(res.status_code, 200)
+        data = res.get_json()
+        self.assertTrue(data["speed_of_sound_m_s"] > 343.0)
+        self.assertTrue(data["thermal_offset_cm"] > 0)
+        self.assertIn("compensated_water_level_cm", data)
+        print(f"  [PASS] Acoustic speed-of-sound temperature compensation verified: c={data['speed_of_sound_m_s']}m/s, offset=+{data['thermal_offset_cm']}cm.")
+
+    def test_19_mannings_hydraulics_and_rating_calibration(self):
+        # 1. Manning's Equation & Froude flow regime
+        res_mann = self.client.post("/api/v1/telemetry/mannings-flow", json={
+            "stage_cm": 420.0,
+            "bottom_width_m": 14.0,
+            "side_slope_z": 1.5,
+            "mannings_n": 0.035,
+            "bed_slope": 0.0018
+        })
+        self.assertEqual(res_mann.status_code, 200)
+        mann_data = res_mann.get_json()
+        self.assertTrue(mann_data["discharge_m3_s"] > 0)
+        self.assertIn("froude_number", mann_data)
+        self.assertIn("flow_regime", mann_data)
+
+        # 2. Field ADCP rating curve calibration (Q = C * (H - H0)^P)
+        res_calib = self.client.post("/api/v1/telemetry/calibrate-rating-curve", json={
+            "fixed_h0": 0.50,
+            "gauging_points": [
+                {"stage_cm": 150.0, "discharge_m3s": 14.8},
+                {"stage_cm": 250.0, "discharge_m3s": 46.2},
+                {"stage_cm": 350.0, "discharge_m3s": 89.5},
+                {"stage_cm": 450.0, "discharge_m3s": 145.0},
+                {"stage_cm": 550.0, "discharge_m3s": 210.4}
+            ]
+        })
+        self.assertEqual(res_calib.status_code, 200)
+        calib_data = res_calib.get_json()
+        self.assertEqual(calib_data["status"], "CALIBRATED")
+        self.assertTrue(calib_data["r_squared"] >= 0.95)
+        print(f"  [PASS] Manning open-channel hydraulics (Fr={mann_data['froude_number']}, {mann_data['flow_regime']}) & Rating calibration ({calib_data['equation']}, R²={calib_data['r_squared']}) verified.")
+
+    def test_20_settings_sync_audit_log_and_nmea_bridge(self):
+        # 1. Synchronize settings
+        res_set = self.client.post("/api/v1/system/settings", json={
+            "warning_threshold": 320.0,
+            "critical_threshold": 480.0,
+            "radius_km": 25.0
+        })
+        self.assertEqual(res_set.status_code, 200)
+        self.assertEqual(res_set.get_json()["status"], "SYNCHRONIZED")
+
+        # 2. Retrieve chronological audit log
+        res_audit = self.client.get("/api/v1/system/audit-log")
+        self.assertEqual(res_audit.status_code, 200)
+        self.assertIn("events", res_audit.get_json())
+
+        # 3. Virtual NMEA Hardware Serial Bridge Module verification
+        from scripts.virtual_edge_bridge import generate_nmea_sentence, verify_nmea_sentence, compute_nmea_checksum
+        sentence = generate_nmea_sentence("NODE-ALPHA-1", 185.5, 12.0, 34.5, 96.0)
+        valid, fields, reason = verify_nmea_sentence(sentence)
+        self.assertTrue(valid)
+        self.assertEqual(fields[0], "PETH")
+        self.assertEqual(fields[1], "NODE-ALPHA-1")
+        print("  [PASS] Dynamic system settings sync, event audit log, and NMEA-0183 checksum bridge verified.")
 
 if __name__ == "__main__":
     print("\n=== STARTING FLASK PRODUCTION BACKEND FULL TEST ===")

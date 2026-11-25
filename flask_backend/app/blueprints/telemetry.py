@@ -267,4 +267,83 @@ def get_threshold_exceedances():
     finally:
         db.close()
 
+@telemetry_bp.route("/compensate-temperature", methods=["POST"])
+def compensate_temperature():
+    """
+    Applies in-situ acoustic temperature compensation to raw ultrasonic transit times:
+    c(T) = 331.3 * sqrt(1 + T / 273.15) [m/s].
+    """
+    data = request.get_json(silent=True) or {}
+    raw_dist = data.get("raw_distance_cm")
+    temp_c = data.get("ambient_temp_c", 20.0)
+    calib_c = data.get("calibration_temp_c", 20.0)
+    offset_h = data.get("sensor_offset_height_cm", 600.0)
+
+    if raw_dist is None:
+        return jsonify({"detail": "Missing mandatory field 'raw_distance_cm'"}), 400
+
+    try:
+        raw_dist = float(raw_dist)
+        temp_c = float(temp_c)
+        calib_c = float(calib_c)
+        offset_h = float(offset_h)
+    except ValueError:
+        return jsonify({"detail": "Numeric fields must be valid floats"}), 400
+
+    result = compensate_ultrasonic_temperature(
+        raw_distance_cm=raw_dist,
+        ambient_temp_c=temp_c,
+        calibration_temp_c=calib_c,
+        sensor_offset_height_cm=offset_h
+    )
+    return jsonify(result), 200
+
+@telemetry_bp.route("/mannings-flow", methods=["POST"])
+def calculate_mannings():
+    """
+    Computes open-channel cross-sectional hydraulics, discharge Q, and Froude Number Fr:
+    Q = (1/n) * A * R^(2/3) * S0^(1/2).
+    """
+    data = request.get_json(silent=True) or {}
+    stage = data.get("stage_cm")
+    if stage is None:
+        return jsonify({"detail": "Missing mandatory field 'stage_cm'"}), 400
+
+    try:
+        stage = float(stage)
+        b = float(data.get("bottom_width_m", 12.0))
+        z = float(data.get("side_slope_z", 1.5))
+        n = float(data.get("mannings_n", 0.035))
+        s0 = float(data.get("bed_slope", 0.0018))
+    except ValueError:
+        return jsonify({"detail": "Hydraulic parameters must be valid floats"}), 400
+
+    result = calculate_mannings_hydraulics(
+        stage_cm=stage,
+        bottom_width_m=b,
+        side_slope_z=z,
+        mannings_n=n,
+        bed_slope=s0
+    )
+    return jsonify(result), 200
+
+@telemetry_bp.route("/calibrate-rating-curve", methods=["POST"])
+def calibrate_rating_curve():
+    """
+    Calibrates power-law rating curve Q = C * (H - H0)^P via log-linear least-squares
+    from ADCP stream gauging field points.
+    """
+    data = request.get_json(silent=True) or {}
+    points = data.get("gauging_points", [])
+    if not isinstance(points, list) or len(points) < 2:
+        return jsonify({"detail": "'gauging_points' must be a list containing at least 2 measurements"}), 400
+
+    try:
+        fixed_h0 = float(data.get("fixed_h0", 0.50))
+    except ValueError:
+        return jsonify({"detail": "'fixed_h0' must be a valid float"}), 400
+
+    result = calibrate_rating_curve_least_squares(points, fixed_h0=fixed_h0)
+    return jsonify(result), 200
+
 

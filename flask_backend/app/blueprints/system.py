@@ -1,8 +1,8 @@
 import time
 from datetime import datetime, timezone
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 from ..database import SessionLocal, check_db_health
-from ..models import SystemSetting, SensorNode, HydroLog, AlertLog
+from ..models import SystemSetting, SensorNode, HydroLog, AlertLog, User
 from ..services.watchdog import watchdog
 from ..services.alert_dispatcher import alert_dispatcher
 
@@ -16,6 +16,58 @@ def get_system_settings():
     try:
         settings = db.query(SystemSetting).all()
         return jsonify({s.key: s.value for s in settings}), 200
+    finally:
+        db.close()
+
+@system_bp.route("/settings", methods=["POST", "PUT"])
+def update_system_settings():
+    """Synchronizes warning and critical thresholds and broadcast radius to database."""
+    data = request.get_json(silent=True) or {}
+    db = SessionLocal()
+    try:
+        updated = {}
+        for key, val in data.items():
+            if isinstance(val, (int, float)):
+                setting = db.query(SystemSetting).filter(SystemSetting.key == key).first()
+                if not setting:
+                    setting = SystemSetting(key=key, value=float(val))
+                    db.add(setting)
+                else:
+                    setting.value = float(val)
+                updated[key] = float(val)
+        db.commit()
+        return jsonify({"status": "SYNCHRONIZED", "settings": updated}), 200
+    finally:
+        db.close()
+
+@system_bp.route("/audit-log", methods=["GET"])
+def get_audit_log():
+    """Returns chronological system audit log of critical threshold crossings and siren actions."""
+    db = SessionLocal()
+    try:
+        recent_alerts = db.query(AlertLog).order_by(AlertLog.id.desc()).limit(25).all()
+        user_count = db.query(User).count()
+        node_count = db.query(SensorNode).count()
+
+        events = []
+        for a in recent_alerts:
+            events.append({
+                "event_id": f"EVT-ALT-{a.id}",
+                "event_type": "ALERT_TRIGGERED",
+                "severity": a.severity,
+                "message": a.title,
+                "station_id": a.node_id,
+                "water_level_cm": a.water_level_cm,
+                "acknowledged": a.is_acknowledged,
+                "timestamp": a.timestamp.isoformat() if a.timestamp else None
+            })
+
+        return jsonify({
+            "audit_trail_count": len(events),
+            "system_users_registered": user_count,
+            "monitored_stations": node_count,
+            "events": events
+        }), 200
     finally:
         db.close()
 
