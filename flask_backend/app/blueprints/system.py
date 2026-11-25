@@ -5,6 +5,8 @@ from ..database import SessionLocal, check_db_health
 from ..models import SystemSetting, SensorNode, HydroLog, AlertLog, User
 from ..services.watchdog import watchdog
 from ..services.alert_dispatcher import alert_dispatcher
+from ..core.cache import cache
+from ..core.event_bus import event_bus
 
 system_bp = Blueprint("system", __name__, url_prefix="/api/v1/system")
 
@@ -90,6 +92,8 @@ def get_diagnostics():
             "logged_hazard_alerts": alert_count,
             "siren_system_state": "ARMED" if alert_dispatcher.siren_armed else "STANDBY",
             "sms_gateway_provider": alert_dispatcher.gateway_provider,
+            "cache_metrics": cache.get_stats(),
+            "event_bus_metrics": event_bus.get_metrics(),
             "engine_status": "OPTIMAL",
             "timestamp": datetime.now(timezone.utc).isoformat()
         }), 200

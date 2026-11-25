@@ -13,6 +13,8 @@ from ..hydrology import (
     calibrate_rating_curve_least_squares
 )
 from ..services.alert_dispatcher import alert_dispatcher
+from ..core.cache import cache
+from ..core.event_bus import event_bus, EventType
 
 telemetry_bp = Blueprint("telemetry", __name__, url_prefix="/api/v1/telemetry")
 
@@ -81,6 +83,16 @@ def ingest_telemetry():
 
         db.commit()
 
+        # Decoupled Event-Driven notification & Cache Invalidation
+        cache.invalidate("dashboard_summary")
+        event_bus.publish(EventType.TELEMETRY_INGESTED, {
+            "node_id": node_id,
+            "stage_cm": water_level,
+            "discharge_m3s": discharge,
+            "risk_level": risk_level,
+            "flood_probability": prob
+        }, asynchronous=True)
+
         return jsonify({
             "status": "INGESTED",
             "node_id": node_id,
@@ -121,6 +133,13 @@ def ingest_batch_telemetry():
                 db.add(log_entry)
                 processed_count += 1
         db.commit()
+
+        # Decoupled Event-Driven notification & Cache Invalidation
+        cache.invalidate("dashboard_summary")
+        event_bus.publish(EventType.TELEMETRY_INGESTED, {
+            "batch": True,
+            "count": processed_count
+        }, asynchronous=True)
         return jsonify({"status": "SUCCESS", "ingested_count": processed_count}), 201
     finally:
         db.close()

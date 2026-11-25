@@ -3,6 +3,7 @@ from flask import Blueprint, jsonify
 from ..database import SessionLocal
 from ..models import SensorNode, HydroLog, AlertLog, RiverBasin
 from ..hydrology import calculate_discharge
+from ..core.cache import cache
 
 dashboard_bp = Blueprint("dashboard", __name__, url_prefix="/api/v1/dashboard")
 
@@ -12,6 +13,10 @@ def get_dashboard_root():
 
 @dashboard_bp.route("/summary", methods=["GET"])
 def get_dashboard_summary():
+    cached = cache.get("dashboard_summary")
+    if cached:
+        return jsonify(cached), 200
+
     db = SessionLocal()
     try:
         nodes = db.query(SensorNode).all()
@@ -33,7 +38,7 @@ def get_dashboard_summary():
         peak_q = calculate_discharge(max_stage)
         basin_health = "CRITICAL RISK" if max_stage >= 450.0 else ("WARNING ELEVATED" if max_stage >= 350.0 else "OPERATIONAL")
 
-        return jsonify({
+        payload = {
             "total_stations": total_stations,
             "active_stations": active_stations,
             "open_alerts": open_alerts,
@@ -42,7 +47,9 @@ def get_dashboard_summary():
             "max_water_level_cm": max_stage,
             "basin_health": basin_health,
             "timestamp": datetime.now(timezone.utc).isoformat()
-        }), 200
+        }
+        cache.set("dashboard_summary", payload, ttl=10)
+        return jsonify(payload), 200
     finally:
         db.close()
 
