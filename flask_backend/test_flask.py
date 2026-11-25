@@ -409,6 +409,73 @@ class TestFlaskProductionBackend(unittest.TestCase):
         self.assertEqual(fields[1], "NODE-ALPHA-1")
         print("  [PASS] Dynamic system settings sync, event audit log, and NMEA-0183 checksum bridge verified.")
 
+    def test_21_muskingum_flood_routing(self):
+        # Hydrograph crest: 45 -> 520 -> 60 m3/s
+        hydrograph = [45.0, 95.0, 210.0, 380.0, 520.0, 390.0, 220.0, 110.0, 60.0]
+        res = self.client.post("/api/v1/telemetry/muskingum-routing", json={
+            "inflow_hydrograph_m3s": hydrograph,
+            "reach_k_hours": 6.0,
+            "weighting_x": 0.20,
+            "time_step_dt_hours": 1.0
+        })
+        self.assertEqual(res.status_code, 200)
+        data = res.get_json()
+        self.assertIn("routed_outflow_hydrograph_m3s", data)
+        self.assertTrue(data["peak_outflow_m3s"] < data["peak_inflow_m3s"])
+        self.assertTrue(data["peak_attenuation_percent"] > 0)
+        self.assertIn("mass_conservation_error_percent", data)
+        print(f"  [PASS] Muskingum flood routing verified: Peak Inflow={data['peak_inflow_m3s']}m³/s -> Outflow={data['peak_outflow_m3s']}m³/s (-{data['peak_attenuation_percent']}%), Lag={data['crest_lag_hours']}h.")
+
+    def test_22_scs_curve_number_runoff(self):
+        res = self.client.post("/api/v1/telemetry/scs-runoff", json={
+            "storm_rainfall_depth_mm": 85.0,
+            "curve_number_cn": 78.0,
+            "catchment_area_km2": 1250.0
+        })
+        self.assertEqual(res.status_code, 200)
+        data = res.get_json()
+        self.assertTrue(data["direct_runoff_depth_mm"] > 0)
+        self.assertTrue(data["total_runoff_volume_million_m3"] > 0)
+        self.assertTrue(data["runoff_coefficient"] > 0)
+        print(f"  [PASS] USDA SCS-CN Catchment Runoff verified: P=85mm -> Q={data['direct_runoff_depth_mm']}mm (Coeff: {data['runoff_coefficient']}, Vol: {data['total_runoff_volume_million_m3']}M m³).")
+
+    def test_23_inundation_exposure_and_infrastructure(self):
+        res = self.client.post("/api/v1/gis/inundation-exposure", json={
+            "stage_cm": 460.0,
+            "station_id": "NODE-ALPHA-1"
+        })
+        self.assertEqual(res.status_code, 200)
+        data = res.get_json()
+        self.assertEqual(data["flood_hazard_tier"], "CRITICAL_INUNDATION")
+        self.assertTrue(data["impacted_infrastructure_count"] >= 3)
+        self.assertTrue(data["estimated_population_at_risk"] > 0)
+        print(f"  [PASS] GIS Inundation Exposure verified: {data['impacted_infrastructure_count']} critical assets breached, {data['estimated_population_at_risk']} people in hazard zone.")
+
+    def test_24_fota_and_remote_node_config(self):
+        res_login = self.client.post("/api/v1/auth/login", json={
+            "email": "admin@sfews.gov.et",
+            "password": "admin123"
+        })
+        token = res_login.get_json()["access_token"]
+
+        # 1. Update config OTA
+        res_cfg = self.client.put("/api/v1/nodes/NODE-ALPHA-1/config", headers={"Authorization": f"Bearer {token}"}, json={
+            "sample_interval_sec": 10,
+            "sleep_duration_sec": 45,
+            "lora_tx_power_dbm": 17,
+            "high_rate_mode": True
+        })
+        self.assertEqual(res_cfg.status_code, 200)
+        self.assertEqual(res_cfg.get_json()["status"], "CONFIG_APPLIED")
+
+        # 2. Trigger FOTA update
+        res_fota = self.client.post("/api/v1/nodes/NODE-ALPHA-1/fota", headers={"Authorization": f"Bearer {token}"}, json={
+            "firmware_version": "v4.2.2-ASTU"
+        })
+        self.assertEqual(res_fota.status_code, 202)
+        self.assertEqual(res_fota.get_json()["status"], "FOTA_QUEUED")
+        print("  [PASS] Remote Over-The-Air (OTA) Node configuration & FOTA firmware pipeline verified.")
+
 if __name__ == "__main__":
     print("\n=== STARTING FLASK PRODUCTION BACKEND FULL TEST ===")
     unittest.main()
