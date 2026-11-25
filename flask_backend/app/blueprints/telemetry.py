@@ -10,7 +10,9 @@ from ..hydrology import (
     classify_surge_dynamics,
     compensate_ultrasonic_temperature,
     calculate_mannings_hydraulics,
-    calibrate_rating_curve_least_squares
+    calibrate_rating_curve_least_squares,
+    route_muskingum_flood_wave,
+    calculate_scs_catchment_runoff
 )
 from ..services.alert_dispatcher import alert_dispatcher
 from ..core.cache import cache
@@ -363,6 +365,57 @@ def calibrate_rating_curve():
         return jsonify({"detail": "'fixed_h0' must be a valid float"}), 400
 
     result = calibrate_rating_curve_least_squares(points, fixed_h0=fixed_h0)
+    return jsonify(result), 200
+
+@telemetry_bp.route("/muskingum-routing", methods=["POST"])
+def muskingum_routing():
+    """
+    Simulates dynamic flood wave celerity, attenuation, and downstream peak arrival
+    using Muskingum Flood Wave Routing: O(t+1) = C0*I(t+1) + C1*I(t) + C2*O(t).
+    """
+    data = request.get_json(silent=True) or {}
+    inflow = data.get("inflow_hydrograph_m3s") or data.get("inflow_hydrograph", [])
+    if not isinstance(inflow, list) or len(inflow) < 2:
+        return jsonify({"detail": "'inflow_hydrograph_m3s' must be an array of at least 2 discharge values"}), 400
+
+    try:
+        k = float(data.get("reach_k_hours", 6.0))
+        x = float(data.get("weighting_x", 0.20))
+        dt = float(data.get("time_step_dt_hours", 1.0))
+    except ValueError:
+        return jsonify({"detail": "Routing parameters (k, x, dt) must be valid floats"}), 400
+
+    result = route_muskingum_flood_wave(
+        inflow_hydrograph=inflow,
+        reach_k_hours=k,
+        weighting_x=x,
+        time_step_dt_hours=dt
+    )
+    return jsonify(result), 200
+
+@telemetry_bp.route("/scs-runoff", methods=["POST"])
+def scs_runoff():
+    """
+    USDA SCS-CN Catchment Runoff & Water Balance Calculator:
+    Q = (P - 0.2S)^2 / (P + 0.8S) for P > 0.2S.
+    """
+    data = request.get_json(silent=True) or {}
+    rainfall = data.get("storm_rainfall_depth_mm") or data.get("rainfall_mm")
+    if rainfall is None:
+        return jsonify({"detail": "Missing mandatory field 'storm_rainfall_depth_mm'"}), 400
+
+    try:
+        p = float(rainfall)
+        cn = float(data.get("curve_number_cn", 78.0))
+        area = float(data.get("catchment_area_km2", 1250.0))
+    except ValueError:
+        return jsonify({"detail": "Numeric fields must be valid floats"}), 400
+
+    result = calculate_scs_catchment_runoff(
+        rainfall_depth_mm=p,
+        curve_number_cn=cn,
+        catchment_area_km2=area
+    )
     return jsonify(result), 200
 
 

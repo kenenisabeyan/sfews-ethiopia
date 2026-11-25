@@ -243,3 +243,121 @@ def calibrate_rating_curve_least_squares(
         "equation": f"Q = {calibrated_c:.2f} * (H - {fixed_h0:.2f})^{slope_p:.2f}",
         "units": "H in meters, Q in m³/s"
     }
+
+def route_muskingum_flood_wave(
+    inflow_hydrograph: list,
+    reach_k_hours: float = 6.0,
+    weighting_x: float = 0.20,
+    time_step_dt_hours: float = 1.0
+) -> Dict:
+    """
+    Solves Muskingum Flood Wave Routing differential equation:
+    O(t+1) = C0 * I(t+1) + C1 * I(t) + C2 * O(t)
+    Where:
+      D = 2 * K * (1 - X) + dt
+      C0 = (dt - 2 * K * X) / D
+      C1 = (dt + 2 * K * X) / D
+      C2 = (2 * K * (1 - X) - dt) / D
+    Accurately models flood wave propagation, dispersion, and peak attenuation along the Awash River.
+    """
+    if len(inflow_hydrograph) < 2:
+        return {"error": "Inflow hydrograph requires at least 2 time-step discharge points."}
+
+    k = max(reach_k_hours, 0.1)
+    x = max(min(weighting_x, 0.5), 0.0)
+    dt = max(time_step_dt_hours, 0.1)
+
+    denominator = (2.0 * k * (1.0 - x)) + dt
+    c0 = (dt - (2.0 * k * x)) / denominator
+    c1 = (dt + (2.0 * k * x)) / denominator
+    c2 = ((2.0 * k * (1.0 - x)) - dt) / denominator
+
+    outflow = [float(inflow_hydrograph[0])]
+    for i in range(len(inflow_hydrograph) - 1):
+        i_curr = float(inflow_hydrograph[i])
+        i_next = float(inflow_hydrograph[i + 1])
+        o_curr = outflow[-1]
+        o_next = (c0 * i_next) + (c1 * i_curr) + (c2 * o_curr)
+        outflow.append(round(max(o_next, 0.0), 2))
+
+    peak_inflow = max(inflow_hydrograph)
+    peak_outflow = max(outflow)
+    attenuation_m3s = round(peak_inflow - peak_outflow, 2)
+    attenuation_percent = round((attenuation_m3s / peak_inflow) * 100.0, 1) if peak_inflow > 0 else 0.0
+
+    inflow_peak_step = inflow_hydrograph.index(peak_inflow)
+    outflow_peak_step = outflow.index(peak_outflow)
+    crest_lag_hours = (outflow_peak_step - inflow_peak_step) * dt
+
+    # Mass continuity error: sum(I) vs sum(O)
+    sum_inflow = sum(inflow_hydrograph)
+    sum_outflow = sum(outflow)
+    mass_conservation_error_pct = round(abs(sum_inflow - sum_outflow) / sum_inflow * 100.0, 2) if sum_inflow > 0 else 0.0
+
+    return {
+        "muskingum_coefficients": {
+            "C0": round(c0, 4),
+            "C1": round(c1, 4),
+            "C2": round(c2, 4),
+            "sum_check": round(c0 + c1 + c2, 4)
+        },
+        "reach_storage_constant_k_hours": k,
+        "attenuation_weight_x": x,
+        "time_step_hours": dt,
+        "inflow_hydrograph_m3s": [round(float(q), 1) for q in inflow_hydrograph],
+        "routed_outflow_hydrograph_m3s": outflow,
+        "peak_inflow_m3s": round(peak_inflow, 2),
+        "peak_outflow_m3s": round(peak_outflow, 2),
+        "peak_attenuation_m3s": attenuation_m3s,
+        "peak_attenuation_percent": attenuation_percent,
+        "crest_lag_hours": crest_lag_hours,
+        "mass_conservation_error_percent": mass_conservation_error_pct
+    }
+
+def calculate_scs_catchment_runoff(
+    rainfall_depth_mm: float,
+    curve_number_cn: float = 78.0,
+    catchment_area_km2: float = 1250.0
+) -> Dict:
+    """
+    USDA SCS-CN (Soil Conservation Service Curve Number) Runoff Engine.
+    Computes effective storm runoff depth and volumetric discharge from catchment precipitation:
+      - Potential Maximum Retention: S = (25400 / CN) - 254 [mm]
+      - Initial Abstraction: Ia = 0.20 * S [mm]
+      - Direct Runoff Depth: Q = (P - Ia)^2 / (P - Ia + S) [mm] (when P > Ia)
+    Calibrated for Awash Basin volcanic loam and alluvial floodplain soils.
+    """
+    cn = max(min(curve_number_cn, 100.0), 30.0)
+    p = max(rainfall_depth_mm, 0.0)
+    area_km2 = max(catchment_area_km2, 0.1)
+
+    retention_s_mm = (25400.0 / cn) - 254.0
+    initial_abstraction_ia_mm = 0.20 * retention_s_mm
+
+    if p <= initial_abstraction_ia_mm:
+        direct_runoff_depth_mm = 0.0
+    else:
+        numerator = (p - initial_abstraction_ia_mm) ** 2
+        denominator = (p - initial_abstraction_ia_mm) + retention_s_mm
+        direct_runoff_depth_mm = numerator / denominator
+
+    direct_runoff_depth_mm = round(direct_runoff_depth_mm, 2)
+    runoff_coefficient = round(direct_runoff_depth_mm / p, 3) if p > 0 else 0.0
+
+    # Volumetric water balance: Volume = Runoff depth (m) * Area (m^2)
+    area_m2 = area_km2 * 1_000_000.0
+    runoff_volume_m3 = (direct_runoff_depth_mm / 1000.0) * area_m2
+    runoff_volume_million_m3 = round(runoff_volume_m3 / 1_000_000.0, 3)
+
+    return {
+        "catchment_curve_number": cn,
+        "catchment_area_km2": area_km2,
+        "storm_rainfall_depth_mm": round(p, 1),
+        "potential_max_retention_s_mm": round(retention_s_mm, 2),
+        "initial_abstraction_ia_mm": round(initial_abstraction_ia_mm, 2),
+        "direct_runoff_depth_mm": direct_runoff_depth_mm,
+        "runoff_coefficient": runoff_coefficient,
+        "total_runoff_volume_m3": round(runoff_volume_m3, 1),
+        "total_runoff_volume_million_m3": runoff_volume_million_m3,
+        "hydrologic_soil_group": "Group B/C (Awash Piedmont & Alluvial Clay)"
+    }

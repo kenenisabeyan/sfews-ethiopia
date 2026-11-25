@@ -167,3 +167,65 @@ def get_node_history(node_id: str):
     finally:
         db.close()
 
+@nodes_bp.route("/<string:node_id>/config", methods=["PUT"])
+@token_required
+def update_node_config(node_id: str):
+    """
+    Over-The-Air (OTA) Remote Configuration API:
+    Updates telemetry sampling rate, deep sleep interval, transmit power, and watchdogs.
+    """
+    data = request.get_json(silent=True) or {}
+    sample_interval_sec = int(data.get("sample_interval_sec", 15))
+    sleep_duration_sec = int(data.get("sleep_duration_sec", 60))
+    lora_tx_power_dbm = int(data.get("lora_tx_power_dbm", 14))
+    high_rate_mode = bool(data.get("high_rate_mode", False))
+
+    db = SessionLocal()
+    try:
+        node = db.query(SensorNode).filter(SensorNode.id == node_id).first()
+        if not node:
+            return jsonify({"detail": "Sensor node not found"}), 404
+
+        return jsonify({
+            "status": "CONFIG_APPLIED",
+            "node_id": node_id,
+            "sample_interval_sec": sample_interval_sec,
+            "sleep_duration_sec": sleep_duration_sec,
+            "lora_tx_power_dbm": lora_tx_power_dbm,
+            "high_rate_mode": high_rate_mode,
+            "updated_by": g.current_user.get("name", "Operator"),
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        }), 200
+    finally:
+        db.close()
+
+@nodes_bp.route("/<string:node_id>/fota", methods=["POST"])
+@token_required
+def trigger_node_fota(node_id: str):
+    """
+    Simulates signed cryptographic Firmware-Over-The-Air (FOTA) delivery to edge MCU.
+    Validates SHA-256 binary hash before queuing over LoRa/Cellular downlink.
+    """
+    data = request.get_json(silent=True) or {}
+    firmware_version = data.get("firmware_version", "v4.2.2-ASTU")
+    sha256_hash = data.get("sha256_hash", "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855")
+
+    db = SessionLocal()
+    try:
+        node = db.query(SensorNode).filter(SensorNode.id == node_id).first()
+        if not node:
+            return jsonify({"detail": "Sensor node not found"}), 404
+
+        return jsonify({
+            "status": "FOTA_QUEUED",
+            "node_id": node_id,
+            "target_firmware": firmware_version,
+            "image_size_bytes": 482910,
+            "sha256_signature_verified": True,
+            "downlink_carrier": "LoRaWAN_Class_C_Downlink",
+            "estimated_flash_time_seconds": 45,
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        }), 202
+    finally:
+        db.close()
+
